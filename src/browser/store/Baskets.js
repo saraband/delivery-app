@@ -3,14 +3,24 @@ const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 const CLEAR_BASKET = 'CLEAR_BASKET';
 const CLEAR_ALL_BASKETS = 'CLEAR_ALL_BASKETS';
 
+/*
+ *  The baskets are implemented as nested hash lists
+ *  So retrieving the products list for one restaurant basket is quick,
+ *  and isn't dependent of the amount of data stored.
+ */
+
 export default (state = {}, action) => {
   switch (action.type) {
     case CLEAR_BASKET:
       return Object.keys(state).reduce((newState, currentBasketId) => {
+
+        // This is the basket we need to clear
+        // we don't include it in the new state
         if (currentBasketId == action.basketId) {
           return newState;
         }
 
+        // Not the basket we need to clear, just return it
         newState[currentBasketId] = state[currentBasketId];
         return newState;
       }, {});
@@ -19,7 +29,7 @@ export default (state = {}, action) => {
       return {};
 
     case ADD_PRODUCT: {
-      const {id, restaurantId} = action.product;
+      const { id, restaurantId } = action.product;
       const restaurantBasket = state[restaurantId];
       const productStored = restaurantBasket && restaurantBasket[id];
 
@@ -28,7 +38,12 @@ export default (state = {}, action) => {
         [restaurantId]: {
           ...state[restaurantId],
           [id]: productStored
+
+            // If the product already exists in the basket
+            // We increase its quantity
             ? { ...productStored, quantity: productStored.quantity + 1 }
+
+            // Else, we put it there
             : { ...action.product, quantity: 1 }
         }
       };
@@ -40,24 +55,33 @@ export default (state = {}, action) => {
       const productStored = restaurantBasket && restaurantBasket[id];
 
       // Product doesn't exist in baskets
+      // This should never happen
       if (!productStored) {
         console.error(`Error: Unable to remove product id: ${id}, name: ${name}`);
         return state;
       }
 
       return Object.keys(state).reduce((newState, currentBasketId) => {
+
+        // This is not the basket we need to remove
+        // a product from, just return it
         if (currentBasketId != restaurantId) {
           newState[currentBasketId] = state[currentBasketId];
           return newState;
         }
 
-        // Only product in basket, don't even return the basket
+        // The product we remove is the only one
+        // In the whole basket, remove the basket
         if (productStored.quantity === 1 &&
           Object.keys(state[currentBasketId]).length === 1) {
           return newState;
         }
 
+        // Decrease the quantity of the removed product
+        // In the basket
         newState[currentBasketId] = Object.keys(state[currentBasketId]).reduce((newBasketState, currentProductId) => {
+
+          // Not the product we need to remove
           if (currentProductId != id) {
             newBasketState[currentProductId] = state[currentBasketId][currentProductId];
             return newBasketState;
