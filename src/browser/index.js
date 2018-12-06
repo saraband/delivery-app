@@ -4,7 +4,8 @@ import ApolloClient from "apollo-boost"
 import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as StoreProvider } from 'react-redux';
-import store from 'STORE/index';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from 'STORE/index';
 import App from './App';
 
 const apolloClient = new ApolloClient({
@@ -15,9 +16,11 @@ const render = (App) => {
   ReactDOM.render(
     <ApolloProvider client={apolloClient}>
       <StoreProvider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
       </StoreProvider>
     </ApolloProvider>,
     document.getElementById('root')
