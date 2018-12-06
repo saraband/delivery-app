@@ -99,7 +99,7 @@ const Query = new GraphQLObjectType({
           type: GraphQLInt
         },
         restaurantId: {
-          type: GraphQLInt
+          type: GraphQLString
         }
       },
       resolve: (root, args) => db.product.findAll({ where: args })

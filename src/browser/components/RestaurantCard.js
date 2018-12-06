@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Colors from '../constants/Colors';
+import Routes, { addParamsToUrl } from 'ROUTES';
+import { Link } from 'react-router-dom';
 
-const StyledCard = styled.div`
+const StyledCard = styled(Link)`
+  display: block;
   border: 1px solid ${Colors.GREY};
   border-radius: 2px;
   width: 200px;
@@ -27,7 +30,7 @@ export default class RestaurantCard extends React.PureComponent {
     } = this.props;
 
     return (
-      <StyledCard>
+      <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { restaurantId: id })}>
         <Image />
         <Name>{name}</Name>
         <Rating>{rating} / 10</Rating>

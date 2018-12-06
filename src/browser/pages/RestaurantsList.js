@@ -32,7 +32,11 @@ export default class RestaurantsList extends React.Component {
           if (error) return <p>Error</p>;
           if (loading) return <p>Loading</p>;
 
-          return data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} />)
+          return (
+            <List>
+              {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} />)}
+            </List>
+          );
         }}
       </Query>
     );
