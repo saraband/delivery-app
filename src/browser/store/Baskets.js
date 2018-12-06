@@ -33,6 +33,7 @@ export default (state = {}, action) => {
       const restaurantBasket = state[restaurantId];
       const productStored = restaurantBasket && restaurantBasket[id];
 
+
       return {
         ...state,
         [restaurantId]: {

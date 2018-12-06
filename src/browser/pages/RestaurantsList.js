@@ -27,10 +27,14 @@ const List = styled.div`
 export default class RestaurantsList extends React.Component {
   render () {
     return (
-      <List>
-        <Input />
-        <Button>Hello world !</Button>
-      </List>
+      <Query query={GET_RESTAURANTS_LIST}>
+        {({ error, loading, data }) => {
+          if (error) return <p>Error</p>;
+          if (loading) return <p>Loading</p>;
+
+          return data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} />)
+        }}
+      </Query>
     );
   }
 }
