@@ -26,7 +26,8 @@ module.exports = {
       PAGES: path.resolve(__dirname, 'src/browser/pages/'),
       ICONS: path.resolve(__dirname, 'src/browser/icons/'),
       HOCS: path.resolve(__dirname, 'src/browser/hocs/'),
-      STORE: path.resolve(__dirname, 'src/browser/store/')
+      STORE: path.resolve(__dirname, 'src/browser/store/'),
+      HELPERS: path.resolve(__dirname, 'src/browser/helpers/')
     }
   },
   module: {
