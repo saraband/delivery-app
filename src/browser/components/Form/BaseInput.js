@@ -13,22 +13,36 @@ import PropTypes from 'prop-types';
 import nullFunc from 'MISC/NullFunction';
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
+import { validateValue } from 'HELPERS/Validate';
 
-// TODO: Old style, recup icon ?
-/*
+const Container = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 const StyledInput = styled.input`
   border-radius: 2px;
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #111;
-  transition: all 0.15s ease-in-out;
+  padding: 8px 12px 8px 12px;
+  font-size: ${FontSizes.MEDIUM};
+  border: 1px solid ${Colors.GREY};
+  transition: all 0.1s ease-in-out;
 
   &:focus,
   &:active {
-    box-shadow: 0 0 0 3px ${Colors.LIGHT_BLUE};
-    border-color: ${Colors.BLUE};
+    border-color: ${Colors.DARK_GREY};
+    outline: 0;
   }
+  
+  /* VALID INPUT ? */
+  ${p => {
+    if (p.showBorder) {
+      return p.validBorder
+        ? `border-color: ${Colors.BLUE} !important;`
+        : `border-color: ${Colors.RED} !important;`;
+    }
+  }}
 
+  /* ICON */
   ${p => p.icon
     ? `
       background-image: url(${p.icon});
@@ -39,18 +53,26 @@ const StyledInput = styled.input`
     : ''
   }
 `;
-*/
+
+const Label = styled.label`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  font-size: ${FontSizes.SMALL};
+  color: ${Colors.RED};
+`;
 
 export default class BaseInput extends React.Component {
   constructor (props) {
     super(props);
 
     // Validate the start value
-    const isValid = this.isValueValid(props.validate, props.value);
-
+    const isValid = validateValue(props.validate, props.value);
     this.state = {
       isValid: isValid,
-      hasTypedAnythingYet: false,
+      hasTypedAnythingYet: !!props.value,
       errorLabel: ''
     };
 
@@ -64,46 +86,15 @@ export default class BaseInput extends React.Component {
     }
   }
 
-  // Pure validate function, used in the constructor
-  // and whenever the input changes
-  isValueValid = (validate, value) => {
-
-    // Valid until proven otherwise
-    let isValid = true;
-
-    // If no validate func is passed,
-    // the input is always valid
-    if (validate !== undefined) {
-
-      // Multiple validation rules
-      if (Array.isArray(validate)) {
-        isValid = validate.reduce((areOtherRulesValids, validateFn) => {
-
-          // Check if the array element is a validate function
-          // use it if that's the case, ignore otherwise
-          return typeof validateFn !== 'function'
-            ? areOtherRulesValids
-            : areOtherRulesValids && validateFn(value);
-        }, true);
-
-        // Single validation rule
-      } else {
-        isValid = validate(value);
-      }
-    }
-
-    return isValid;
-  }
-
   // This is called whenever the input value changes
   // (i.e. when native onChange event is called)
-  handleChange = (event) => {
+  handleChange = async (event) => {
     const newValue = event.target.value;
     const name = event.target.name;
     const { validate, validator } = this.props;
 
     // Check validity of the new value
-    const isValid = this.isValueValid(validate, newValue);
+    const isValid = validateValue(validate, newValue);
 
     const changeEvent = {
       name,
@@ -111,26 +102,23 @@ export default class BaseInput extends React.Component {
       valid: isValid
     };
 
-    // We trigger the onChange prop
-    // TODO: replace this by await
-    // TODO: parce que on est pas sur que props.onChange
-    // TODO: est defini
-    // TODO: et si c'est pas le cas, ça provoquera une erreur
-    this.props.onChange(changeEvent).then(() => {
+    // We trigger the onChange prop and wait for it
+    if (this.props.onChange) {
+      await this.props.onChange(changeEvent);
+    }
 
-      // We update the internal validity state of the input
-      this.setState({
-        isValid,
-        hasTypedAnythingYet: true
-      }, () => {
+    // We update the internal validity state of the input
+    this.setState({
+      isValid,
+      hasTypedAnythingYet: true
+    }, () => {
 
-        // If the input is connected to a validator,
-        // we notify the change so it can update the global
-        // validity of the form
-        if (validator) {
-          validator.onChange(changeEvent);
-        }
-      });
+      // If the input is connected to a validator,
+      // we notify the change so it can update the global
+      // validity of the form
+      if (validator) {
+        validator.onChange(changeEvent);
+      }
     });
   }
 
@@ -141,6 +129,9 @@ export default class BaseInput extends React.Component {
       onChange,
       validate,
       validator,
+      id,
+      className,
+      style,
       errorLabel,
       ...rest
     } = this.props;
@@ -151,20 +142,29 @@ export default class BaseInput extends React.Component {
     } = this.state;
 
     return (
-      <div className='input'>
-        <input
+      <Container
+        id={id}
+        className={className}
+        style={style}
+        >
+        <StyledInput
           onChange={this.handleChange}
           {...rest}
+
+          // styled-component props
+          showBorder={hasTypedAnythingYet}
+          validBorder={isValid}
         />
         {!isValid && hasTypedAnythingYet &&
-        <label>{errorLabel}</label>
+        <Label>{errorLabel}</Label>
         }
-      </div>
+      </Container>
     );
   }
 };
 
 BaseInput.propTypes = {
+  icon: PropTypes.string,
   autoComplete: PropTypes.string,
   errorLabel: PropTypes.string,
   onChange: PropTypes.func,
@@ -182,8 +182,5 @@ BaseInput.propTypes = {
 BaseInput.defaultProps = {
   autoComplete: 'off',
   errorLabel: 'This input is not valid',
-  type: 'text',
-  // TODO: Replace this by await (props.onChange && props.onChange())
-  // TODO: en haut (ligne: 82)
-  onChange: () => new Promise(r => r())
+  type: 'text'
 };

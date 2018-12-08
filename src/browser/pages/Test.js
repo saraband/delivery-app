@@ -4,6 +4,8 @@ import BaseInput from 'COMPONENTS/Form/BaseInput';
 import withValidator from 'HOCS/WithValidator';
 import v from 'HELPERS/Validate';
 import { createInputHandler } from 'HELPERS';
+import BaseForm from 'COMPONENTS/Form/BaseForm';
+import BaseButton from 'COMPONENTS/Form/BaseButton';
 
 class TestPage extends React.Component {
   constructor (props) {
@@ -18,6 +20,7 @@ class TestPage extends React.Component {
 
     this.updateInput = createInputHandler({ stateKey: 'formData' }).bind(this);
   }
+
   render () {
     const {
       isFormValid,
@@ -31,7 +34,7 @@ class TestPage extends React.Component {
 
     return (
       <div>
-        <form onSubmit={e => e.preventDefault()}>
+        <BaseForm onSubmit={e => e.preventDefault()}>
           <BaseInput
             name='email'
             value={email}
@@ -39,6 +42,7 @@ class TestPage extends React.Component {
             validator={validator}
             validate={v.email}
             placeholder='Your email here'
+            style={{ marginRight: '20px' }}
             />
           <BaseInput
             name='password'
@@ -48,9 +52,13 @@ class TestPage extends React.Component {
             validate={v.password}
             placeholder='Your password here'
             />
-          <button disabled={!isFormValid}>login</button>
-          valid={isFormValid ? 'true' :'false'}
-        </form>
+          <BaseButton
+            disabled={!isFormValid}
+            style={{ marginLeft: '20px' }}
+            >
+            login
+          </BaseButton>
+        </BaseForm>
       </div>
     );
   }
