@@ -2,6 +2,37 @@
 
 This is a demo app.
 
+## How to try it out
+
+This app can be tested here (link WIP).
+If you want to try it locally, make sure to have Postgres running.
+Tweak the file src/server/config.json to fit your localhost database credentials:
+
+```json
+{
+  "development": {
+    "username": "YOUR_USERNAME_HERE",
+    "password": "YOUR_PASSWORD_HERE",
+    "database": "YOUR_DB_NAME_HERE",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
+```
+
+Once you've properly configured config.json, run the following:
+
+```
+yarn install                    # Install dependencies
+sequelize db:migrate            # Migrate DB schemas
+sequelize db:seed:all           # Populate the DB (This can take some time)
+
+
+yarn server                     # Launch the server app on port 4000
+yarn webpack                    # Launch the client app on port 8080
+```
+
 ## Folder structure
 
 * [src/server/](./src/server/) Server app

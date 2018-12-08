@@ -1,6 +1,4 @@
 import express from 'express';
-import Faker from 'faker';
-import _ from 'lodash';
 import cors from 'cors';
 import morgan from 'morgan';
 import graphQLHttp from 'express-graphql';
@@ -8,7 +6,6 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import log from './log';
 import schema from './schema';
-
 
 const app = express();
 app.disable('x-powered-by-x');
@@ -22,11 +19,11 @@ app.use('/graphql', graphQLHttp({
 }));
 
 /* LOGGING */
-app.use(morgan('tiny'))
+app.use(morgan('tiny'));
 
 /* OTHERS MIDDLEWARES */
-app.use(express.static(path.resolve(__dirname, '../../dist')))
-app.use(bodyParser.json())
+app.use(express.static(path.resolve(__dirname, '../../dist')));
+app.use(bodyParser.json());
 
 app.get('*', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
@@ -34,5 +31,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(3000, () => {
-
+  console.log('\n');
+  log.server('Server started on port 3000');
 });
