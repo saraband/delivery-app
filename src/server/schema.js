@@ -1,13 +1,20 @@
 import { makeExecutableSchema } from 'graphql-tools';
 import db from './models';
 import { Op } from 'sequelize';
+import GraphQLJSON from 'graphql-type-json';
 
 const typeDefs = `
+  scalar JSON
+  
   type Restaurant {
     id: ID!
     name: String!
     rating: Int!
     products: [Product!]
+    phone: String
+    address: String
+    thumbnail: String!
+    opening_hours: JSON
   }
   
   type Product {
@@ -15,6 +22,8 @@ const typeDefs = `
     name: String!
     price: Int!
     restaurant: Restaurant!
+    description: String,
+    ingredients: [String]
   }
   
   type Query {
@@ -30,6 +39,7 @@ const typeDefs = `
 `;
 
 const resolvers = {
+  JSON: GraphQLJSON,
   Restaurant: {
     products: (restaurant) => restaurant.getProducts()
   },

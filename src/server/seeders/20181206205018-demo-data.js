@@ -15,7 +15,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'restaurants',
-      new Array(150).fill(1).map(() => ({
+      new Array(100).fill(1).map(() => ({
         name: Faker.company.companyName(),
         rating: randomRating(),
         createdAt: new Date(),

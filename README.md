@@ -26,8 +26,9 @@ Once you've properly configured config.json, run the following:
 ```
 yarn install                    # Install dependencies
 sequelize db:migrate            # Migrate DB schemas
-sequelize db:seed:all           # Populate the DB (This can take some time)
 
+yarn generate-images            # Generates static images (Can take some time)
+sequelize db:seed:all           # Populate the DB (Make sure you properly generated images before)
 
 yarn server                     # Launch the server app on port 4000
 yarn webpack                    # Launch the client app on port 8080

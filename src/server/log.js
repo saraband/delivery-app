@@ -9,13 +9,20 @@ export default {
   server: (message) => {
     console.log(
       chalk.white.bgGreen(` ${moment(Date.now()).format('LT')} `) +
-      chalk.green(` Server: ${message}.\n`)
-    )
+      chalk.green(` Server: ${message}\n`)
+    );
   },
   db: (message) => {
     console.log(
       chalk.white.bgMagenta(` ${moment(Date.now()).format('LT')} `) +
-      chalk.magenta(` Database: ${message}.\n`)
-    )
-  }
+      chalk.magenta(` Database: ${message}\n`)
+    );
+  },
+  info: (message) => {
+    console.log(
+      chalk.white.bgHex('#0074D9')(` ${moment(Date.now()).format('LT')} `) +
+      chalk.white(` ${message}\n`)
+    );
+  },
+  endl: () => console.log('\n')
 }

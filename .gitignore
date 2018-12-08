@@ -2,6 +2,7 @@ node_modules
 .idea
 yarn.lock
 dist/bundle.js
+dist/images
 src/server/config.json
 specs.rtf
 package-lock.json

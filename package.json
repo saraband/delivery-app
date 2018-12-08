@@ -7,6 +7,8 @@
   "license": "MIT",
   "scripts": {
     "server": "nodemon --config nodemon.json ./src/server/index.js",
+    "test": "babel-node ./src/server/test.js",
+    "generate-images": "babel-node ./src/server/data/generate-images.js",
     "webpack": "webpack-dev-server --watch"
   },
   "dependencies": {
@@ -37,6 +39,8 @@
     "graphql": "^14.0.2",
     "graphql-tag": "^2.9.2",
     "graphql-tools": "^4.0.3",
+    "graphql-type-json": "^0.2.1",
+    "jimp": "^0.6.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "morgan": "^1.9.0",
