@@ -1,9 +1,7 @@
 /*
- *	BaseInput.js
+ *	LazyImage.js
  *	------------
- *	Custom input that accepts validation rules and can be
- *	connected to a validator.
- *
+ *  TODO: Better description
  *
  */
 
@@ -27,6 +25,7 @@ const StyledPlaceholder = styled.div`
   left: 0;
   background-image: url(${p => p.thumbnail});
   background-size: cover;
+  background-position: center center;
   filter: blur(2px);
 `;
 
@@ -39,6 +38,7 @@ const StyledImage = styled.div`
   left: 0;
   background-image: url(${p => p.src});
   background-size: cover;
+  background-position: center center;
 `;
 
 export default class LazyImage extends React.Component {
@@ -110,7 +110,6 @@ export default class LazyImage extends React.Component {
     return (
       <Container
         ref={this.ref}
-        onClick={this.loadImage}
         {...rest}
         >
         {hasImageLoaded && <StyledImage src={src} />}

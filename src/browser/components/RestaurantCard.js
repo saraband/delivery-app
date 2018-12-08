@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Colors from '../constants/Colors';
 import Routes, { addParamsToUrl } from 'ROUTES';
 import { Link } from 'react-router-dom';
+import LazyImage from 'COMPONENTS/LazyImage';
 
 const StyledCard = styled(Link)`
   display: block;
@@ -26,12 +27,19 @@ export default class RestaurantCard extends React.PureComponent {
     const {
       id,
       name,
-      rating
+      rating,
+      thumbnail
     } = this.props;
+
+    const src = `/images/restaurant/${id}/medium.jpeg`;
 
     return (
       <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { restaurantId: id })}>
-        <Image />
+        <LazyImage
+          src={src}
+          thumbnail={thumbnail}
+          alt={name}
+          />
         <Name>{name}</Name>
         <Rating>{rating} / 10</Rating>
       </StyledCard>

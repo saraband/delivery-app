@@ -34,7 +34,7 @@ const typeDefs = `
   }
   
   type Query {
-    restaurantsList: [Restaurant!]
+    restaurantsList (offset: Int, limit: Int): [Restaurant!]
     restaurant (restaurantId: ID): Restaurant
     productsList (restaurantId: ID): [Product]
     product (id: ID): Product
@@ -76,7 +76,7 @@ const resolvers = {
         [Op.eq]: id
       }
     }),
-    restaurantsList: () => db.restaurant.findAll(),
+    restaurantsList: (_, { offset, limit }) => db.restaurant.findAll({ offset, limit }),
     productsList: (_, { restaurantId }) => db.product.findAll({
       where: {
         restaurantId: {

@@ -11,5 +11,5 @@ export default {
   HOME: '/',
   RESTAURANTS_LIST: '/list/:city',
   RESTAURANT_DETAILS: '/restaurant/:restaurantId',
-  CHECKOUT: 'restaurant/:restaurantId/checkout'
+  CHECKOUT: '/restaurant/:restaurantId/checkout'
 };
