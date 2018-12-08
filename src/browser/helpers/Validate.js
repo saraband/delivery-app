@@ -1,6 +1,6 @@
 export default {
 	// Tests if the username is between 4 and 50 characters
-	username: un => /^.{4,10}$/.test(un),
+	username: un => /^.{4,50}$/.test(un),
 
 	// Tests if the email is valid
 	email: str => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(str),

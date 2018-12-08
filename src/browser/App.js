@@ -10,13 +10,16 @@ import Routes from 'ROUTES';
 import RestaurantsList from './pages/RestaurantsList';
 import RouteNotFound from './pages/RouteNotFound';
 import Restaurant from 'PAGES/Restaurant';
+import TestPage from 'PAGES/Test';
 
 export default class App extends React.Component {
   render () {
     return(
       <Layout>
         <Switch>
-          <Route exact path={Routes.HOME} component={RestaurantsList} />
+          <Route exact path={Routes.HOME} component={TestPage} />
+          {/*<Route exact path={Routes.HOME} component={RestaurantsList} />*/}
+          <Route exact path={Routes.TEST} component={TestPage} />
           <Route exact path={Routes.RESTAURANTS_LIST} component={RestaurantsList} />
           <Route exact path={Routes.RESTAURANT_DETAILS} component={Restaurant} />
           <Route component={RouteNotFound} />
