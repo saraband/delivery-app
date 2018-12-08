@@ -31,12 +31,12 @@ export default class RestaurantCard extends React.PureComponent {
       thumbnail
     } = this.props;
 
-    const src = `/images/restaurant/${id}/medium.jpeg`;
+    const imageUrl = `/images/restaurant/${id}/:size.jpeg`;
 
     return (
       <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { restaurantId: id })}>
         <LazyImage
-          src={src}
+          url={imageUrl}
           thumbnail={thumbnail}
           alt={name}
           />

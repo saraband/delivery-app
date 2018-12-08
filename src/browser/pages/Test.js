@@ -64,7 +64,7 @@ class TestPage extends React.Component {
           </BaseButton>
         </BaseForm>
         <Image
-          src={imageUrl}
+          url={imageUrl}
           thumbnail={thumbnail}
           alt='This is an image'
           />
