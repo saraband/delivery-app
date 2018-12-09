@@ -28,10 +28,9 @@ export default class RestaurantCard extends React.PureComponent {
       id,
       name,
       rating,
-      thumbnail
+      thumbnail,
+      imageUrl
     } = this.props;
-
-    const imageUrl = `/images/restaurant/${id}/:size.jpeg`;
 
     return (
       <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { restaurantId: id })}>

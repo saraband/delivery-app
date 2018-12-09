@@ -7,7 +7,7 @@ function randomRating () {
 }
 
 function randomPrice () {
-  return Math.ceil(Math.random() * 30) + 5;
+  return Math.ceil(Math.random() * 30) + 5 + (Math.random() < .5 ? 0.5 : 0);
 }
 
 module.exports = {

@@ -23,22 +23,32 @@ function resizeAndSave(img, maxSize, id, name) {
   const ratio = img.bitmap.width / img.bitmap.height;
   const filename = `${distPath}restaurant/${id}/${name}.${img.getExtension()}`;
 
-  img = img
-    .resize(
-      ratio > 1 ? maxSize : (maxSize * ratio),
-      ratio > 1 ? (maxSize  / ratio) : maxSize
-    )
-    .quality(80);
-
-  // Thumbnail case, we don't save it
-  if (maxSize < Resolutions.SMALL) {
+  // We check before if the file exist
+  // If it does we don't do anything
+  if (doesFileAlreadyExist(filename)) {
+    console.log(filename + ' already exists');
     return img;
   }
 
-  // We check before if the file exist
-  // If it does we don't save it
-  if (doesFileAlreadyExist(filename)) {
-    console.log(filename + ' already exists');
+  img = img
+    .resize(
+      maxSize,
+      maxSize  / ratio
+    )
+    .quality(80);
+
+  // If height > width, we crop it to a square
+  if (ratio < 1) {
+    img = img.crop(
+      0,
+      (img.bitmap.height - maxSize) / 2,
+      maxSize,
+      maxSize
+    );
+  }
+
+  // Thumbnail case, we don't save it
+  if (maxSize < Resolutions.SMALL) {
     return img;
   }
 

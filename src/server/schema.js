@@ -16,6 +16,7 @@ const typeDefs = `
     address: String
     thumbnail: String!
     opening_hours: JSON
+    imageUrl: String!
   }
   
   type Product {
@@ -49,6 +50,7 @@ const typeDefs = `
 const resolvers = {
   JSON: GraphQLJSON,
   Restaurant: {
+    imageUrl: (restaurant) => restaurant.image_url,
     products: (restaurant) => restaurant.getProducts()
   },
   Product: {

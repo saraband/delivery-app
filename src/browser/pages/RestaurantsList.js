@@ -12,10 +12,11 @@ import Button from 'COMPONENTS/Form/BaseButton';
 const GET_RESTAURANTS_LIST = gql`
   query list ($limit: Int) {
     restaurantsList (limit: $limit) {
-      id,
-      name,
-      rating,
+      id
+      name
+      rating
       thumbnail
+      imageUrl
     }
   }
 `;

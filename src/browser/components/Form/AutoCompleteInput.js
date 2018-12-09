@@ -3,11 +3,26 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import BaseInput from 'COMPONENTS/Form/BaseInput';
+import Colors from 'CONSTANTS/Colors';
 
 const Container = styled.div`
   position: relative;
   display: inline-block;
-  border: 1px solid blue;
+`;
+
+const StyledInput = styled(BaseInput)`
+  border-radius: 3px 3px 0 0;
+`;
+
+const DropDown = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  border: 1px solid ${Colors.DARK_GREY};
+    border-radius: 0 0 3px 3px;
+  margin-top: -1px;
+  top: 100%;
+  left: 0;
 `;
 
 export default class AutoCompleteInput extends React.Component {
@@ -30,7 +45,8 @@ export default class AutoCompleteInput extends React.Component {
     console.log('=> ', results);
 
     this.setState({
-      list: results
+      list: results,
+      isDropDownVisible: false
     });
   }
 
@@ -39,16 +55,24 @@ export default class AutoCompleteInput extends React.Component {
       onChange,
       ...rest
     } = this.props;
+    const {
+      isDropDownVisible,
+      list
+    } = this.state;
 
     return (
       <Container>
-        <BaseInput
+        <StyledInput
           onChange={(event) => {
             onChange(event);
-            this.handleSearch(event.value);
+            return this.handleSearch(event.value);
           }}
           {...rest}
           />
+        {isDropDownVisible || true &&
+          <DropDown>
+          </DropDown>
+        }
       </Container>
     );
   }

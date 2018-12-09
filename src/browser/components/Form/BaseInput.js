@@ -129,9 +129,6 @@ export default class BaseInput extends React.Component {
       onChange,
       validate,
       validator,
-      id,
-      className,
-      style,
       errorLabel,
       ...rest
     } = this.props;
@@ -142,11 +139,7 @@ export default class BaseInput extends React.Component {
     } = this.state;
 
     return (
-      <Container
-        id={id}
-        className={className}
-        style={style}
-        >
+      <Container>
         <StyledInput
           onChange={this.handleChange}
           {...rest}

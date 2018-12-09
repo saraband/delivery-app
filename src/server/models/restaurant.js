@@ -5,9 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.INTEGER,
     phone: DataTypes.STRING,
     address: DataTypes.STRING,
-    tags: DataTypes.ARRAY(DataTypes.INTEGER),
+    tags: DataTypes.ARRAY(DataTypes.STRING),
     thumbnail: DataTypes.TEXT,
-    opening_hours: DataTypes.JSON
+    opening_hours: DataTypes.JSON,
+    image_url: DataTypes.STRING
   }, {});
   restaurant.associate = function(models) {
     restaurant.hasMany(models.product);

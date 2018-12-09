@@ -4,7 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('restaurants', 'phone', Sequelize.STRING);
     await queryInterface.addColumn('restaurants', 'address', Sequelize.STRING);
-    await queryInterface.addColumn('restaurants', 'tags', Sequelize.ARRAY(Sequelize.INTEGER));
+    await queryInterface.addColumn('restaurants', 'tags', Sequelize.ARRAY(Sequelize.STRING));
     await queryInterface.addColumn('restaurants', 'thumbnail', Sequelize.TEXT);
   },
 

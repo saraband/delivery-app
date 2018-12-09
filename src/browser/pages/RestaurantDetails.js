@@ -22,6 +22,7 @@ const GET_PRODUCTS_LIST = gql`
       name
       rating
       thumbnail
+      imageUrl
     }
     
     productsList(restaurantId: $restaurantId) {
@@ -52,7 +53,7 @@ export default class extends React.Component {
               <div>
                 <Basket id={restaurantId} />
                 <BannerImage
-                  url={`/images/restaurant/${restaurantId}/:size.jpeg`}
+                  url={data.restaurant.imageUrl}
                   thumbnail={data.restaurant.thumbnail}
                   alt={data.restaurant.name}
                   />
