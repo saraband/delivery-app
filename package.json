@@ -9,6 +9,7 @@
     "server": "nodemon --config nodemon.json ./src/server/index.js",
     "test": "babel-node ./src/server/test.js",
     "generate-images": "babel-node ./src/server/data/generate-images.js",
+    "update-thumbnails": "babel-node ./src/server/data/update-thumbnails.js",
     "webpack": "webpack-dev-server --watch"
   },
   "dependencies": {
