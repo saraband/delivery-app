@@ -29,6 +29,7 @@ module.exports = {
       STORE: path.resolve(__dirname, 'src/browser/store/'),
       HELPERS: path.resolve(__dirname, 'src/browser/helpers/'),
       DIST: path.resolve(__dirname, 'dist/'),
+      ROOT: path.resolve(__dirname, './'),
       UTILS: path.resolve(__dirname, 'src/utils/')
     }
   },
@@ -40,6 +41,14 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+          path.resolve(__dirname, 'src/loaders/svg-loader.js'),
+        ]
       }
     ]
   },

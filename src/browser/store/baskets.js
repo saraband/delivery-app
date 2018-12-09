@@ -1,7 +1,7 @@
-const ADD_PRODUCT = 'ADD_PRODUCT';
-const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
-const CLEAR_BASKET = 'CLEAR_BASKET';
-const CLEAR_ALL_BASKETS = 'CLEAR_ALL_BASKETS';
+export const ADD_PRODUCT = 'ADD_PRODUCT';
+export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
+export const CLEAR_BASKET = 'CLEAR_BASKET';
+export const CLEAR_ALL_BASKETS = 'CLEAR_ALL_BASKETS';
 
 /*
  *  The baskets are implemented as nested hash lists
