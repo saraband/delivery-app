@@ -6,3 +6,4 @@ dist/images
 src/server/config.json
 specs.rtf
 package-lock.json
+design

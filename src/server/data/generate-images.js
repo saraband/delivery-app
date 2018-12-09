@@ -1,18 +1,12 @@
 import log from 'SERVER/log';
-import jimp from 'jimp';
 import fs from 'fs';
 import db from 'SERVER/models';
 import CliProgress from 'cli-progress';
+import sharp from 'sharp';
+import { ImageResolutions } from 'UTILS';
 
 const distPath = './dist/images/';
 const srcPath = './src/server/data/images/';
-const Resolutions = {
-  BIG: 1500,
-  MEDIUM: 800,
-  NORMAL: 500,
-  SMALL: 250
-};
-
 let counter = 0;
 let notProcessedCounter = 0;
 
@@ -23,42 +17,6 @@ const progressBar = new CliProgress.Bar(
 
 function doesFileAlreadyExist (filename) {
   return fs.existsSync(filename);
-}
-
-function resizeAndSave(img, maxSize, id, name) {
-  // Calculate image ratio
-  const ratio = img.bitmap.width / img.bitmap.height;
-  const filename = `${distPath}restaurant/${id}/${name}.${img.getExtension()}`;
-
-  // We check before if the file exist
-  // If it does we don't do anything
-  if (doesFileAlreadyExist(filename)) {
-    ++notProcessedCounter;
-    progressBar.update(counter + notProcessedCounter);
-    return img;
-  }
-
-  img = img
-    .resize(
-      maxSize,
-      maxSize  / ratio
-    )
-    .quality(80);
-
-  // If height > width, we crop it to a square
-  if (ratio < 1) {
-    img = img.crop(
-      0,
-      (img.bitmap.height - maxSize) / 2,
-      maxSize,
-      maxSize
-    );
-  }
-
-  ++counter;
-  progressBar.update(counter + notProcessedCounter);
-
-  return img.write(filename);
 }
 
 (async () => {
@@ -81,15 +39,33 @@ function resizeAndSave(img, maxSize, id, name) {
   log.db(`${restaurants.length} restaurants found.`);
   log.info(`Generating images of different resolutions for those restaurants...`);
 
-  progressBar.start(restaurants.length * 4, 0);
-  await Promise.all(restaurants.map(async ({ dataValues: { id } }, index) => {
-    let img = await jimp.read(`${srcImageFiles[index % srcImageFiles.length]}`);
+  progressBar.start(restaurants.length * ImageResolutions.length, 0);
+
+  await Promise.all(restaurants.map(async (restaurant, index) => {
+    const id = restaurant.dataValues.id;
+    let image = await sharp(`${srcImageFiles[index % srcImageFiles.length]}`);
 
     // Resolutions
-    await resizeAndSave(img, Resolutions.BIG, id, 'big');
-    await resizeAndSave(img, Resolutions.MEDIUM, id, 'medium');
-    await resizeAndSave(img, Resolutions.NORMAL, id, 'normal');
-    await resizeAndSave(img, Resolutions.SMALL, id, 'small');
+    for (let i = ImageResolutions.length - 1; i >= 0; --i) {
+      const filename = `${distPath}restaurant/${id}/${ImageResolutions[i]}.jpeg`;
+
+      if (doesFileAlreadyExist(filename)) {
+        ++notProcessedCounter;
+        progressBar.update(counter + notProcessedCounter);
+        continue;
+      }
+
+      // Create folder if necessary
+      if (!fs.existsSync(`${distPath}restaurant/${id}/`)) {
+        fs.mkdirSync(`${distPath}restaurant/${id}/`);
+      }
+
+      await image.resize({ width: ImageResolutions[i] });
+      await image.toFile(filename);
+
+      ++counter;
+      progressBar.update(counter + notProcessedCounter);
+    }
 
     return Promise.resolve();
   }));

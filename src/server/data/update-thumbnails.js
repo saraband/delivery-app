@@ -1,13 +1,14 @@
 import log from 'SERVER/log';
-import jimp from 'jimp';
+import sharp from 'sharp';
 import fs from 'fs';
 import db from 'SERVER/models';
-import sequelize, { Op } from 'sequelize';
+import { Op } from 'sequelize';
 import CliProgress from 'cli-progress';
+import { ImageResolutions } from 'UTILS';
 
 (async () => {
-
   let counter = 1;
+  const THUMBNAIL_WIDTH = 25;
   const distPath = './dist/images/restaurant/';
   const restaurantIds = fs.readdirSync(distPath);
   const progressBar = new CliProgress.Bar(
@@ -27,24 +28,15 @@ import CliProgress from 'cli-progress';
   progressBar.start(restaurantIds.length, 0);
   await Promise.all(restaurantIds.map(async (id) => {
 
-    // Generating thumbnail
-    let img = await jimp.read(`${distPath}${id}/small.jpeg`);
-    const ratio = img.bitmap.width / img.bitmap.height;
-
-    await img.resize(25, 25 / ratio);
-
-    // If height > width, we crop it to a square
-    if (ratio < 1) {
-      await img.crop(0, (img.bitmap.height - 25) / 2, 25, 25);
-    }
-
-    // Base 64 string
-    await img.quality(80);
-    const b64img = await img.getBase64Async(jimp.MIME_JPEG);
+    // Generating base 64 thumbnail
+    let image = await sharp(`${distPath}${id}/${ImageResolutions[0]}.jpeg`);
+    await image.resize({ width: THUMBNAIL_WIDTH });
+    const data = await image.toBuffer();
+    const base64string = `data:image/png;base64,${data.toString('base64')}`;
 
     // Update DB
     await db.restaurant.update(
-      { thumbnail: b64img },
+      { thumbnail: base64string },
       { where: { id: { [Op.eq]: id } } }
     );
 
