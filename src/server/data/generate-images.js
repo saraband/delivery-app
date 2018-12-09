@@ -3,6 +3,7 @@ import jimp from 'jimp';
 import fs from 'fs';
 import db from 'SERVER/models';
 import sequelize, { Op } from 'sequelize';
+import CliProgress from 'cli-progress';
 
 const distPath = './dist/images/';
 const srcPath = './src/server/data/images/';
@@ -13,6 +14,16 @@ const Resolutions = {
   SMALL: 250,
   THUMBNAIL: 25
 };
+
+const resizingProgressBar = new CliProgress.Bar(
+  { format: 'Resizing images: [{bar}] {percentage}% | ETA: {eta}s | {value}/{total} images processed.' },
+  CliProgress.Presets.shades_classic
+);
+
+const insertingThumbnailsBar = new CliProgress.Bar(
+  { format: 'Inserting thumbnails in DB: [{bar}] {percentage}% | ETA: {eta}s | {value}/{total} thumbnails inserted.' },
+  CliProgress.Presets.shades_classic
+);
 
 function doesFileAlreadyExist (filename) {
   return fs.existsSync(filename);
@@ -26,7 +37,6 @@ function resizeAndSave(img, maxSize, id, name) {
   // We check before if the file exist
   // If it does we don't do anything
   if (doesFileAlreadyExist(filename)) {
-    console.log(filename + ' already exists');
     return img;
   }
 
@@ -61,7 +71,10 @@ function resizeAndSave(img, maxSize, id, name) {
   let thumbnails = {};
 
   log.endl();
-  log.info('===== generate-images script =====');
+  console.log('============================================================');
+  console.log('================== generate-images script ==================');
+  console.log('============================================================');
+  log.endl();
 
   log.info(`Searching source images in ${srcPath}`);
   srcImageFiles = fs.readdirSync(srcPath).map(file => `${srcPath}${file}`);
@@ -75,6 +88,7 @@ function resizeAndSave(img, maxSize, id, name) {
   log.db(`${restaurants.length} restaurants found.`);
   log.info(`Generating images of different resolutions for those restaurants...`);
 
+  resizingProgressBar.start(restaurants.length, 0);
   await Promise.all(restaurants.map(async ({ dataValues: { id } }, index) => {
     let img = await jimp.read(`${srcImageFiles[index % srcImageFiles.length]}`);
 
@@ -88,18 +102,30 @@ function resizeAndSave(img, maxSize, id, name) {
     await resizeAndSave(img, Resolutions.THUMBNAIL);
     thumbnails[id] = await img.getBase64Async(jimp.MIME_JPEG);
 
-    log.info(`Generating images: ${counter++}/${restaurants.length}.`);
+    resizingProgressBar.update(counter++);
     return Promise.resolve();
   }));
 
+  resizingProgressBar.stop();
+
   // We update the thumbnails in DB
-  await Promise.all(restaurants.map(({ dataValues: { id } }) => {
-    return db.restaurant.update(
+  let insertingThumbnailsCounter = 1;
+  insertingThumbnailsBar.start(restaurants.length, 0);
+  await Promise.all(restaurants.map(async ({ dataValues: { id } }) => {
+    await db.restaurant.update(
       { thumbnail: thumbnails[id] },
       { where: { id: { [Op.eq]: id } } }
     );
+
+    insertingThumbnailsBar.update(insertingThumbnailsCounter++);
+
+    return Promise.resolve();
   }));
+
+  insertingThumbnailsBar.stop();
 
   log.endl();
   log.info(`${restaurants.length} images successfully generated !`);
+
+  process.exit(0);
 })();
