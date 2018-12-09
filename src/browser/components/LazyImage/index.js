@@ -22,20 +22,22 @@ const StyledPlaceholder = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 42;
+  z-index: 50;
   top: 0;
   left: 0;
   background-image: url(${p => p.thumbnail});
   background-size: cover;
   background-position: center center;
   filter: blur(2px);
+  transition: all 0.2s ease-in-out;
+  opacity: ${p => p.visible ? 1 : 0};
 `;
 
 const StyledImage = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 43;
+  z-index: 45;
   top: 0;
   left: 0;
   background-image: url(${p => p.url});
@@ -89,7 +91,7 @@ export default class LazyImage extends React.Component {
     }
 
     // Start loading image
-    this.loadImage();
+    setTimeout(() => this.loadImage(), 500);
 
     // No need to watch scroll anymore
     document.removeEventListener('scroll', this.watchScroll);
@@ -119,7 +121,7 @@ export default class LazyImage extends React.Component {
         {...rest}
         >
         {hasImageLoaded && <StyledImage url={this.image.src} />}
-        <StyledPlaceholder thumbnail={thumbnail} />
+        <StyledPlaceholder thumbnail={thumbnail} visible={!hasImageLoaded} />
       </Container>
     );
   }

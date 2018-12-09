@@ -29,7 +29,7 @@ sequelize db:migrate            # Migrate DB schemas
 sequelize db:seed:all           # Populate the DB with fake data
 
 yarn generate-images            # Generates static images of different resolutions (Can take some time)
-yarn server                     # Launch the server app on port 4000
+yarn server                     # Launch the server app on port 3000
 yarn webpack                    # Launch the client app on port 8080
 ```
 

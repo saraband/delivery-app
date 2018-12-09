@@ -9,7 +9,7 @@ import Layout from './layouts/default';
 import Routes from 'ROUTES';
 import RestaurantsList from './pages/RestaurantsList';
 import RouteNotFound from './pages/RouteNotFound';
-import Restaurant from 'PAGES/Restaurant';
+import Restaurant from 'PAGES/RestaurantDetails';
 import TestPage from 'PAGES/Test';
 
 export default class App extends React.Component {

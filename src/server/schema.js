@@ -35,7 +35,7 @@ const typeDefs = `
   
   type Query {
     restaurantsList (offset: Int, limit: Int): [Restaurant!]
-    restaurant (restaurantId: ID): Restaurant
+    restaurant (id: ID): Restaurant
     productsList (restaurantId: ID): [Product]
     product (id: ID): Product
     citiesList (name: String): [City]
@@ -62,18 +62,22 @@ const resolvers = {
       const then = Date.now();
       const filtered = worldCities.filter(city => {
         return city.name.toLowerCase().includes(name.toLowerCase());
-      });
+      }).slice(0, 5);
       console.log('Searching for \'' + name + '\' took ' + (Date.now() - then) / 1000 + 'ms');
       return filtered;
     },
     restaurant: (_, { id }) => db.restaurant.findOne({
       where: {
-        [Op.eq]: id
+        id: {
+          [Op.eq]: id
+        }
       }
     }),
     product: (_, { id }) => db.restaurant.findOne({
       where: {
-        [Op.eq]: id
+        id: {
+          [Op.eq]: id
+        }
       }
     }),
     restaurantsList: (_, { offset, limit }) => db.restaurant.findAll({ offset, limit }),

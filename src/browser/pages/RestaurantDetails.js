@@ -3,13 +3,27 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import RestaurantCard from 'COMPONENTS/RestaurantCard';
+import LazyImage from 'COMPONENTS/LazyImage';
+import Basket from 'COMPONENTS/Basket';
 
 const StyledRestaurant = styled.div`
   
 `;
 
+const BannerImage = styled(LazyImage)`
+  width: 100%;
+  height: 300px;
+`;
+
 const GET_PRODUCTS_LIST = gql`
-  query productsOfRestaurant ($restaurantId: String!) {
+  query productsOfRestaurant ($restaurantId: ID!) {
+    restaurant (id: $restaurantId) {
+      id
+      name
+      rating
+      thumbnail
+    }
+    
     productsList(restaurantId: $restaurantId) {
       id
       name
@@ -28,7 +42,7 @@ export default class extends React.Component {
 
     return (
       <StyledRestaurant>
-        {this.props.match.params.restaurantId}
+        {restaurantId}
         <Query query={GET_PRODUCTS_LIST} variables={{ restaurantId }}>
           {({ error, loading, data }) => {
             if (error) return <p>Error</p>;
@@ -36,6 +50,12 @@ export default class extends React.Component {
 
             return (
               <div>
+                <Basket id={restaurantId} />
+                <BannerImage
+                  url={`/images/restaurant/${restaurantId}/:size.jpeg`}
+                  thumbnail={data.restaurant.thumbnail}
+                  alt={data.restaurant.name}
+                  />
                 {data.productsList.map(product => <p key={product.id}>{product.name} - ${product.price}</p>)}
               </div>
             );
