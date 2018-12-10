@@ -79,10 +79,21 @@ export default class BaseInput extends React.Component {
     // If a validator is connected, we notify it
     // of the validity of the start value
     if (props.validator) {
-      props.validator.onChange({
+      props.validator.onSubscribe({
         name: props.name,
-        valid: isValid
+        validity: isValid
       });
+    }
+  }
+
+  componentWillUnmount () {
+    const {
+      name,
+      validator
+    } = this.props;
+
+    if (validator) {
+      validator.onUnsubscribe(name);
     }
   }
 
@@ -99,7 +110,7 @@ export default class BaseInput extends React.Component {
     const changeEvent = {
       name,
       value: newValue,
-      valid: isValid
+      validity: isValid
     };
 
     // We trigger the onChange prop and wait for it
@@ -129,6 +140,7 @@ export default class BaseInput extends React.Component {
       onChange,
       validate,
       validator,
+
       errorLabel,
       ...rest
     } = this.props;
@@ -168,7 +180,9 @@ BaseInput.propTypes = {
     PropTypes.PropTypes.arrayOf([PropTypes.func])
   ]),
   validator: PropTypes.shape({
-    onChange: PropTypes.func
+    onChange: PropTypes.func.isRequired,
+    onSubscribe: PropTypes.func.isRequired,
+    onUnsubscribe: PropTypes.func.isRequired
   })
 };
 

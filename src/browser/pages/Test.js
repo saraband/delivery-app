@@ -26,39 +26,45 @@ class TestPage extends React.Component {
 
     this.updateInput = createInputHandler().bind(this);
     this.state = {
-      email: '',
-      password: ''
+      email: 'dgsdf@qsdfq.com',
+      password: 'qs2dfsdq2f8qsdf25',
+      unmounted: false
     };
   }
 
+  unmount = () => {
+    this.setState({ unmounted: true });
+  };
+
   render () {
-    const {
-      isFormValid,
-      validator
-    } = this.props;
     return (
-      <div>
-        <BaseForm>
-          <BaseInput
-            name='email'
-            value={this.state.email}
-            onChange={this.updateInput}
-            validator={validator}
-            validate={v.email}
-            />
-          <BaseInput
-            name='password'
-            type='password'
-            value={this.state.password}
-            onChange={this.updateInput}
-            validator={validator}
-            validate={v.password}
-            />
-          <BaseButton disabled={!isFormValid}>Submit</BaseButton>
-        </BaseForm>
-      </div>
+      <FormValidator>
+        {({ isFormValid, validator }) => (
+          <BaseForm>
+            <BaseInput
+              name='email'
+              value={this.state.email}
+              onChange={this.updateInput}
+              validator={validator}
+              validate={v.email}
+              />
+            {!this.state.unmounted &&
+              <BaseInput
+                name='password'
+                type='password'
+                value={this.state.password}
+                onChange={this.updateInput}
+                validator={validator}
+                validate={v.password}
+              />
+            }
+            <BaseButton disabled={!isFormValid}>Submit</BaseButton>
+            <BaseButton onClick={this.unmount}>Unmount</BaseButton>
+          </BaseForm>
+        )}
+      </FormValidator>
     );
   }
 };
 
-export default withValidator(TestPage);
+export default TestPage
