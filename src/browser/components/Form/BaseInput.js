@@ -120,9 +120,9 @@ export default class BaseInput extends React.Component {
         validator.onChange(changeEvent);
       }
     });
-  }
+  };
 
-  render() {
+  render () {
     const {
       // These props are not used but should
       // not be passed down, so we extract them here

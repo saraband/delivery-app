@@ -40,7 +40,7 @@ export default class AutoCompleteInput extends React.Component {
   }
 
   handleSearch = async (value) => {
-    console.log('Searching...')
+    console.log('Searching...');
     const results = await this.props.searchFunction(value);
     console.log('=> ', results);
 
@@ -48,7 +48,7 @@ export default class AutoCompleteInput extends React.Component {
       list: results,
       isDropDownVisible: false
     });
-  }
+  };
 
   render () {
     const {

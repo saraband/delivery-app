@@ -25,4 +25,4 @@ export default {
     );
   },
   endl: () => console.log('\n')
-}
+};

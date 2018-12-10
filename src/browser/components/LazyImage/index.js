@@ -77,7 +77,7 @@ export default class LazyImage extends React.Component {
     this.image.src = addParamsToUrl(this.props.url, {
       size: getOptimalResolution(this.ref.current.getBoundingClientRect().width)
     });
-  }
+  };
 
   checkIfImageIsInViewPort = () => {
     this.hasTicked = false;
@@ -95,16 +95,16 @@ export default class LazyImage extends React.Component {
 
     // No need to watch scroll anymore
     document.removeEventListener('scroll', this.watchScroll);
-  }
+  };
 
   watchScroll = () => {
     if (!this.hasTicked) {
       this.hasTicked = true;
       window.requestAnimationFrame(this.checkIfImageIsInViewPort);
     }
-  }
+  };
 
-  render() {
+  render () {
     const {
       url,
       thumbnail,

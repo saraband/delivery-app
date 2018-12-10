@@ -51,7 +51,7 @@ export default (state = {}, action) => {
     }
 
     case REMOVE_PRODUCT: {
-      const {id, restaurantId, name} = action.product;
+      const { id, restaurantId, name } = action.product;
       const restaurantBasket = state[restaurantId];
       const productStored = restaurantBasket && restaurantBasket[id];
 

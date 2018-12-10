@@ -20,10 +20,10 @@ module.exports = function (source) {
     export default class extends React.PureComponent {
       render () {
         return <SVGComponent
-            {...${JSON.stringify(attributes)}}
-            inTagRaw={\`${inTagRaw}\`}
-            {...this.props}
-            />;
+          {...${JSON.stringify(attributes)}}
+          inTagRaw={\`${inTagRaw}\`}
+          {...this.props}
+          />;
       }
     }
   `;
@@ -31,4 +31,4 @@ module.exports = function (source) {
   console.log(output);
 
   this.callback(null, output);
-}
+};

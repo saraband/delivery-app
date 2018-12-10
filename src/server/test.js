@@ -19,22 +19,22 @@ const Resolutions = {
   THUMBNAIL: 25
 };
 
-function resizeTo(img, maxSize, name, id) {
+function resizeTo (img, maxSize, name, id) {
   // calculate ratio
   const ratio = img.bitmap.width / img.bitmap.height;
 
   return img
-  .resize(
-    ratio > 1 ? maxSize : (maxSize * ratio),
-    ratio > 1 ? (maxSize  / ratio) : maxSize
-  )
-  .quality(80)
-  .write(`${distPath}r/${id}/${name}.${img.getExtension()}`);
+    .resize(
+      ratio > 1 ? maxSize : (maxSize * ratio),
+      ratio > 1 ? (maxSize / ratio) : maxSize
+    )
+    .quality(80)
+    .write(`${distPath}r/${id}/${name}.${img.getExtension()}`);
 }
 
 (async () => {
   console.log('\n\n');
-  log.server(`Searching images in ./src/server/data/images`)
+  log.server(`Searching images in ./src/server/data/images`);
   const srcPath = './src/server/data/images/';
   let srcImageFiles = [];
   let thumbnails = {};
@@ -80,7 +80,7 @@ function resizeTo(img, maxSize, name, id) {
     // tumbnail
     await resizeTo(img, Resolutions.THUMBNAIL);
     thumbnails[id] = await img.getBase64Async(jimp.MIME_JPEG);
-    console.log(thumbnails[id])
+    console.log(thumbnails[id]);
     console.log(`Generating images: ${counter++}/${restaurants.length}`);
   });
-})()
+})();

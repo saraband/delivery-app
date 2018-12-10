@@ -42,7 +42,7 @@ module.exports = {
         'products',
         {
           description: Faker.lorem.sentence(),
-          ingredients: generateRandomIngredients(),
+          ingredients: generateRandomIngredients()
         },
         {
           id: {
@@ -58,7 +58,7 @@ module.exports = {
       'products',
       {
         description: null,
-        ingredients: null,
+        ingredients: null
       },
       {}
     );

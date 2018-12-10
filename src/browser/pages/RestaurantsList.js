@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { Query, Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import Loader from '../components/Loader';
 import RestaurantCard from '../components/RestaurantCard';
 import Input from 'COMPONENTS/Form/BaseInput';

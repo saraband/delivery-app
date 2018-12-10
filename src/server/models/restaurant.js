@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     opening_hours: DataTypes.JSON,
     image_url: DataTypes.STRING
   }, {});
-  restaurant.associate = function(models) {
+  restaurant.associate = function (models) {
     restaurant.hasMany(models.product);
   };
   return restaurant;

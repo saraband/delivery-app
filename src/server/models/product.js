@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     ingredients: DataTypes.ARRAY(DataTypes.STRING)
   }, {});
-  product.associate = function(models) {
+  product.associate = function (models) {
     product.belongsTo(models.restaurant);
   };
   return product;

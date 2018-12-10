@@ -14,7 +14,7 @@ import TestPage from 'PAGES/Test';
 
 export default class App extends React.Component {
   render () {
-    return(
+    return (
       <Layout>
         <Switch>
           <Route exact path={Routes.HOME} component={TestPage} />

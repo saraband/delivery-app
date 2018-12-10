@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ApolloClient from "apollo-boost"
-import { ApolloProvider } from 'react-apollo'
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as StoreProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -25,7 +25,7 @@ const render = (App) => {
     </ApolloProvider>,
     document.getElementById('root')
   );
-}
+};
 
 render(App);
 

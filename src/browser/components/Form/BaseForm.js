@@ -27,4 +27,4 @@ BaseForm.propTypes = {
 
 BaseForm.defaultProps = {
   onSubmit: preventDefault
-}
+};

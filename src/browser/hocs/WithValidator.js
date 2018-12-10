@@ -57,7 +57,7 @@ export default Component => {
             this.setState({
               formDataValidity: newFormDataValidity,
               isFormValid: Object.keys(newFormDataValidity).reduce((formValid, currentFormKey) => {
-                return formValid && newFormDataValidity[currentFormKey]
+                return formValid && newFormDataValidity[currentFormKey];
               }, true)
             }, resolve);
           });
@@ -68,8 +68,8 @@ export default Component => {
 
         // Queue is empty, we resolve the promise
         finishValidating();
-      })
-    }
+      });
+    };
 
     render () {
       return (
