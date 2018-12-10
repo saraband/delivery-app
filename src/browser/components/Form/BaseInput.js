@@ -99,10 +99,15 @@ export default class BaseInput extends React.Component {
 
   // This is called whenever the input value changes
   // (i.e. when native onChange event is called)
-  handleChange = async (event) => {
+  handleChange = (event) => {
     const newValue = event.target.value;
     const name = event.target.name;
-    const { validate, validator } = this.props;
+
+    const {
+      validate,
+      validator,
+      onChange
+    } = this.props;
 
     // Check validity of the new value
     const isValid = validateValue(validate, newValue);
@@ -113,24 +118,19 @@ export default class BaseInput extends React.Component {
       validity: isValid
     };
 
-    // We trigger the onChange prop and wait for it
-    if (this.props.onChange) {
-      await this.props.onChange(changeEvent);
-    }
+    // We trigger the onChange prop
+    onChange && onChange(changeEvent);
 
     // We update the internal validity state of the input
     this.setState({
       isValid,
       hasTypedAnythingYet: true
-    }, () => {
-
-      // If the input is connected to a validator,
-      // we notify the change so it can update the global
-      // validity of the form
-      if (validator) {
-        validator.onChange(changeEvent);
-      }
     });
+
+    // If the input is connected to a validator,
+    // we notify the change so it can update the global
+    // validity of the form
+    validator && validator.onChange(changeEvent);
   };
 
   render () {
