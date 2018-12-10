@@ -17,10 +17,10 @@ const StyledLayout = styled.div`
 
 export default ({ children }) => (
   <StyledLayout>
-    <Header />
+    {/*<Header />*/}
     <Body>
       {children}
     </Body>
-    <Footer />
+    {/*<Footer />*/}
   </StyledLayout>
 );
