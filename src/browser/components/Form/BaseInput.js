@@ -138,9 +138,9 @@ export default class BaseInput extends React.Component {
       // These props are not used but should
       // not be passed down, so we extract them here
       onChange,
-      validate,
       validator,
 
+      validate,
       errorLabel,
       ...rest
     } = this.props;
@@ -157,7 +157,7 @@ export default class BaseInput extends React.Component {
           {...rest}
 
           // styled-component props
-          showBorder={hasTypedAnythingYet}
+          showBorder={hasTypedAnythingYet && validate}
           validBorder={isValid}
         />
         {!isValid && hasTypedAnythingYet &&

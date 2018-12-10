@@ -9,7 +9,7 @@ export const addParamsToUrl = (url, params) => {
 export default {
   TEST: '/test',
   HOME: '/',
-  RESTAURANTS_LIST: '/list/:city',
-  RESTAURANT_DETAILS: '/restaurant/:restaurantId',
-  CHECKOUT: '/restaurant/:restaurantId/checkout'
+  RESTAURANTS_LIST: '/l/:city',
+  RESTAURANT_DETAILS: '/r/:id/:name',
+  CHECKOUT: '/r/:id/:name/checkout'
 };

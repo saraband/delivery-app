@@ -27,13 +27,14 @@ export default class RestaurantCard extends React.PureComponent {
     const {
       id,
       name,
+      urlName,
       rating,
       thumbnail,
       imageUrl
     } = this.props;
 
     return (
-      <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { restaurantId: id })}>
+      <StyledCard to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name: urlName })}>
         <LazyImage
           url={imageUrl}
           thumbnail={thumbnail}

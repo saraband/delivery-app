@@ -14,6 +14,7 @@ const GET_RESTAURANTS_LIST = gql`
     restaurantsList (limit: $limit) {
       id
       name
+      urlName
       rating
       thumbnail
       imageUrl

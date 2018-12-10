@@ -45,8 +45,6 @@ class TestPage extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.updateInput}
-              validator={validator}
-              validate={v.email}
               />
             {!this.state.unmounted &&
               <BaseInput
@@ -54,8 +52,6 @@ class TestPage extends React.Component {
                 type='password'
                 value={this.state.password}
                 onChange={this.updateInput}
-                validator={validator}
-                validate={v.password}
               />
             }
             <BaseButton disabled={!isFormValid}>Submit</BaseButton>

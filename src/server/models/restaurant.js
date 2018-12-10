@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     tags: DataTypes.ARRAY(DataTypes.STRING),
     thumbnail: DataTypes.TEXT,
     opening_hours: DataTypes.JSON,
-    image_url: DataTypes.STRING
+    image_url: DataTypes.STRING,
+    urlName: DataTypes.STRING
   }, {});
   restaurant.associate = function (models) {
     restaurant.hasMany(models.product);

@@ -16,8 +16,8 @@ const BannerImage = styled(LazyImage)`
 `;
 
 const GET_PRODUCTS_LIST = gql`
-  query productsOfRestaurant ($restaurantId: ID!) {
-    restaurant (id: $restaurantId) {
+  query productsOfRestaurant ($id: ID!) {
+    restaurant (id: $id) {
       id
       name
       rating
@@ -25,7 +25,7 @@ const GET_PRODUCTS_LIST = gql`
       imageUrl
     }
     
-    productsList(restaurantId: $restaurantId) {
+    productsList(restaurantId: $id) {
       id
       name
       price
@@ -39,19 +39,19 @@ export default class extends React.Component {
   }
 
   render () {
-    const restaurantId = this.props.match.params.restaurantId;
+    const id = this.props.match.params.id;
 
     return (
       <StyledRestaurant>
-        {restaurantId}
-        <Query query={GET_PRODUCTS_LIST} variables={{ restaurantId }}>
+        {id}
+        <Query query={GET_PRODUCTS_LIST} variables={{ id }}>
           {({ error, loading, data }) => {
             if (error) return <p>Error</p>;
             if (loading) return <p>Loading</p>;
 
             return (
               <div>
-                <Basket id={restaurantId} />
+                <Basket id={id} />
                 <BannerImage
                   url={data.restaurant.imageUrl}
                   thumbnail={data.restaurant.thumbnail}

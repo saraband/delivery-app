@@ -10,6 +10,7 @@ const typeDefs = `
   type Restaurant {
     id: ID!
     name: String!
+    urlName: String!
     rating: Int!
     products: [Product!]
     phone: String
