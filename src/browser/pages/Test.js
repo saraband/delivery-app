@@ -4,7 +4,12 @@ import AutoCompleteInput from 'COMPONENTS/Form/AutoCompleteInput';
 import { createInputHandler } from 'HELPERS';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
+import FormValidator from 'COMPONENTS/Form/FormValidator';
+import BaseForm from 'COMPONENTS/Form/BaseForm';
+import BaseInput from 'COMPONENTS/Form/BaseInput';
+import v from 'HELPERS/Validate';
+import BaseButton from 'COMPONENTS/Form/BaseButton';
+import withValidator from 'HOCS/WithValidator';
 
 const GET_CITIES = gql`
   query autoCompleteCities ($name: String!) {
@@ -14,31 +19,6 @@ const GET_CITIES = gql`
     }
   }
 `;
-/*
-  <ApolloConsumer>
-        {(client) => (
-          <AutoCompleteInput
-            searchFunction={async (value) => {
-              const { data } = await client.query({
-                query: GET_CITIES,
-                variables: { name: value }
-              });
-
-              return data.citiesList;
-            }}
-            debounce={500}
-            onChange={this.updateInput}
-            value={city}
-            name='city'
-          />
-        )}
-      </ApolloConsumer>
-      */
-
-import Input from 'COMPONENTS/Form/BaseInput';
-import Validator from 'COMPONENTS/Form/Validator';
-import v from 'HELPERS/Validate';
-import BaseButton from 'COMPONENTS/Form/BaseButton';
 
 class TestPage extends React.Component {
   constructor (props) {
@@ -46,37 +26,39 @@ class TestPage extends React.Component {
 
     this.updateInput = createInputHandler().bind(this);
     this.state = {
-      city: ''
+      email: '',
+      password: ''
     };
   }
 
   render () {
     const {
-      city
-    } = this.state;
-
+      isFormValid,
+      validator
+    } = this.props;
     return (
-      <Validator>
-        {({ isFormValid, validator }) => {
-          return (
-            <div>
-						  <Input
-                name='email'
-                validator={validator}
-                validate={v.email}
-                />
-						  <Input
-                name='password'
-                validator={validator}
-                validate={v.password}
-                />
-              <BaseButton disabled={!isFormValid}>Submit</BaseButton>
-            </div>
-          )
-				}}
-      </Validator>
+      <div>
+        <BaseForm>
+          <BaseInput
+            name='email'
+            value={this.state.email}
+            onChange={this.updateInput}
+            validator={validator}
+            validate={v.email}
+            />
+          <BaseInput
+            name='password'
+            type='password'
+            value={this.state.password}
+            onChange={this.updateInput}
+            validator={validator}
+            validate={v.password}
+            />
+          <BaseButton disabled={!isFormValid}>Submit</BaseButton>
+        </BaseForm>
+      </div>
     );
   }
 };
 
-export default TestPage;
+export default withValidator(TestPage);
