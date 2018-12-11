@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import BaseInput from 'COMPONENTS/Form/BaseInput';
 import Colors from 'CONSTANTS/Colors';
 

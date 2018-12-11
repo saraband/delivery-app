@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Loader from '../components/Loader';
