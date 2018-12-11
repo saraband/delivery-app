@@ -3,8 +3,5 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map',
-  output: {
-    chunkFilename: '[name].bundle.js',
-  }
+  devtool: 'source-map'
 });
