@@ -33,7 +33,7 @@ yarn update-thumbnails          # Generate thumbnails from the images previously
                                 # and updates the restaurant DB with those base 64 thumbnails
 
 yarn server                     # Launch the server app on port 3000
-yarn webpack                    # Launch the client app on port 8080
+yarn dev                        # Launch the client app on port 8080
 ```
 
 ## Folder structure

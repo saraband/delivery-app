@@ -26,8 +26,7 @@ app.use(express.static(path.resolve(__dirname, '../../dist')));
 app.use(bodyParser.json());
 
 app.get('*', (req, res) => {
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello world !');
+  res.sendFile(path.resolve(__dirname, '../../dist/_index.html'));
 });
 
 app.listen(3000, () => {

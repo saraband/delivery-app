@@ -10,7 +10,8 @@
     "test": "babel-node ./src/server/test.js",
     "generate-images": "babel-node ./src/server/data/generate-images.js",
     "update-thumbnails": "babel-node ./src/server/data/update-thumbnails.js",
-    "webpack": "webpack-dev-server --watch"
+    "dev": "webpack-dev-server --watch --config ./webpack.dev.js",
+    "build": "webpack --config ./webpack.prod.js"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
@@ -63,6 +64,7 @@
     "styled-components": "^4.1.2",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.5",
+    "webpack-merge": "^4.1.5"
   }
 }

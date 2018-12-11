@@ -41,6 +41,12 @@ const typeDefs = `
     productsList (restaurantId: ID): [Product]
     product (id: ID): Product
     citiesList (name: String): [City]
+    self: User
+  }
+  
+  type User {
+    username: String!
+    email: String!
   }
   
   type schema {
@@ -61,6 +67,10 @@ const resolvers = {
     id: (city) => city.geonameid
   },
   Query: {
+    self: () => ({
+			username: 'Jane Doe',
+			email: 'jane.doe@mail.com'
+		}),
     citiesList: (_, { name }) => {
       const then = Date.now();
       const filtered = worldCities.filter(city => {

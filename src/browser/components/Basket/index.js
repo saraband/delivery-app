@@ -18,7 +18,6 @@ class Basket extends React.Component {
       removeProduct
     } = this.props;
     const products = baskets[id];
-    console.log(products);
 
     return (
       <StyledBasket>
