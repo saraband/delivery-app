@@ -68,9 +68,9 @@ const resolvers = {
   },
   Query: {
     self: () => ({
-			username: 'Jane Doe',
-			email: 'jane.doe@mail.com'
-		}),
+      username: 'Jane Doe',
+      email: 'jane.doe@mail.com'
+    }),
     citiesList: (_, { name }) => {
       const then = Date.now();
       const filtered = worldCities.filter(city => {
