@@ -1,8 +1,8 @@
 node_modules
 .idea
 yarn.lock
-dist/bundle.js
-dist/bundle.js.map
+dist/app.bundle.js
+dist/app.bundle.js.map
 dist/images
 src/server/config.json
 specs.rtf
