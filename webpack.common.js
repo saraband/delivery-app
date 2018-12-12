@@ -5,12 +5,6 @@ module.exports = {
   entry: {
     app: './src/browser/index.js'
   },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contentHash].bundle.js',
-    chunkFilename: '[name].[contentHash].bundle.js',
-    publicPath: '/'
-  },
   resolve: {
     alias: {
       COMPONENTS: path.resolve(__dirname, 'src/browser/components/'),
