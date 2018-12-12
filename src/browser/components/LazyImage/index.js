@@ -16,6 +16,7 @@ const Container = styled.div`
   display: inline-block;
   width: 200px;
   height: 200px;
+  overflow: hidden;
 `;
 
 const StyledPlaceholder = styled.div`
@@ -30,6 +31,7 @@ const StyledPlaceholder = styled.div`
   background-position: center center;
   filter: blur(2px);
   transition: all 0.2s ease-in-out;
+  transform: scale(1.1);
   opacity: ${p => p.visible ? 1 : 0};
 `;
 
@@ -43,6 +45,7 @@ const StyledImage = styled.div`
   background-image: url(${p => p.url});
   background-size: cover;
   background-position: center center;
+  transform: scale(1.1);
 `;
 
 export default class LazyImage extends React.Component {

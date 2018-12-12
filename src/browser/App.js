@@ -8,10 +8,10 @@ import {
 import Layout from './layouts/default';
 import Routes from 'ROUTES';
 
-const RestaurantsList = React.lazy(() => import('PAGES/RestaurantsList'));
-const RouteNotFound = React.lazy(() => import('PAGES/RouteNotFound'));
-const Restaurant = React.lazy(() => import('PAGES/RestaurantDetails'));
-const TestPage = React.lazy(() => import('PAGES/Test'));
+const RestaurantsList = React.lazy(() => import(/* webpackChunkName: 'restaurants-list' */ 'PAGES/RestaurantsList'));
+const RouteNotFound = React.lazy(() => import(/* webpackChunkName: 'route-404' */ 'PAGES/RouteNotFound'));
+const Restaurant = React.lazy(() => import(/* webpackChunkName: 'restaurants-details' */ 'PAGES/RestaurantDetails'));
+const TestPage = React.lazy(() => import(/* webpackChunkName: 'route-test' */ 'PAGES/Test'));
 
 export default class App extends React.Component {
   render () {

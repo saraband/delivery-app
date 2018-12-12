@@ -10,7 +10,7 @@ module.exports = merge(common, {
     hot: true,
     port: 8080,
     historyApiFallback: {
-      index: '_index.html'
+      index: '__dev_index.html'
     }
   },
   plugins: [
