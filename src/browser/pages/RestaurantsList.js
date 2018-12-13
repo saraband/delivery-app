@@ -24,6 +24,7 @@ const GET_RESTAURANTS_LIST = gql`
 const List = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 `;
 
 export default class RestaurantsList extends React.Component {

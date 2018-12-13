@@ -19,7 +19,8 @@ module.exports = {
       HELPERS: path.resolve(__dirname, 'src/browser/helpers/'),
       DIST: path.resolve(__dirname, 'dist/'),
       ROOT: path.resolve(__dirname, './'),
-      UTILS: path.resolve(__dirname, 'src/utils/')
+      UTILS: path.resolve(__dirname, 'src/utils/'),
+      ASSETS: path.resolve(__dirname, 'assets/')
     }
   },
   module: {

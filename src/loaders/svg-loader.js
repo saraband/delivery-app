@@ -28,7 +28,5 @@ module.exports = function (source) {
     }
   `;
 
-  console.log(output);
-
   this.callback(null, output);
 };

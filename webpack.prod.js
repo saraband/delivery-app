@@ -39,6 +39,10 @@ module.exports = merge(common, {
       files: {
         js: ['/babel.polyfill.min.js']
       },
+      meta: {
+        'robots': 'noindex',
+        'viewport': 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no'
+      },
       minify: {
         collapseWhitespace: true,
         removeComments: true,

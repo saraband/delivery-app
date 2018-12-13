@@ -1,10 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import {
-  Switch,
-  Route
-} from 'react-router-dom';
-
+import { Switch, Route } from 'react-router-dom';
 import Layout from './layouts/default';
 import Routes from 'ROUTES';
 

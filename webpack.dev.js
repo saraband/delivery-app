@@ -40,7 +40,11 @@ module.exports = merge(common, {
       title: '[DEV] delivery-app',
       files: {
         js: ['/babel.polyfill.min.js']
-      }
+      },
+      meta: {
+        'robots': 'noindex',
+        'viewport': 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no'
+      },
     }),
 
     // Writes index.html to disk so we can

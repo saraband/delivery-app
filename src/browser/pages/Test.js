@@ -10,6 +10,8 @@ import BaseInput from 'COMPONENTS/Form/BaseInput';
 import v from 'HELPERS/Validate';
 import BaseButton from 'COMPONENTS/Form/BaseButton';
 import withValidator from 'HOCS/WithValidator';
+import Loader from '../components/Loader';
+import { ButtonTypes } from '../components/Form/BaseButton';
 
 const GET_CITIES = gql`
   query autoCompleteCities ($name: String!) {
@@ -32,30 +34,29 @@ class TestPage extends React.Component {
     };
   }
 
-  unmount = () => {
-    this.setState({ unmounted: true });
-  };
-
   render () {
     return (
       <FormValidator>
         {({ isFormValid, validator }) => (
           <BaseForm>
-            <BaseInput
-              name='email'
-              value={this.state.email}
-              onChange={this.updateInput}
-              />
-            {!this.state.unmounted &&
-              <BaseInput
-                name='password'
-                type='password'
-                value={this.state.password}
-                onChange={this.updateInput}
-              />
-            }
-            <BaseButton disabled={!isFormValid}>Submit</BaseButton>
-            <BaseButton onClick={this.unmount}>Unmount</BaseButton>
+            <BaseButton
+              type={ButtonTypes.FULL}
+              color='#F012BE'
+            >
+              Submit
+            </BaseButton>
+            <BaseButton
+              type={ButtonTypes.BORDERED}
+              color='#F012BE'
+            >
+              Submit
+            </BaseButton>
+            <BaseButton
+              type={ButtonTypes.EMPTY}
+              color='#F012BE'
+            >
+              CLEAR
+            </BaseButton>
           </BaseForm>
         )}
       </FormValidator>

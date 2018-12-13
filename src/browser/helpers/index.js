@@ -26,3 +26,28 @@ export const createInputHandler = (args) => function updateInput (event) {
     }
   });
 };
+
+// Thank you stack overflow
+export function hexToRgb (hex) {
+  if (!/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    console.error(`${hex} is not a valid color.`);
+    return;
+  }
+
+  let c = hex.substring(1).split('');
+  if (c.length === 3) {
+    c = [
+      c[0], c[0],
+      c[1], c[1],
+      c[2], c[2]
+    ];
+  }
+
+  c = '0x' + c.join('');
+
+  return {
+    r: (c >> 16) & 255,
+    g: (c >> 8) & 255,
+    b: c & 255
+  };
+}
