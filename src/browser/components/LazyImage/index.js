@@ -15,8 +15,6 @@ import makeCancelable from 'makecancelable';
 const Container = styled.div`
   position: relative;
   display: inline-block;
-  width: 200px;
-  height: 200px;
   overflow: hidden;
 `;
 

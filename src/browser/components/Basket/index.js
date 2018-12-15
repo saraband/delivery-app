@@ -12,9 +12,10 @@ import AddIcon from 'ICONS/AddIcon';
 import RemoveIcon from 'ICONS/RemoveIcon';
 import FontSizes from '../../constants/FontSizes';
 import FlipMove from 'react-flip-move';
+import ToolTip from 'COMPONENTS/ToolTip';
 
 const StyledBasket = styled.div`
-  border: 1px solid ${Colors.BLUE};
+  border: 1px solid ${Colors.LIGHT_GREY};
   border-radius: 3px;
   padding: 10px;
   position: sticky;
@@ -43,9 +44,12 @@ const ProductName = styled.h4`
   flex-grow: 1;
   margin-left: 10px;
 `;
-const ProductControls = styled.div``;
+export const ProductControls = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-const ControlButton = styled(BaseButton).attrs({
+export const ControlButton = styled(BaseButton).attrs({
   round: true,
   type: ButtonTypes.EMPTY
 })`
@@ -56,6 +60,11 @@ const ControlButton = styled(BaseButton).attrs({
     filter: grayscale(0);
     opacity: 1;
   }
+`;
+
+const Title = styled.h2`
+  color: ${Colors.DARK_GREY};
+  text-align: center;
 `;
 
 class Basket extends React.Component {
@@ -77,14 +86,19 @@ class Basket extends React.Component {
 
     return (
       <StyledBasket>
-        <FlipMove>
+        <Title>Your basket (&nbsp;64.5 €&nbsp;)</Title>
+        <FlipMove enterAnimation='fade' leaveAnimation='fade'>
           {this.state.products.map((product, index) => (
             <Product key={index}>
               <ProductQuantity>2x</ProductQuantity>
               <ProductName>Porc pané</ProductName>
               <ProductControls>
-                <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
-                <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
+                <ToolTip label='Remove item'>
+                  <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
+                </ToolTip>
+                <ToolTip label='Add item'>
+                  <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
+                </ToolTip>
               </ProductControls>
             </Product>
             ))}

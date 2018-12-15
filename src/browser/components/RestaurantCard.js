@@ -1,30 +1,65 @@
 import React from 'react';
 import styled from 'styled-components';
-import Colors from '../constants/Colors';
+import Colors from 'CONSTANTS/Colors';
 import Routes, { addParamsToUrl } from 'ROUTES';
 import { Link } from 'react-router-dom';
 import LazyImage from 'COMPONENTS/LazyImage';
-
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Star from '@material-ui/icons/StarRateSharp';
-import Grid from '@material-ui/core/Grid';
+import withRipples from 'HOCS/WithRipples';
+import Ripple from 'COMPONENTS/RippleProvider/Ripple';
+import { ButtonTypes } from './Form/BaseButton';
 
-const styles = {
-  card: {
-    maxWidth: 345,
-    margin: 20
+const CardContainer = styled.div`
+  width: 350px;
+  margin: 20px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
-};
+`;
+
+const RestaurantImage = styled(LazyImage)`
+  width: 100%;
+  height: 300px;
+`;
+
+const Description = styled.div``;
 
 class RestaurantCard extends React.PureComponent {
+  constructor (props) {
+    super(props);
+    this.ref = React.createRef();
+  }
+
+  componentDidMount () {
+    // We store the maximum size of
+    // the restaurant card, so we can create ripples large enough
+    const { width, height } = this.ref.current.getBoundingClientRect();
+    this.size = width > height ? width : height;
+  }
+
+  handleMouseDown = (event) => {
+    // We calculate the relative pos of the mouse
+    const bounds = this.ref.current.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+
+    // We add a ripple there
+    this.props.addRipple({
+      x,
+      y,
+      color: Colors.BLUE,
+      size: this.size * 2
+    })
+  };
+
   render () {
     const {
       id,
@@ -33,43 +68,39 @@ class RestaurantCard extends React.PureComponent {
       rating,
       thumbnail,
       imageUrl,
-      classes
+      ripples,
+      addRipple,
+      deactivateActiveRipple
     } = this.props;
 
-    const url = addParamsToUrl(imageUrl, {
-      size: 600
-    });
-
     return (
-      <Card className={classes.card}>
-        <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name: urlName })}>
-          <CardActionArea>
-            <LazyImage
-              url={imageUrl}
-              thumbnail={thumbnail}
-              alt={name}
-              style={{ width: '100%'}}
-              />
-            <CardContent>
-              <Grid
-                container
-                direction='row'
-                justify='space-between'
-                alignItems='center'
-                >
-                <Typography gutterBottom variant="h5" component="h2">{name}</Typography>
-                <Typography color='primary' gutterBottom variant="h6" component="h3">{rating} / 10<Star color='primary' /></Typography>
-              </Grid>
-              <Typography component="p">
-                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                across all continents except Antarctica
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Link>
-      </Card>
+      <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name })}>
+        <CardContainer
+          ref={this.ref}
+          onMouseDown={this.handleMouseDown}
+          onMouseOut={deactivateActiveRipple}
+          onMouseUp={deactivateActiveRipple}
+          >
+          <RestaurantImage
+            url={imageUrl}
+            alt={name}
+            thumbnail={thumbnail}
+            />
+          <Description>
+            {name}
+          </Description>
+
+          {/* We render there the ripples */}
+          {Object.keys(ripples).map((rId) => (
+            <Ripple
+              key={rId}
+              {...ripples[rId]}
+            />
+          ))}
+        </CardContainer>
+      </Link>
     );
   }
 }
 
-export default withStyles(styles)(RestaurantCard);
+export default withRipples(RestaurantCard);

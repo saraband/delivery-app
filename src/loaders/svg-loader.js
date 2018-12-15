@@ -9,6 +9,7 @@ module.exports = function (source) {
   let attributeMatches;
   let attributes = {};
 
+  // Get all top levels attributes
   while (attributeMatches = attributeRegex.exec(attributesRaw)) {
     attributes[attributeMatches[1]] = attributeMatches[2];
   }

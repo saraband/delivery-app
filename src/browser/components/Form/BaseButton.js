@@ -16,7 +16,7 @@ export const ButtonTypes = {
 const TextContainer = styled.div`
   background-color: rgba(0, 0, 0, 0);
   opacity: 1;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.15s ease-in-out;
   width: 100%;
   height: 100%;
   padding: 8px 12px 8px 12px;
@@ -27,7 +27,7 @@ const StyledButton = styled.button`
   box-sizing: border-box;
   cursor: pointer;
   font-size: ${FontSizes.MEDIUM};
-  transition: all 0.25s ease-in-out;
+  transition: all 0.15s ease-in-out;
   position: relative;
   overflow: hidden;
   font-family: Roboto, Arial; // TODO: why doesnt this work ffs
@@ -88,10 +88,17 @@ const StyledButton = styled.button`
   
   &:disabled {
     filter: grayscale(100%);
+    opacity: 0.5;
     
-    &:hover { /* TODO: do here */
-      opacity: unset;
+    &:hover {
       cursor: not-allowed;
+      ${TextContainer} {
+        background-color: unset;
+      }
+    }
+    
+    &:active {
+      box-shadow: unset;
     }
   }
 `;
@@ -107,13 +114,16 @@ class BaseButton extends React.PureComponent {
   componentDidMount () {
     // We store the maximum size of
     // the button, so we can create ripples large enough
-    const bounds = this.ref.current.getBoundingClientRect();
-    this.size = bounds.width > bounds.height
-      ? bounds.width
-      : bounds.height;
+    const { width, height } = this.ref.current.getBoundingClientRect();
+    this.size = width > height ? width : height;
   }
 
   handleMouseDown = (event) => {
+    const disabled = false; // TODO: compute disabled
+    if (disabled) {
+      return;
+    }
+
     // We calculate the relative pos of the mouse
     this.props.onMouseDown(event);
     let x, y;
