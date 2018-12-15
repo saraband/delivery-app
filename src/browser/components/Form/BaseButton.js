@@ -3,7 +3,7 @@ import styled, { keyframes, css } from 'styled-components';
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
 import PropTypes from 'prop-types';
-import RippleProvider from 'COMPONENTS/RippleProvider';
+import withRipples from 'HOCS/WithRipples';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import nullFunction from 'MISC/NullFunction';
 
@@ -23,7 +23,7 @@ const TextContainer = styled.div`
 `;
 
 const StyledButton = styled.button`
-  border-radius: 5px;
+  border-radius: ${p => p.round ? '100%' : '5px'};
   box-sizing: border-box;
   cursor: pointer;
   font-size: ${FontSizes.MEDIUM};
@@ -97,10 +97,11 @@ const StyledButton = styled.button`
 `;
 
 
-export default class BaseButton extends React.PureComponent {
+class BaseButton extends React.PureComponent {
   constructor (props) {
     super(props);
     this.ref = React.createRef();
+    this.size = 200;
   }
 
   componentDidMount () {
@@ -108,36 +109,44 @@ export default class BaseButton extends React.PureComponent {
     // the button, so we can create ripples large enough
     const bounds = this.ref.current.getBoundingClientRect();
     this.size = bounds.width > bounds.height
-      ? bounds.width * 2
-      : bounds.height * 2;
+      ? bounds.width
+      : bounds.height;
   }
 
-  handleMouseDown = (event, addRipple) => {
+  handleMouseDown = (event) => {
     // We calculate the relative pos of the mouse
     this.props.onMouseDown(event);
+    let x, y;
     const bounds = this.ref.current.getBoundingClientRect();
-    const x = event.clientX - bounds.left;
-    const y = event.clientY - bounds.top;
+
+    // Round button, add the ripple at the center
+    if (this.props.round) {
+      x = bounds.width / 2;
+      y = bounds.height / 2;
+    } else {
+      x = event.clientX - bounds.left;
+      y = event.clientY - bounds.top;
+    }
 
     // We add a ripple there
-    addRipple({
+    this.props.addRipple({
       x,
       y,
       color: this.props.type === ButtonTypes.FULL
         ? Colors.WHITE
         : this.props.color,
-      size: this.size || 200
+      size: this.size * 2
     })
   };
 
-  handleMouseOut = (event, deactivateActiveRipple) => {
+  handleMouseOut = (event) => {
     this.props.onMouseOut(event);
-    deactivateActiveRipple();
+    this.props.deactivateActiveRipple();
   };
 
-  handleMouseUp = (event, deactivateActiveRipple) => {
+  handleMouseUp = (event) => {
     this.props.onMouseUp(event);
-    deactivateActiveRipple();
+    this.props.deactivateActiveRipple();
   };
 
   render () {
@@ -147,6 +156,10 @@ export default class BaseButton extends React.PureComponent {
       onMouseDown,
       onMouseUp,
       onMouseOut,
+      ripples,
+      addRipple,
+      deactivateActiveRipple,
+
       children,
       icon,
       type,
@@ -155,33 +168,29 @@ export default class BaseButton extends React.PureComponent {
     } = this.props;
 
     return (
-      <RippleProvider>
-        {({ ripples, addRipple, deactivateActiveRipple }) => (
-          <StyledButton
-            ref={this.ref}
-            onMouseDown={() => this.handleMouseDown(event, addRipple)}
-            onMouseOut={() => this.handleMouseOut(event, deactivateActiveRipple)}
-            onMouseUp={() => this.handleMouseUp(event, deactivateActiveRipple)}
-            buttonType={type}
-            color={color}
-            {...rest}
-            >
+      <StyledButton
+        ref={this.ref}
+        onMouseDown={this.handleMouseDown}
+        onMouseOut={this.handleMouseOut}
+        onMouseUp={this.handleMouseUp}
+        buttonType={type}
+        color={color}
+        {...rest}
+        >
 
-            {/* We render there the ripples */}
-            {Object.keys(ripples).map((rId) => (
-              <Ripple
-                key={rId}
-                {...ripples[rId]}
-                />
-            ))}
+        {/* We render there the ripples */}
+        {Object.keys(ripples).map((rId) => (
+          <Ripple
+            key={rId}
+            {...ripples[rId]}
+            />
+        ))}
 
-            <TextContainer>
-              {icon}
-              {children}
-            </TextContainer>
-          </StyledButton>
-        )}
-      </RippleProvider>
+        <TextContainer>
+          {icon}
+          {children}
+        </TextContainer>
+      </StyledButton>
     );
   }
 };
@@ -193,6 +202,7 @@ BaseButton.propTypes = {
   type: PropTypes.symbol,
   color: PropTypes.string,
   icon: PropTypes.any,
+  round: PropTypes.bool
 };
 
 BaseButton.defaultProps = {
@@ -200,6 +210,9 @@ BaseButton.defaultProps = {
   onMouseOut: nullFunction,
   onMouseUp: nullFunction,
   type: ButtonTypes.BORDERED,
-  color: Colors.BLACK,
-  icon: null
+  color: Colors.BLUE,
+  icon: null,
+  round: false
 };
+
+export default withRipples(BaseButton);

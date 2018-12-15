@@ -9,5 +9,6 @@ export default {
   RED: '#FF4136',
   ORANGE: '#ff851b',
   DARK_ORANGE: '#ee6e00',
-  GREEN: '#3D9970'
+  GREEN: '#3D9970',
+  LIGHT_GREEN: '#01FF70'
 };
