@@ -14,22 +14,26 @@ import nullFunc from 'MISC/NullFunction';
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
 import { validateValue } from 'HELPERS/Validate';
+import { hexToRgb } from 'HELPERS';
 
 const Container = styled.div`
   position: relative;
   display: inline-block;
 `;
 
+const blueRgb = hexToRgb(Colors.BLUE);
 const StyledInput = styled.input`
-  border-radius: 2px;
+  border-radius: 3px;
   padding: 8px 12px 8px 12px;
   font-size: ${FontSizes.MEDIUM};
   border: 1px solid ${Colors.GREY};
   transition: all 0.1s ease-in-out;
+  width: 100%;
 
   &:focus,
   &:active {
     border-color: ${Colors.DARK_GREY};
+    box-shadow: 0 0 0px 3px rgba(${blueRgb.r}, ${blueRgb.g}, ${blueRgb.b}, 0.3);
     outline: 0;
   }
   
@@ -52,6 +56,9 @@ const StyledInput = styled.input`
     `
     : ''
   }
+  
+  /* CUSTOM INPUT STYLE */
+  ${p => p.inputStyle}
 `;
 
 const Label = styled.label`
@@ -140,6 +147,7 @@ export default class BaseInput extends React.Component {
       onChange,
       validator,
 
+      className,
       validate,
       errorLabel,
       ...rest
@@ -151,7 +159,7 @@ export default class BaseInput extends React.Component {
     } = this.state;
 
     return (
-      <Container>
+      <Container className={className}>
         <StyledInput
           onChange={this.handleChange}
           {...rest}

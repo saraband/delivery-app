@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import withRipples from 'HOCS/WithRipples';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import nullFunction from 'MISC/NullFunction';
+import { hexToRgb } from 'HELPERS';
 
 export const ButtonTypes = {
   EMPTY: Symbol(),
@@ -22,6 +23,13 @@ const TextContainer = styled.div`
   padding: 8px 12px 8px 12px;
 `;
 
+/*
+  OLD SHADOW :active / :focus
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  text-shadow: 0 -1px rgba(0, 0, 0, 0.1);
+*/
+
+const blueRgb = hexToRgb(Colors.BLUE);
 const StyledButton = styled.button`
   border-radius: ${p => p.round ? '100%' : '5px'};
   box-sizing: border-box;
@@ -64,18 +72,8 @@ const StyledButton = styled.button`
   &:focus,
   &:active {
     outline: 0;
+    box-shadow: 0 0 0px 3px rgba(${blueRgb.r}, ${blueRgb.g}, ${blueRgb.b}, 0.3);
   }
-  
-  /* ACTIVE EFFECT */
-  ${p => p.buttonType === ButtonTypes.FULL
-    ? `
-      &:active {
-        box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-      }
-    `
-    : ''
-  };
-  
 
   &:hover {
     ${TextContainer} {
