@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { addParamsToUrl } from 'ROUTES';
 import { getOptimalResolution } from 'UTILS';
+import makeCancelable from 'makecancelable';
 
 const Container = styled.div`
   position: relative;
@@ -66,14 +67,22 @@ export default class LazyImage extends React.Component {
 
   componentWillUnmount () {
     document.removeEventListener('scroll', this.watchScroll);
+    this.cancelImageLoad && this.cancelImageLoad();
   }
 
   loadImage = () => {
-    this.image.onload = () => {
-      this.setState({
-        hasImageLoaded: true
-      });
-    };
+
+    // When the image has loaded, we display the real img
+    // instead of the placeholer
+    // + cancelable in case component gets unmounted
+    this.cancelImageLoad = makeCancelable(
+      new Promise((resolve, reject) => {
+        this.image.onload = resolve;
+        this.image.onerror = reject;
+      }).then(() => {
+        this.setState({ hasImageLoaded: true });
+      })
+    );
 
     // If the image has a parameter size, find the path
     // to its most optimal resolution
@@ -94,7 +103,7 @@ export default class LazyImage extends React.Component {
     }
 
     // Start loading image
-    setTimeout(() => this.loadImage(), 500);
+    this.loadImage();
 
     // No need to watch scroll anymore
     document.removeEventListener('scroll', this.watchScroll);

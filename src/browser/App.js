@@ -12,7 +12,7 @@ export default class App extends React.Component {
   render () {
     return (
       <Layout>
-        <React.Suspense fallback={() => <div>Loading...</div>}>
+        <React.Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route exact path={Routes.HOME} component={TestPage} />
             {/*<Route exact path={Routes.HOME} component={RestaurantsList} />*/}

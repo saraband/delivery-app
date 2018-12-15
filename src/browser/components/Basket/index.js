@@ -7,7 +7,7 @@ import {
   REMOVE_PRODUCT
 } from 'STORE/baskets';
 import Colors from 'CONSTANTS/Colors';
-import BaseButton from '../Form/BaseButton';
+import BaseButton, { ButtonTypes } from '../Form/BaseButton';
 
 const StyledBasket = styled.div`
   border: 1px solid ${Colors.LIGHT_BLUE};
@@ -30,7 +30,7 @@ class Basket extends React.Component {
     return (
       <StyledBasket>
         basket {id}
-        <BaseButton>Check out</BaseButton>
+        <BaseButton color='#FF9505' type={ButtonTypes.FULL}>Check out</BaseButton>
       </StyledBasket>
     );
   }
