@@ -8,10 +8,19 @@ export default class RippleProvider extends React.PureComponent {
     super(props);
 
     this.counter = 1;
+    this.deactivateRippleTimeouts = {};
     this.state = {
       ripples: {},
       activeRippleId: null
     }
+  }
+
+  componentWillUnmount () {
+    // We clear all the timeouts to avoid changing state
+    // of an unmounted component
+    Object.keys(this.deactivateRippleTimeouts).forEach((id) => {
+      clearTimeout(this.deactivateRippleTimeouts[id]);
+    });
   }
 
   addRipple = ({
@@ -63,9 +72,13 @@ export default class RippleProvider extends React.PureComponent {
 
     // We let the fading animation complete and we remove the
     // ripple when it's totally faded
-    setTimeout(() => {
+    // + store the timeout so if the component unmounts
+    // we can clear it before it setState onto an unmounted component
+    this.deactivateRippleTimeouts[activeRippleId] = setTimeout(() => {
       this.setState({
         ripples: Object.keys(this.state.ripples).reduce((acc, currentId) => {
+
+          // weak equal is necessary here
           if (currentId == activeRippleId) {
             return acc;
           }
@@ -73,7 +86,11 @@ export default class RippleProvider extends React.PureComponent {
           acc[currentId] = this.state.ripples[currentId];
           return acc;
         }, {})
-      })
+
+      // Ripples state has been cleaned up
+      // We resolve the promise and clean up the cancel fn
+      // Since it doesn't need to be canceled anymore
+      });
     }, ANIMATION_DURATION * 1000);
   };
 

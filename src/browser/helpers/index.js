@@ -51,3 +51,8 @@ export function hexToRgb (hex) {
     b: c & 255
   };
 }
+
+export function hexToRgbaString (hex, alpha) {
+  const c = hexToRgb(hex);
+  return `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
+}

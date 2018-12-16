@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import RestaurantCard from 'COMPONENTS/RestaurantCard';
 import LazyImage from 'COMPONENTS/LazyImage';
 import Basket from 'COMPONENTS/Basket';
 import { ProductControls, ControlButton } from 'COMPONENTS/Basket';
@@ -10,6 +9,8 @@ import ToolTip from 'COMPONENTS/ToolTip';
 import RemoveIcon from 'ICONS/RemoveIcon';
 import Colors from 'CONSTANTS/Colors';
 import AddIcon from 'ICONS/AddIcon';
+import BreadCrumb from 'COMPONENTS/BreadCrumb';
+import Routes, { addParamsToUrl } from 'ROUTES';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -37,6 +38,7 @@ const GET_PRODUCTS_LIST = gql`
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const MenuSection = styled.div`
@@ -73,6 +75,11 @@ const Product = styled.div`
   }
 `;
 
+const NavSection = styled.div``;
+const BodySection = styled.div`
+  display: flex;
+`;
+
 const ProductInformation = styled.div`
   flex-grow: 1;
 `;
@@ -85,7 +92,7 @@ export default class extends React.Component {
   }
 
   render () {
-    const id = this.props.match.params.id;
+    const { id, city, name } = this.props.match.params;
 
     return (
       <Query query={GET_PRODUCTS_LIST} variables={{ id }}>
@@ -95,32 +102,53 @@ export default class extends React.Component {
 
           return (
             <Container>
-              <MenuSection>
-                <BannerImage
-                  url={data.restaurant.imageUrl}
-                  thumbnail={data.restaurant.thumbnail}
-                  alt={data.restaurant.name}
-                />
-                {data && data.productsList.map(({ id, name, price, ingredients }) => (
-                  <Product key={id}>
-                    <ProductInformation>
-                      <ProductName>{name}</ProductName>
-                      <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
-                    </ProductInformation>
-                    <ProductControls>
-                      <ToolTip label='Remove item'>
-                        <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
-                      </ToolTip>
-                      <ToolTip label='Add item'>
-                        <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
-                      </ToolTip>
-                    </ProductControls>
-                  </Product>
-                ))}
-              </MenuSection>
-              <BasketSection>
-                <Basket id={id} />
-              </BasketSection>
+              <NavSection>
+                <BreadCrumb>
+                  {[
+                    {
+                      label: 'home',
+                      url: Routes.HOME,
+                      tip: 'Home page'
+                    },
+                    {
+                      label: city,
+                      url: addParamsToUrl(Routes.RESTAURANTS_LIST, { city }),
+                      tip: `Restaurants around ${city}`
+                    },
+                    {
+                      label: name
+                    }
+                  ]}
+                </BreadCrumb>
+              </NavSection>
+              <BodySection>
+                <MenuSection>
+                  <BannerImage
+                    url={data.restaurant.imageUrl}
+                    thumbnail={data.restaurant.thumbnail}
+                    alt={data.restaurant.name}
+                  />
+                  {data && data.productsList.map(({ id, name, price, ingredients }) => (
+                    <Product key={id}>
+                      <ProductInformation>
+                        <ProductName>{name}</ProductName>
+                        <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
+                      </ProductInformation>
+                      <ProductControls>
+                        <ToolTip label='Remove item'>
+                          <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
+                        </ToolTip>
+                        <ToolTip label='Add item'>
+                          <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
+                        </ToolTip>
+                      </ProductControls>
+                    </Product>
+                  ))}
+                </MenuSection>
+                <BasketSection>
+                  <Basket id={id} />
+                </BasketSection>
+              </BodySection>
             </Container>
           );
         }}

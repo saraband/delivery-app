@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import withRipples from 'HOCS/WithRipples';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import { ButtonTypes } from './Form/BaseButton';
+import FontSizes from 'CONSTANTS/FontSizes';
 
 const CardContainer = styled.div`
   width: 350px;
@@ -28,9 +29,23 @@ const CardContainer = styled.div`
 const RestaurantImage = styled(LazyImage)`
   width: 100%;
   height: 300px;
+  filter: grayscale(20%);
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    filter: grayscale(0%);
+  }
 `;
 
-const Description = styled.div``;
+const Description = styled.div`
+  padding: 15px;
+`;
+
+const RestaurantName = styled.h3`
+  color: ${Colors.BLACK};
+  font-size: ${FontSizes.MEDIUM};
+  font-family: Roboto;
+`;
 
 class RestaurantCard extends React.PureComponent {
   constructor (props) {
@@ -66,6 +81,7 @@ class RestaurantCard extends React.PureComponent {
       name,
       urlName,
       rating,
+      city,
       thumbnail,
       imageUrl,
       ripples,
@@ -74,7 +90,7 @@ class RestaurantCard extends React.PureComponent {
     } = this.props;
 
     return (
-      <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name })}>
+      <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name, city })}>
         <CardContainer
           ref={this.ref}
           onMouseDown={this.handleMouseDown}
@@ -87,7 +103,7 @@ class RestaurantCard extends React.PureComponent {
             thumbnail={thumbnail}
             />
           <Description>
-            {name}
+            <RestaurantName>{name}</RestaurantName>
           </Description>
 
           {/* We render there the ripples */}

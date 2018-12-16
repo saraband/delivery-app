@@ -38,6 +38,8 @@ export default class RestaurantsList extends React.Component {
 
   render () {
     const { limit } = this.state;
+    const { city } = this.props.match.params;
+
     return (
       <Query query={GET_RESTAURANTS_LIST} variables={{ limit }}>
         {({ error, loading, data }) => {
@@ -46,7 +48,7 @@ export default class RestaurantsList extends React.Component {
 
           return (
             <List>
-              {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} />)}
+              {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} city={city} />)}
             </List>
           );
         }}

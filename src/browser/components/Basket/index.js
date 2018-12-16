@@ -68,13 +68,6 @@ const Title = styled.h2`
 `;
 
 class Basket extends React.Component {
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      products: []
-    };
-  }
   render () {
     const {
       id,
@@ -88,26 +81,36 @@ class Basket extends React.Component {
       <StyledBasket>
         <Title>Your basket (&nbsp;64.5 €&nbsp;)</Title>
         <FlipMove enterAnimation='fade' leaveAnimation='fade'>
-          {this.state.products.map((product, index) => (
-            <Product key={index}>
-              <ProductQuantity>2x</ProductQuantity>
-              <ProductName>Porc pané</ProductName>
-              <ProductControls>
-                <ToolTip label='Remove item'>
-                  <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
-                </ToolTip>
-                <ToolTip label='Add item'>
-                  <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
-                </ToolTip>
-              </ProductControls>
-            </Product>
-            ))}
+
+          {/* TODO: split this into a product item component */}
+          {Object.keys(products || []).map(productId => {
+            const product = products[productId];
+
+            return (
+              <Product key={product.id}>
+                <ProductQuantity>{product.quantity}</ProductQuantity>
+                <ProductName>{product.name}</ProductName>
+                <ProductControls>
+                  <ToolTip label='Remove item'>
+                    <ControlButton
+                      icon={<RemoveIcon height={12} color={Colors.RED} />}
+                      onClick={() => removeProduct(product)}
+                    />
+                  </ToolTip>
+                  <ToolTip label='Add item'>
+                    <ControlButton
+                      icon={<AddIcon height={12} color={Colors.GREEN} />}
+                      onClick={() => addProduct(product)}
+                    />
+                  </ToolTip>
+                </ProductControls>
+              </Product>
+            );
+          })}
         </FlipMove>
         <Controls>
           <BaseButton type={ButtonTypes.EMPTY}>Clear</BaseButton>
-          <BaseButton type={ButtonTypes.FULL} onClick={() => {
-            this.setState({ products: [...this.state.products, 5] })
-          }}>Checkout</BaseButton>
+          <BaseButton type={ButtonTypes.FULL}>Checkout</BaseButton>
         </Controls>
       </StyledBasket>
     );
