@@ -10,10 +10,30 @@ import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import { ButtonTypes } from './Form/BaseButton';
 import FontSizes from 'CONSTANTS/FontSizes';
 
+// TODO: refactor this maybe ?
+const CARD_WIDTH = 350;
+const CARD_HEIGHT = 400;
+
+const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
+  return `
+    @media only screen and (min-width: ${(index + 1) * CARD_WIDTH}px) {
+      width: ${100 / (index + 1)}%;
+    }
+  `;
+}).join('\n');
+
+const ResponsiveContainer = styled.div`
+  width: 100%; /* This will get overridden if the width of the viewport is higher */
+  height: ${CARD_HEIGHT}px;
+  padding: 15px;
+  
+  /* Responsive card sizes */
+  ${ResponsiveCardSizes}
+`;
+
 const CardContainer = styled.div`
-  width: 350px;
-  margin: 20px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -28,7 +48,7 @@ const CardContainer = styled.div`
 
 const RestaurantImage = styled(LazyImage)`
   width: 100%;
-  height: 300px;
+  height: 250px;
   filter: grayscale(20%);
   transition: all 0.2s ease-in-out;
   
@@ -90,31 +110,34 @@ class RestaurantCard extends React.PureComponent {
     } = this.props;
 
     return (
-      <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name, city })}>
-        <CardContainer
-          ref={this.ref}
-          onMouseDown={this.handleMouseDown}
-          onMouseOut={deactivateActiveRipple}
-          onMouseUp={deactivateActiveRipple}
-          >
-          <RestaurantImage
-            url={imageUrl}
-            alt={name}
-            thumbnail={thumbnail}
-            />
-          <Description>
-            <RestaurantName>{name}</RestaurantName>
-          </Description>
+      <ResponsiveContainer>
+        <Link to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name, city })}>
+          <CardContainer
+            ref={this.ref}
+            to={addParamsToUrl(Routes.RESTAURANT_DETAILS, { id, name, city })}
+            onMouseDown={this.handleMouseDown}
+            onMouseOut={deactivateActiveRipple}
+            onMouseUp={deactivateActiveRipple}
+            >
+            <RestaurantImage
+              url={imageUrl}
+              alt={name}
+              thumbnail={thumbnail}
+              />
+            <Description>
+              <RestaurantName>{name}</RestaurantName>
+            </Description>
 
-          {/* We render there the ripples */}
-          {Object.keys(ripples).map((rId) => (
-            <Ripple
-              key={rId}
-              {...ripples[rId]}
-            />
-          ))}
-        </CardContainer>
-      </Link>
+            {/* We render there the ripples */}
+            {Object.keys(ripples).map((rId) => (
+              <Ripple
+                key={rId}
+                {...ripples[rId]}
+              />
+            ))}
+          </CardContainer>
+        </Link>
+      </ResponsiveContainer>
     );
   }
 }

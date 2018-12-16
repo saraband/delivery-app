@@ -81,10 +81,16 @@ export default class SearchInput extends React.PureComponent {
     this.state = {
       value: '',
       lastSearchedValue: '',
+      focusedOption: undefined,
       results: [],
       isDropDownVisible: false,
       isLoading: false
     };
+  }
+
+  handleKeyDown = ({ key }) => {
+    console.log(key)
+    const { focusedOption } = this.state;
   }
 
   handleChange = (event) => {
@@ -175,6 +181,7 @@ export default class SearchInput extends React.PureComponent {
         <StyledInput
           name={name}
           value={value}
+          onKeyDown={this.handleKeyDown}
           onFocus={() => this.setState({ isDropDownVisible: true })}
           onBlur={(event) => {
             // check if the element that provoked the blur is the result list
@@ -209,9 +216,10 @@ export default class SearchInput extends React.PureComponent {
 SearchInput.propTypes = {
   searchFunction: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   placeholder: PropTypes.string
 };
 
 SearchInput.defaultProps = {
-  placeholder: '[undefined placeholder]'
+  placeholder: '[Undefined placeholder]'
 };

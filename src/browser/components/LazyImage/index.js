@@ -59,12 +59,14 @@ export default class LazyImage extends React.Component {
   }
 
   componentDidMount () {
-    document.addEventListener('scroll', this.watchScroll);
+    document.addEventListener('scroll', this.watchScrollOrResize);
+    window.addEventListener('resize', this.watchScrollOrResize);
     this.checkIfImageIsInViewPort();
   }
 
   componentWillUnmount () {
-    document.removeEventListener('scroll', this.watchScroll);
+    document.removeEventListener('scroll', this.watchScrollOrResize);
+    window.removeEventListener('resize', this.watchScrollOrResize);
     this.cancelImageLoad && this.cancelImageLoad();
   }
 
@@ -103,11 +105,12 @@ export default class LazyImage extends React.Component {
     // Start loading image
     this.loadImage();
 
-    // No need to watch scroll anymore
-    document.removeEventListener('scroll', this.watchScroll);
+    // No need to watch scroll/resize anymore
+    document.removeEventListener('scroll', this.watchScrollOrResize);
+    window.removeEventListener('resize', this.watchScrollOrResize);
   };
 
-  watchScroll = () => {
+  watchScrollOrResize = () => {
     if (!this.hasTicked) {
       this.hasTicked = true;
       window.requestAnimationFrame(this.checkIfImageIsInViewPort);

@@ -1,11 +1,11 @@
-# delivery-app
+# Yumbox.com demo app
 
-This is a demo app.
+This is a demo app for an imaginary food delivery website.
 
 ## How to try it out
 
-This app can be tested here (link WIP).
-If you want to try it locally, make sure to have Postgres running.
+This app can be live tested here (link WIP).
+If you want to run it locally, make sure first to have Postgres running.
 Tweak the file src/server/config.json to fit your localhost database credentials:
 
 ```json
@@ -21,7 +21,7 @@ Tweak the file src/server/config.json to fit your localhost database credentials
 }
 ```
 
-Once you've properly configured config.json, run the following:
+Once you've properly configured config.json, run the following to set up the project:
 
 ```
 yarn install                    # Install dependencies
@@ -29,31 +29,42 @@ sequelize db:migrate            # Migrate DB schemas
 sequelize db:seed:all           # Populate the DB with fake data
 
 yarn generate-images            # Generates static images of different resolutions (Can take some time)
-yarn update-thumbnails          # Generate thumbnails from the images previously generated
-                                # and updates the restaurant DB with those base 64 thumbnails
+yarn update-thumbnails          # Generate base 64 thumbnails from the images previously generated
+                                # and updates the DB
+```
 
+You may now launch the project:
+
+```
 yarn server                     # Launch the server app on port 3000
 yarn dev                        # Launch the client app on port 8080
 ```
 
 ## Folder structure
 
+* [src/browser/](./src/browser/) Client app
+    * [components/](./src/browser/components/) Components used throughout the app
+    * [constants/](./src/browser/constants/) Constants (Colors, Styles, ...)
+    * [helpers/](./src/browser/helpers/) Client app helpers
+    * [hocs/](./src/browser/hocs/) HOCS adding general purpose utilities (Loaders, dropdowns, ...)
+    * [icons/](./src/browser/icons/) SVG icons as components
+    * [layouts/](./src/browser/layouts/) Main layouts
+    * [misc/](./src/browser/misc/) Miscellaneous (CSS animations, generic styled-components)
+    * [pages/](./src/browser/pages/) Different pages of the client app
+    * [routes/](./src/browser/routes/) Route paths and helpers
+    * [store/](./src/browser/store/) Redux store reducers and actions
+
 * [src/server/](./src/server/) Server app
     * [data/](./src/server/data/) Miscellaneous data
     * [models/](./src/server/models/) Sequelize models
     * [seeders/](./src/server/seeders/) Sequelize data seeds
     * [migrations/](./src/server/migrations/) Sequelize migrations
+    
+* [src/utils/](./src/utils/) Utilities, constants and helpers used in the client AND the server.
+    
+* [src/loaders/](./src/loaders/) Custom webpack loaders (Inlining SVG, ...)
 
-* [src/browser/](./src/browser/) Client app
-    * [components/](./src/browser/components/) Components used throughout the app
-    * [constants/](./src/browser/constants/) Constants (Colors, Styles, ...)
-    * [hocs/](./src/browser/hocs/) HOCS adding general purpose functionnalities (Loaders, dropdowns, ...)
-    * [icons/](./src/browser/icons/) SVG icons as components
-    * [layouts/](./src/browser/layouts/) Main layouts
-    * [misc/](./src/browser/misc/) Miscellaneous (CSS animations, helpers, generic styled-components)
-    * [pages/](./src/browser/pages/) Different pages of the client app
-    * [routes/](./src/browser/routes/) Routes path and helpers
-    * [store/](./src/browser/store/) Redux store reducers and actions
+* [src/templates/](./src/templates/) HTML template for HTMLWebpackPlugin
 
 ## This project is using
 #### Client-side
@@ -62,6 +73,7 @@ yarn dev                        # Launch the client app on port 8080
 * [Redux](https://redux.js.org/) Managing global state
 * [Styled Components](https://www.styled-components.com/) Styling React components
 * [Apollo](https://github.com/apollographql) Interacting with GraphQL API client-side
+* [makeCancelable](https://www.npmjs.com/package/makecancelable) Cancelable promises
 * [Webpack](https://webpack.js.org/) Bundling up everything
 * [Babel](https://babeljs.io/) Transpiling shit cause that's what cool kids do
 
@@ -69,9 +81,15 @@ yarn dev                        # Launch the client app on port 8080
 
 * [GraphQL](https://graphql.org/) GraphQL API
 * [NodeJS](https://nodejs.org/en/) Well, NodeJS
-* [Express](https://expressjs.com/) NodeJS server
+* [Express](https://expressjs.com/) NodeJS HTTP server
 * [Morgan](https://github.com/expressjs/morgan) Logging middleware for Express
 * [Sequelize](http://docs.sequelizejs.com/) ORM
 * [PostgreSQL](https://www.postgresql.org/) Database
 * [Lodash](https://lodash.com/) Provides cool utilities
-* [Chalk](https://github.com/chalk/chalk) Pretty colors in the console (Absolutely mandatory)
+* [Chalk](https://github.com/chalk/chalk) Pretty colors in the console (Absolutely mandatory if you ask me)
+* [Faker](https://github.com/marak/Faker.js/) Fake data generation
+* [Sharp](https://github.com/lovell/sharp) NodeJS image processing (Dat boi is hella fast)
+
+## Credits
+
+* WIP: logo licenses
