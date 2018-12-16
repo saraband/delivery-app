@@ -71,7 +71,14 @@ const Label = styled.label`
   color: ${Colors.RED};
 `;
 
-export default class BaseInput extends React.Component {
+export default class BaseInput extends React.PureComponent {
+  // TODO: troubleshoot this
+  // TODO maybe it has side effects
+  shouldComponentUpdate (nextProps, nextState, nextContext) {
+    return this.props.value !== nextProps.value ||
+      this.props.icon !== nextProps.icon;
+  }
+
   constructor (props) {
     super(props);
 
@@ -79,8 +86,9 @@ export default class BaseInput extends React.Component {
     const isValid = validateValue(props.validate, props.value);
     this.state = {
       isValid: isValid,
-      hasTypedAnythingYet: !!props.value,
-      errorLabel: ''
+
+      // TODO: this state should not belong to the state ?
+      hasTypedAnythingYet: !!props.value
     };
 
     // If a validator is connected, we notify it

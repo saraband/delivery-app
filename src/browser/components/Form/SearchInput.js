@@ -64,12 +64,9 @@ const Result = styled.h4`
   font-weight: lighter;
   padding: 10px;
   font-size: ${FontSizes.MEDIUM};
-  transition: all 0.1s ease-in-out;
   cursor: pointer;
   
-  &:hover {
-    background-color: ${hexToRgbaString(Colors.BLUE, 0.2)};
-  }
+  background-color: ${p => p.focused ? hexToRgbaString(Colors.BLUE, 0.2) : 'white'};
 `;
 
 export default class SearchInput extends React.PureComponent {
@@ -88,10 +85,60 @@ export default class SearchInput extends React.PureComponent {
     };
   }
 
-  handleKeyDown = ({ key }) => {
-    console.log(key)
-    const { focusedOption } = this.state;
-  }
+  handleKeyDown = (event) => {
+    const {
+      focusedOption,
+      isDropDownVisible,
+      lastSearchedValue,
+      results
+    } = this.state;
+    const { key } = event;
+    let nextFocusedOption = focusedOption;
+
+    // todo: weird, we should only check if isDropDownVisible is true
+    if (!isDropDownVisible || !lastSearchedValue || !results.length) {
+      return;
+    }
+
+    // Prevents the cursor moving inside the input
+    if (key === 'ArrowDown' ||
+      key === 'ArrowUp' ||
+      key === 'Enter') {
+      event.preventDefault();
+    }
+
+    switch (key) {
+      case 'ArrowDown':
+        if (focusedOption === undefined) {
+          nextFocusedOption = 0;
+        } else {
+          nextFocusedOption = focusedOption + 1 >= results.length
+            ? undefined
+            : focusedOption + 1;
+        }
+        break;
+
+      case 'ArrowUp':
+        if (focusedOption !== undefined) {
+          nextFocusedOption = (focusedOption - 1 < 0)
+            ? undefined
+            : focusedOption - 1;
+        } else {
+          nextFocusedOption = results.length - 1;
+        }
+        break;
+
+      case 'Enter':
+        if (focusedOption !== undefined) {
+          this.selectOption(results[focusedOption].value);
+        }
+        break;
+    }
+
+    this.setState({
+      focusedOption: nextFocusedOption
+    });
+  };
 
   handleChange = (event) => {
     const { lastSearchedValue } = this.state;
@@ -111,15 +158,17 @@ export default class SearchInput extends React.PureComponent {
     const results = await this.props.searchFunction(value);
     this.setState({
       results,
-      lastSearchedValue: value
+      lastSearchedValue: value,
+      focusedOption: undefined
     });
-  }, 500);
+  }, 200);
 
   selectOption = (value) => {
     // Select the value
     this.setState({
       value,
-      isDropDownVisible: false
+      isDropDownVisible: false,
+      focusedOption: undefined
     }, () => {
 
       // Focus the button
@@ -129,19 +178,29 @@ export default class SearchInput extends React.PureComponent {
     });
   }
 
+  getHighlightedValue = (value, filter) => {
+    // TODO: doesnt work with uppercase/lowercase
+    // TODO: maybe refactor better
+    return <span dangerouslySetInnerHTML={{ __html: value.replace(filter, `<strong>${filter}</strong>`) }} />;
+  };
+
   renderResults = () => {
     const {
       value,
       results,
-      isLoading
+      isLoading,
+      focusedOption
     } = this.state;
 
     if (results.length) {
       return (
         <ResultsList>
-          {results.map((result) => (
+          {results.map((result, index) => (
             <Result
               key={result.id}
+              onMouseOver={() => this.setState({ focusedOption: index })}
+              onMouseOut={() => this.setState({ focusedOption: undefined })}
+              focused={index === focusedOption}
               tabIndex={0} // this is important to have a relatedTarget when we blur input
               onClick={(event) => {
                 // TODO: are those two lines really necessary ?
@@ -150,7 +209,7 @@ export default class SearchInput extends React.PureComponent {
                 this.selectOption(result.value);
               }}
               >
-              {result.value}
+              {this.getHighlightedValue(result.value, value)}
             </Result>
           ))}
         </ResultsList>
@@ -199,10 +258,10 @@ export default class SearchInput extends React.PureComponent {
           // TODO: this is a bit messy
           retrieveRef={(element) => this.buttonRef = element}
           type={ButtonTypes.FULL}
-          onClick={onSubmit}
+          onClick={() => onSubmit(value)}
           />
 
-        {/* RESULTS */}
+        {/* RESULTS TODO: semantically weird */}
         {isDropDownVisible && lastSearchedValue &&
           <DropDownContainer ref={this.dropDownRef}>
             {this.renderResults()}

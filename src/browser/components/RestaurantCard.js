@@ -13,10 +13,11 @@ import FontSizes from 'CONSTANTS/FontSizes';
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;
 const CARD_HEIGHT = 400;
+const OFFSET_SIDEBAR = 300;
 
 const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
   return `
-    @media only screen and (min-width: ${(index + 1) * CARD_WIDTH}px) {
+    @media only screen and (min-width: ${((index + 1) * CARD_WIDTH) + OFFSET_SIDEBAR}px) {
       width: ${100 / (index + 1)}%;
     }
   `;

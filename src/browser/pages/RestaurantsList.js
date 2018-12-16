@@ -22,9 +22,23 @@ const GET_RESTAURANTS_LIST = gql`
 `;
 
 const List = styled.div`
+flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const SideBar = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 300px;
+  background-color: blue;
+  height: 100%;
+  min-height: 300px;
 `;
 
 export default class RestaurantsList extends React.Component {
@@ -47,9 +61,12 @@ export default class RestaurantsList extends React.Component {
           if (loading) return <p>Loading</p>;
 
           return (
-            <List>
-              {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} city={city} />)}
-            </List>
+            <Container>
+              <SideBar />
+              <List>
+                {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} city={city} />)}
+              </List>
+            </Container>
           );
         }}
       </Query>
