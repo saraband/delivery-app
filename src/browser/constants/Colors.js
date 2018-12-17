@@ -1,3 +1,5 @@
+import { hexToRgb } from 'HELPERS';
+
 export default {
   BLACK: '#111111',
   LIGHT_GREY: '#DDD',
@@ -13,3 +15,15 @@ export default {
   GREEN: '#3D9970',
   LIGHT_GREEN: '#01FF70'
 };
+
+/*
+TODO: maybe add this later
+export default Object.keys(Colors).reduce((acc, key) => {
+  const rgb = hexToRgb(Colors[key]);
+  acc[key] = {
+    hex: Colors[key],
+    rgba: (alpha) => `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`
+  };
+
+  return acc;
+}, {});*/

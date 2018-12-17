@@ -9,7 +9,6 @@ import SearchIcon from 'ICONS/SearchIcon';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import { createInputHandler, hexToRgbaString } from 'HELPERS';
-import { FlexRowCss } from 'MISC/Styles';
 
 const Container = styled.div`
   display: flex;
@@ -41,12 +40,14 @@ const StyledButton = styled(BaseButton).attrs({
 
 const DropDownContainer = styled.div`
   position: absolute;
+  z-index: 55;
   top: 100%;
   left: 0;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   border-radius: 3px;
+  background-color: ${Colors.WHITE};
 `;
 
 const NoResults = styled.div`
@@ -69,6 +70,10 @@ const Result = styled.h4`
   background-color: ${p => p.focused ? hexToRgbaString(Colors.BLUE, 0.2) : 'white'};
 `;
 
+/*
+ * TODO !!!!!!!
+ * implement shouldCOmponentUpdate !
+ */
 export default class SearchInput extends React.PureComponent {
   constructor (props) {
     super(props);
@@ -169,7 +174,7 @@ export default class SearchInput extends React.PureComponent {
       lastSearchedValue: value,
       focusedOption: undefined
     });
-  }, 50);
+  }, 500);
 
   selectOption = (value) => {
     // Select the value
@@ -188,11 +193,14 @@ export default class SearchInput extends React.PureComponent {
 
   /*  This is a bit messy
    */
-  getHighlightedValue = (value, filter) => {
-    const regex = new RegExp(filter, 'i');
-    const match = regex.exec(value);
-    const highlightedValue = value.replace(regex, `<strong style='color: ${Colors.BLUE}; font-weight: normal;'>${match}</strong>`);
-    return <span dangerouslySetInnerHTML={{ __html: highlightedValue }} />;
+  getHighlightedResult = ({ value, highlight: { from, to }}) => {
+    return (
+      <React.Fragment>
+        {value.substring(0, from)}
+        <strong>{value.substring(from, to)}</strong>
+        {value.slice(to)}
+      </React.Fragment>
+    );
   };
 
   renderResults = () => {
@@ -200,6 +208,7 @@ export default class SearchInput extends React.PureComponent {
       value,
       results,
       isLoading,
+      lastSearchedValue,
       focusedOption
     } = this.state;
 
@@ -220,7 +229,7 @@ export default class SearchInput extends React.PureComponent {
                 this.selectOption(result.value);
               }}
               >
-              {this.getHighlightedValue(result.value, value)}
+              {this.getHighlightedResult(result)}
             </Result>
           ))}
         </ResultsList>
@@ -229,7 +238,7 @@ export default class SearchInput extends React.PureComponent {
 
     return (
       <NoResults>
-        There seem to be no results for `{value}`
+        There seem to be no results for `{lastSearchedValue}`
       </NoResults>
     );
   }
@@ -287,9 +296,11 @@ SearchInput.propTypes = {
   searchFunction: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  value: PropTypes.string
 };
 
 SearchInput.defaultProps = {
-  placeholder: '[Undefined placeholder]'
+  placeholder: '[Undefined placeholder]',
+  value: ''
 };

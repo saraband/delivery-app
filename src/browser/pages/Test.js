@@ -15,10 +15,15 @@ const Container = styled(Placeholder)`
 `;
 
 const GET_CITIES_LIST = gql`
- query autoCompleteCities ($name: String) {
-    citiesList (name: $name) {
-      id
-      name
+ query autoCompleteCities ($filter: String) {
+    citiesList (filter: $filter) {
+      city {
+        id
+        name
+        country
+      }
+      matchStartIndex
+      matchEndIndex
     }
   }
 `;
@@ -34,6 +39,7 @@ const Button = styled(BaseButton).attrs({
 
 class TestPage extends React.Component {
   render () {
+    // TODO: this needs to be split more :(
     return (
       <ApolloConsumer>
         {(client) => (
@@ -41,16 +47,21 @@ class TestPage extends React.Component {
             <SearchInput
               name='zipCode'
               value='Toulouse'
-              placeholder='City, state, ZIP code...'
-              searchFunction={async (value) => {
+              placeholder='City, state, country'
+              searchFunction={async (filter) => {
                 const { data } = await client.query({
                   query: GET_CITIES_LIST,
-                  variables: { name: value }
+                  variables: { filter }
                 });
 
-                return data.citiesList.map((city) => ({
-                  id: city.id,
-                  value: city.name
+                /* we restructure the data to fit SearchInput requirements */
+                return data.citiesList.map((match) => ({
+                  id: match.city.id,
+                  value: `${match.city.name}, ${match.city.country}`,
+                  highlight: {
+                    from: match.matchStartIndex,
+                    to: match.matchEndIndex
+                  }
                 }));
               }}
               onSubmit={(value) => {

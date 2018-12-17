@@ -25,7 +25,7 @@ const StyledRipple = styled.div`
   transform: translate3d(-50%, -50%, 0);
   overflow: hidden;
   opacity: 0.3;
-  animation: ${RippleAnimation} ${ANIMATION_DURATION}s forwards ease-out};
+  animation: ${RippleAnimation} ${ANIMATION_DURATION}s forwards cubic-bezier(0.215, 0.610, 0.355, 1.000);
 `;
 
 

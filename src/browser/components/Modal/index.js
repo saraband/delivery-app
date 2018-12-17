@@ -5,6 +5,10 @@ const Container = styled.div`
   
 `;
 
+/*
+ *  TODO: ModalProvider ?
+ */
+
 export default class Modal extends React.PureComponent {
   render () {
     const {
@@ -12,9 +16,9 @@ export default class Modal extends React.PureComponent {
     } = this.props;
 
     return (
-      <Container>
+      <React.Fragment>
         {children}
-      </Container>
+      </React.Fragment>
     );
   }
 }

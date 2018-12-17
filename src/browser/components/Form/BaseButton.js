@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import withRipples from 'HOCS/WithRipples';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import nullFunction from 'MISC/NullFunction';
-import { hexToRgb } from 'HELPERS';
+import { hexToRgb, hexToRgbaString } from 'HELPERS';
 
 export const ButtonTypes = {
   EMPTY: Symbol(),
@@ -53,7 +53,7 @@ const StyledButton = styled.button`
   
   /* BORDER */
   ${p => p.buttonType === ButtonTypes.BORDERED
-    ? 'border: 1px solid ' + p.color + ';'
+    ? 'border: 1px solid ' + hexToRgbaString(p.color, 0.2) + ';'
     : 'border: 0;'
   };
   
@@ -113,10 +113,10 @@ class BaseButton extends React.PureComponent {
   }
 
   componentDidMount () {
-    // We store the maximum size of
-    // the button, so we can create ripples large enough
+    // We store the maximum distance inside the button (which is the diagonal)
+    // so we can create ripples large enough
     const { width, height } = this.ref.current.getBoundingClientRect();
-    this.size = width > height ? width : height;
+    this.size = Math.sqrt(width * width + height * height);
 
     // If the parent of the button needs it ref, we pass it
     if (this.props.retrieveRef) {
@@ -157,7 +157,11 @@ class BaseButton extends React.PureComponent {
 
   handleMouseOut = (event) => {
     this.props.onMouseOut(event);
-    this.props.deactivateActiveRipple();
+
+    /* check if the mouseout event is not triggered by a child of the button */
+    if (!this.ref.current.contains(event.relatedTarget)) {
+      this.props.deactivateActiveRipple();
+    }
   };
 
   handleMouseUp = (event) => {

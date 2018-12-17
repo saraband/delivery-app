@@ -1,11 +1,8 @@
-import { css } from 'styled-components';
+import styled from 'styled-components';
 
-export const FlexRowCss = css`
+export const Flex = styled.div`
   display: flex;
-  flex-direction: row;
-`;
-
-export const FlexColCss = css`
-  display: flex;
-  flex-direction: column;
+  flex-direction: ${p => p.direction || 'initial'};
+  justify-content: ${p => p.justify || 'initial'};
+  align-items: ${p => p.justify || 'initial'};
 `;
