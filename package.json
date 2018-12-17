@@ -10,8 +10,9 @@
     "test": "babel-node ./src/server/test.js",
     "generate-images": "babel-node ./src/server/data/generate-images.js",
     "update-thumbnails": "babel-node ./src/server/data/update-thumbnails.js",
-    "dev": "webpack-dev-server --watch --config ./webpack.dev.js",
-    "build": "webpack --config ./webpack.prod.js"
+    "client": "webpack-dev-server --watch --config ./webpack.dev.js",
+    "build": "webpack --config ./webpack.prod.js",
+    "dev": "concurrently -n SERVER,CLIENT \"yarn server\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\""
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
