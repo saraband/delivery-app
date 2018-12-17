@@ -76,7 +76,7 @@ export default class SearchInput extends React.PureComponent {
     this.dropDownRef = React.createRef();
     this.buttonRef = null; // This will be callbacked by the button after it gets mounted
     this.state = {
-      value: '',
+      value: props.value,
       lastSearchedValue: '',
       focusedOption: undefined,
       results: [],
@@ -142,15 +142,23 @@ export default class SearchInput extends React.PureComponent {
 
   handleChange = (event) => {
     const { lastSearchedValue } = this.state;
+    const { value } = event;
+
     this.setState({
-      value: event.value,
+      value,
 
       // If the user clears the whole input
       // we hide the container instantly
-      lastSearchedValue: event.value.length === 0
+      lastSearchedValue: value.length === 0
         ? ''
         : lastSearchedValue
-    }, this.debounceSearch);
+    }, () => {
+
+      // search if value exists
+      if (value) {
+        this.debounceSearch();
+      }
+    });
   };
 
   debounceSearch = debounce(async () => {
@@ -161,7 +169,7 @@ export default class SearchInput extends React.PureComponent {
       lastSearchedValue: value,
       focusedOption: undefined
     });
-  }, 200);
+  }, 50);
 
   selectOption = (value) => {
     // Select the value
@@ -178,6 +186,7 @@ export default class SearchInput extends React.PureComponent {
     });
   }
 
+  /* TODO: this needs to work with accents (server is ok) */
   getHighlightedValue = (value, filter) => {
     // TODO: doesnt work with uppercase/lowercase
     // TODO: maybe refactor better

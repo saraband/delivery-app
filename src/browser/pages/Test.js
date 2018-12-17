@@ -5,6 +5,8 @@ import Placeholder from 'COMPONENTS/Placeholder';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { ApolloConsumer, ApolloProvider } from 'react-apollo';
+import BaseButton, {ButtonTypes} from 'COMPONENTS/Form/BaseButton';
+import FontSizes from 'CONSTANTS/FontSizes';
 
 const Container = styled(Placeholder)`
   width: 300px;
@@ -21,6 +23,15 @@ const GET_CITIES_LIST = gql`
   }
 `;
 
+const Button = styled(BaseButton).attrs({
+  type: ButtonTypes.FULL
+})`
+  margin-top: 20px;
+  width: 400px;
+  height: 50px;
+  font-size: ${FontSizes.BIG};
+`;
+
 class TestPage extends React.Component {
   render () {
     return (
@@ -29,6 +40,7 @@ class TestPage extends React.Component {
           <div>
             <SearchInput
               name='zipCode'
+              value='Toulouse'
               placeholder='City, state, ZIP code...'
               searchFunction={async (value) => {
                 const { data } = await client.query({
@@ -45,6 +57,7 @@ class TestPage extends React.Component {
                 console.log('SEARCHING city = ' + value)
               }}
               />
+            <Button>Click me</Button>
           </div>
         )}
       </ApolloConsumer>
