@@ -4,6 +4,13 @@ import worldCities from './data/world-cities';
 import { Op } from 'sequelize';
 import GraphQLJSON from 'graphql-type-json';
 
+function toLowerCaseAscii (string) {
+  return string
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 const typeDefs = `
   scalar JSON
   
@@ -74,7 +81,8 @@ const resolvers = {
     citiesList: (_, { name }) => {
       const then = Date.now();
       const filtered = worldCities.filter(city => {
-        return city.name.toLowerCase().includes(name.toLowerCase());
+        /* TODO: refactor this maybe ? messy */
+        return toLowerCaseAscii(city.name).includes(toLowerCaseAscii(name));
       }).slice(0, 5);
       console.log('Searching for \'' + name + '\' took ' + (Date.now() - then) / 1000 + 'ms');
       return filtered;
