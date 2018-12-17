@@ -71,7 +71,7 @@ const Label = styled.label`
   color: ${Colors.RED};
 `;
 
-export default class BaseInput extends React.PureComponent {
+export default class BaseInput extends React.Component {
   // TODO: troubleshoot this
   // TODO maybe it has side effects
   shouldComponentUpdate (nextProps, nextState, nextContext) {

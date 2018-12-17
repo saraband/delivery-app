@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
 import BaseInput from 'COMPONENTS/Form/BaseInput';
 import BaseButton from 'COMPONENTS/Form/BaseButton';
@@ -178,10 +178,13 @@ export default class SearchInput extends React.PureComponent {
     });
   }
 
+  /*  This is a bit messy
+   */
   getHighlightedValue = (value, filter) => {
-    // TODO: doesnt work with uppercase/lowercase
-    // TODO: maybe refactor better
-    return <span dangerouslySetInnerHTML={{ __html: value.replace(filter, `<strong>${filter}</strong>`) }} />;
+    const regex = new RegExp(filter, 'i');
+    const match = regex.exec(value);
+    const highlightedValue = value.replace(regex, `<strong style='color: ${Colors.BLUE}; font-weight: normal;'>${match}</strong>`);
+    return <span dangerouslySetInnerHTML={{ __html: highlightedValue }} />;
   };
 
   renderResults = () => {
