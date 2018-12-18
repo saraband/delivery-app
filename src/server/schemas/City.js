@@ -31,9 +31,10 @@ export const resolvers = {
     /*  TODO: rename this query (searchCity ?)
      *  TODO: search for country also
      *  TODO: search through special chars
+     *  TODO: weird bug for example when we search the city `toulouse******`
+     *  maybe due to the regex wildcard ?
      */
     citiesList: (_, { filter }) => {
-      console.log('==>', removeDiacritics(filter))
       const results = [];
       const regex = new RegExp(removeDiacritics(filter), 'i');
 
@@ -43,6 +44,7 @@ export const resolvers = {
         // if the city name matches the filter,
         // we add it as a CityMatch type to the results
         if (match) {
+          console.log('match')
           results.push({
             city,
             matchStartIndex: match.index,

@@ -174,7 +174,7 @@ export default class SearchInput extends React.PureComponent {
       lastSearchedValue: value,
       focusedOption: undefined
     });
-  }, 500);
+  }, 50);
 
   selectOption = (value) => {
     // Select the value
