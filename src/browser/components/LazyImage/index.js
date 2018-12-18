@@ -103,7 +103,8 @@ export default class LazyImage extends React.Component {
     }
 
     // Start loading image
-    this.loadImage();
+    //TODO: decomment this
+    //this.loadImage();
 
     // No need to watch scroll/resize anymore
     document.removeEventListener('scroll', this.watchScrollOrResize);

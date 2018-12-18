@@ -8,7 +8,7 @@ import FontSizes from 'CONSTANTS/FontSizes';
 import SearchIcon from 'ICONS/SearchIcon';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
-import { createInputHandler, hexToRgbaString } from 'HELPERS';
+import {createInputHandler, hexToRgb, hexToRgbaString} from 'HELPERS';
 
 const Container = styled.div`
   display: flex;
@@ -61,13 +61,27 @@ const ResultsList = styled.div`
   flex-direction: column;
 `;
 
+// TODO: this is redundant
+const blueRgb = hexToRgb(Colors.BLUE);
 const Result = styled.h4`
   font-weight: lighter;
   padding: 10px;
   font-size: ${FontSizes.MEDIUM};
   cursor: pointer;
-  
   background-color: ${p => p.focused ? hexToRgbaString(Colors.BLUE, 0.2) : 'white'};
+  
+  /* native focus happens when we click the option */
+  &:focus,
+  &:active {
+    border-color: ${Colors.DARK_GREY};
+    box-shadow: 0 0 0px 3px rgba(${blueRgb.r}, ${blueRgb.g}, ${blueRgb.b}, 0.3);
+    outline: 0;
+  }
+`;
+
+const Highlight = styled.span`
+  color: ${Colors.BLUE};
+  font-weight: normal;
 `;
 
 /*
@@ -100,12 +114,14 @@ export default class SearchInput extends React.PureComponent {
     const { key } = event;
     let nextFocusedOption = focusedOption;
 
-    // todo: weird, we should only check if isDropDownVisible is true
-    if (!isDropDownVisible || !lastSearchedValue || !results.length) {
+
+    // Don't do anything if no there is no dropdown
+    if (!isDropDownVisible || !results.length) {
       return;
     }
 
-    // Prevents the cursor moving inside the input
+    // Prevents the cursor moving inside the input default behavior
+    // for those key events
     if (key === 'ArrowDown' ||
       key === 'ArrowUp' ||
       key === 'Enter') {
@@ -197,7 +213,7 @@ export default class SearchInput extends React.PureComponent {
     return (
       <React.Fragment>
         {value.substring(0, from)}
-        <strong>{value.substring(from, to)}</strong>
+        <Highlight>{value.substring(from, to)}</Highlight>
         {value.slice(to)}
       </React.Fragment>
     );

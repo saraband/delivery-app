@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import Colors from 'CONSTANTS/Colors';
+import Colors from '../../constants/Colors';
 import Routes, { addParamsToUrl } from 'ROUTES';
 import { Link } from 'react-router-dom';
-import LazyImage from 'COMPONENTS/LazyImage';
+import LazyImage from '../../components/LazyImage';
 import PropTypes from 'prop-types';
-import withRipples from 'HOCS/WithRipples';
-import Ripple from 'COMPONENTS/RippleProvider/Ripple';
-import { ButtonTypes } from './Form/BaseButton';
-import FontSizes from 'CONSTANTS/FontSizes';
+import { withRipples } from 'HOCS';
+import Ripple from '../../components/RippleProvider/Ripple';
+import { ButtonTypes } from '../../components/Form/BaseButton';
+import FontSizes from '../../constants/FontSizes';
 
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;
@@ -102,6 +102,7 @@ class RestaurantCard extends React.PureComponent {
       name,
       urlName,
       rating,
+      tags,
       city,
       thumbnail,
       imageUrl,
@@ -127,6 +128,7 @@ class RestaurantCard extends React.PureComponent {
               />
             <Description>
               <RestaurantName>{name}</RestaurantName>
+              <p>{tags.join(', ')}</p>
             </Description>
 
             {/* We render there the ripples */}
