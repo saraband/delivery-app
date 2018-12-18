@@ -5,7 +5,7 @@ import Routes, { addParamsToUrl } from 'ROUTES';
 import { Link } from 'react-router-dom';
 import LazyImage from 'COMPONENTS/LazyImage';
 import PropTypes from 'prop-types';
-import withRipples from 'HOCS/WithRipples';
+import { withRipples } from 'HOCS';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import { ButtonTypes } from './Form/BaseButton';
 import FontSizes from 'CONSTANTS/FontSizes';

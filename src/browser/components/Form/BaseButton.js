@@ -3,7 +3,7 @@ import styled, { keyframes, css } from 'styled-components';
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
 import PropTypes from 'prop-types';
-import withRipples from 'HOCS/WithRipples';
+import { withRipples } from 'HOCS';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import nullFunction from 'MISC/NullFunction';
 import { hexToRgb, hexToRgbaString } from 'HELPERS';

@@ -70,6 +70,11 @@ const Result = styled.h4`
   background-color: ${p => p.focused ? hexToRgbaString(Colors.BLUE, 0.2) : 'white'};
 `;
 
+const Highlight = styled.span`
+  color: ${Colors.BLUE};
+  font-weight: normal;
+`;
+
 /*
  * TODO !!!!!!!
  * implement shouldCOmponentUpdate !
@@ -100,12 +105,14 @@ export default class SearchInput extends React.PureComponent {
     const { key } = event;
     let nextFocusedOption = focusedOption;
 
-    // todo: weird, we should only check if isDropDownVisible is true
-    if (!isDropDownVisible || !lastSearchedValue || !results.length) {
+
+    // Don't do anything if no there is no dropdown
+    if (!isDropDownVisible || !results.length) {
       return;
     }
 
-    // Prevents the cursor moving inside the input
+    // Prevents the cursor moving inside the input default behavior
+    // for those key events
     if (key === 'ArrowDown' ||
       key === 'ArrowUp' ||
       key === 'Enter') {
@@ -197,7 +204,7 @@ export default class SearchInput extends React.PureComponent {
     return (
       <React.Fragment>
         {value.substring(0, from)}
-        <strong>{value.substring(from, to)}</strong>
+        <Highlight>{value.substring(from, to)}</Highlight>
         {value.slice(to)}
       </React.Fragment>
     );
