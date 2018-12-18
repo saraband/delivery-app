@@ -25,6 +25,7 @@ const GET_PRODUCTS_LIST = gql`
       rating
       thumbnail
       imageUrl
+      tags
     }
     
     productsList(restaurantId: $id) {

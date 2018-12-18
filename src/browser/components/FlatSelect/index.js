@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import nullFunc from 'MISC/NullFunction';
 import FontSizes from 'CONSTANTS/FontSizes';
 import Colors from 'CONSTANTS/Colors';
+import Tag from './Tag';
 
 const Container = styled.div`
   border: 1px solid blue;
@@ -16,17 +17,11 @@ const List = styled.ul`
   list-style-type: none;
 `;
 
-const Tag = styled.li`
-  padding: 10px;
-  font-size: ${FontSizes.MEDIUM};
-  color: ${Colors.BLACK};
-`;
-
 /*
  *  TODO: accessibility: arrow down and up to navigate through options
  */
 
-export default class TagSelect extends React.Component {
+export default class FlatSelect extends React.Component {
   constructor (props) {
     super(props);
 
@@ -35,35 +30,26 @@ export default class TagSelect extends React.Component {
     };
   }
 
-  selectTag = (tag) => {
-    console.log(tag)
-  }
-
   render () {
     const {
       options,
       title,
-      selected
+      selected,
+      onSelect,
+      ...rest
     } = this.props;
     const { isUnrolled } = this.state;
 
     return (
-      <Container>
+      <Container {...rest}>
         {title && <Title>{title}</Title>}
         <List>
           {options.map((tag) => (
             <Tag
               key={tag.id}
-              tabIndex={0}
-              onClick={() => this.selectTag(tag)}
-              onKeyPress={({ key }) => {
-                if (key === 'Enter') {
-                  this.selectTag(tag);
-                }
-              }}
-              >
-              {tag.value}
-            </Tag>
+              onSelect={() => onSelect(tag)}
+              {...tag}
+              />
           ))}
         </List>
       </Container>
@@ -72,17 +58,17 @@ export default class TagSelect extends React.Component {
 };
 
 const OptionShape = PropTypes.shape({
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   value: PropTypes.string.isRequired
 });
 
-TagSelect.propTypes = {
+FlatSelect.propTypes = {
   title: PropTypes.string,
   options: PropTypes.arrayOf(OptionShape).isRequired,
   selected: OptionShape,
   onSelect: PropTypes.func
 };
 
-TagSelect.defaultProps = {
+FlatSelect.defaultProps = {
   onSelect: nullFunc
 };

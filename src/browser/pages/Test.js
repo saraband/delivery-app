@@ -5,7 +5,8 @@ import gql from 'graphql-tag';
 import { ApolloConsumer, ApolloProvider } from 'react-apollo';
 import BaseButton, {ButtonTypes} from 'COMPONENTS/Form/BaseButton';
 import FontSizes from 'CONSTANTS/FontSizes';
-import TagSelect from 'COMPONENTS/TagSelect';
+import FlatSelect from 'COMPONENTS/FlatSelect';
+import { withRouter } from 'react-router-dom';
 
 const GET_CITIES_LIST = gql`
  query autoCompleteCities ($filter: String) {
@@ -44,6 +45,7 @@ class TestPage extends React.Component {
       <ApolloConsumer>
         {(client) => (
           <div>
+            {this.props.location.search}
             <SearchInput
               name='zipCode'
               value='Toulouse'
@@ -69,7 +71,17 @@ class TestPage extends React.Component {
               }}
               />
             <Button>Click me</Button>
-            <TagSelect options={options} title='Tags' />
+            <FlatSelect
+              options={options}
+              title='Tags'
+              onSelect={(tag) => {
+                console.log(this.props.history.location)
+                this.props.history.push({
+                  ...this.props.history.location,
+                  search: `?tag=${tag.id}`
+                })
+              }}
+              />
           </div>
         )}
       </ApolloConsumer>
@@ -77,4 +89,4 @@ class TestPage extends React.Component {
   }
 };
 
-export default TestPage
+export default withRouter(TestPage)
