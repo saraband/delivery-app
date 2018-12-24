@@ -7,12 +7,18 @@ import Colors from 'CONSTANTS/Colors';
 import Tag from './Tag';
 
 const Container = styled.div`
-  border: 1px solid blue;
+  border: 1px solid ${Colors.GREY};
+  border-radius: 2px;
   width: 300px; /* default, override this if necessary */
   height: 500px; /* default, override this if necessary */
 `;
 
-const Title = styled.h1``;
+const Title = styled.h3`
+  font-size: ${FontSizes.MEDIUM}.
+  color: ${Colors.GREY};
+  margin: 10px;
+  font-weight: lighter;
+`;
 const List = styled.ul`
   list-style-type: none;
 `;

@@ -7,6 +7,7 @@ import BaseButton, {ButtonTypes} from 'COMPONENTS/Form/BaseButton';
 import FontSizes from 'CONSTANTS/FontSizes';
 import FlatSelect from 'COMPONENTS/FlatSelect';
 import { withRouter } from 'react-router-dom';
+import Tutorial from 'COMPONENTS/Tutorial';
 
 const GET_CITIES_LIST = gql`
  query autoCompleteCities ($filter: String) {
@@ -45,7 +46,6 @@ class TestPage extends React.Component {
       <ApolloConsumer>
         {(client) => (
           <div>
-            {this.props.location.search}
             <SearchInput
               name='zipCode'
               value='Toulouse'
@@ -68,18 +68,6 @@ class TestPage extends React.Component {
               }}
               onSubmit={(value) => {
                 console.log('SEARCHING city = ' + value)
-              }}
-              />
-            <Button>Click me</Button>
-            <FlatSelect
-              options={options}
-              title='Tags'
-              onSelect={(tag) => {
-                console.log(this.props.history.location)
-                this.props.history.push({
-                  ...this.props.history.location,
-                  search: `?tag=${tag.id}`
-                })
               }}
               />
           </div>

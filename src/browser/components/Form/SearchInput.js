@@ -14,7 +14,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  width: 350px;
   position: relative;
 `;
 const StyledInput = styled(BaseInput).attrs({
@@ -106,6 +105,7 @@ export default class SearchInput extends React.PureComponent {
 
   handleKeyDown = (event) => {
     const {
+      value,
       focusedOption,
       isDropDownVisible,
       lastSearchedValue,
@@ -150,8 +150,13 @@ export default class SearchInput extends React.PureComponent {
         break;
 
       case 'Enter':
+        // Select the current focused option
         if (focusedOption !== undefined) {
           this.selectOption(results[focusedOption].value);
+
+        // Submit the input
+        } else {
+          this.props.onSubmit(value);
         }
         break;
     }
@@ -263,7 +268,8 @@ export default class SearchInput extends React.PureComponent {
     const {
       name,
       placeholder,
-      onSubmit
+      onSubmit,
+      ...rest
     } = this.props;
     const {
       value,
@@ -272,7 +278,7 @@ export default class SearchInput extends React.PureComponent {
     } = this.state;
 
     return (
-      <Container>
+      <Container {...rest}>
         <StyledInput
           name={name}
           value={value}

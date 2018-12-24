@@ -4,20 +4,17 @@ export default {
   BLACK: '#111111',
   LIGHT_GREY: '#DDD',
   GREY: '#999',
-  DARK_GREY: '#545454',
+  DARK_GREY: '#1B4353',
   WHITE: '#FFFFFF',
-  BLUE: '#0074D9',
-  LIGHT_BLUE: '#7FDBFF',
-  DARK_BLUE: '#001f3f',
-  RED: '#FF4136',
-  ORANGE: '#ff851b',
-  DARK_ORANGE: '#ee6e00',
-  GREEN: '#3D9970',
-  LIGHT_GREEN: '#01FF70'
+  DARK_BLUE: '#0074D9', // this one is too google-ish
+  BLUE: '#2892D7',
+  PASTEL_BLUE: '#7180B9', // BLEU DE FRANCE
+  //DARK_BLUE: '#001f3f',
+  DARK_BLUE_2: '#0B3948',
+  RED: '#FF4136'
 };
 
-/*
-TODO: maybe add this later
+/*TODO: maybe add this later
 export default Object.keys(Colors).reduce((acc, key) => {
   const rgb = hexToRgb(Colors[key]);
   acc[key] = {

@@ -13,6 +13,7 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 import { addParamsToUrl } from 'ROUTES';
 import Routes from 'ROUTES';
+import CitySearch from 'COMPONENTS/CitySearch';
 
 const Container = styled.div`
   flex-grow: 0;
@@ -20,8 +21,12 @@ const Container = styled.div`
   width: 300px;
   height: 100%;
   min-height: 300px;
+  position: sticky;
+  top: 15px;
 `;
-const StyledFlatSelect = styled(FlatSelect)``;
+const StyledFlatSelect = styled(FlatSelect)`
+  margin-top: 15px;
+`;
 
 const GET_TAGS_LIST = gql`
   query getTagsList {
@@ -31,6 +36,7 @@ const GET_TAGS_LIST = gql`
 
 export default withRouter(({ history, city }) => (
   <Container>
+    <CitySearch />
     <Query query={GET_TAGS_LIST}>
       {({ loading, error, data }) => {
         // TODO: placeholder
@@ -39,6 +45,7 @@ export default withRouter(({ history, city }) => (
 
         return (
           <StyledFlatSelect
+            title='Tags'
             options={data.tagsList.map((tag) => ({
               id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
               value: tag

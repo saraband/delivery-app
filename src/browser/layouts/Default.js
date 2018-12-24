@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from 'COMPONENTS/Header';
+import Footer from 'COMPONENTS/Footer';
 
 const Body = styled.section`
   flex-grow: 1;
@@ -16,10 +16,10 @@ const StyledLayout = styled.div`
 
 export default ({ children }) => (
   <StyledLayout>
-    {/*<Header />*/}
+    <Header />
     <Body>
       {children}
     </Body>
-    {/*<Footer />*/}
+    <Footer />
   </StyledLayout>
 );

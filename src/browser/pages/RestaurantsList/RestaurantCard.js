@@ -9,12 +9,19 @@ import { withRipples } from 'HOCS';
 import Ripple from '../../components/RippleProvider/Ripple';
 import { ButtonTypes } from '../../components/Form/BaseButton';
 import FontSizes from '../../constants/FontSizes';
+import { Flex } from 'MISC/Styles';
+import ArrowUpSVG from 'DIST/images/arrow-up.svg';
+import { hexToRgbaString } from 'HELPERS';
 
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;
 const CARD_HEIGHT = 400;
 const OFFSET_SIDEBAR = 300;
 
+/**
+ * Generates a bunch of size configuration
+ * TODO: cleaner comment
+ */
 const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
   return `
     @media only screen and (min-width: ${((index + 1) * CARD_WIDTH) + OFFSET_SIDEBAR}px) {
@@ -25,7 +32,7 @@ const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
 
 const ResponsiveContainer = styled.div`
   width: 100%; /* This will get overridden if the width of the viewport is higher */
-  height: ${CARD_HEIGHT}px;
+  min-height: ${CARD_HEIGHT}px;
   padding: 15px;
   
   /* Responsive card sizes */
@@ -40,10 +47,10 @@ const CardContainer = styled.div`
   cursor: pointer;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   border-radius: 3px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.15s ease-in-out;
   
   &:hover {
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
 `;
 
@@ -62,10 +69,42 @@ const Description = styled.div`
   padding: 15px;
 `;
 
-const RestaurantName = styled.h3`
-  color: ${Colors.BLACK};
+const RestaurantName = styled.h1`
+  color: ${Colors.DARK_GREY};
+  font-size: ${FontSizes.BIG};
+  font-weight: normal;
+`;
+
+const RestaurantRating = styled.h4`
+  color: ${Colors.BLUE};
   font-size: ${FontSizes.MEDIUM};
-  font-family: Roboto;
+  font-weight: lighter;
+`;
+
+const TagsList = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.span`
+  background-color: ${hexToRgbaString(Colors.BLUE, 0.8)};
+  padding: 4px 6px 4px 6px;
+  font-size: ${FontSizes.SMALL};
+  color: white;
+  border-radius: 1px;
+  margin: 3px;
+`;
+
+// TODO: logo for rating
+const RatingLogo = styled(ArrowUpSVG)`
+  height: ${FontSizes.MEDIUM};
+`;
+
+const OpeningHours = styled.h3`
+  font-size: ${FontSizes.MEDIUM};
+  font-weight: normal;
+  color: ${Colors.PASTEL_BLUE};
 `;
 
 class RestaurantCard extends React.PureComponent {
@@ -121,17 +160,27 @@ class RestaurantCard extends React.PureComponent {
             onMouseOut={deactivateActiveRipple}
             onMouseUp={deactivateActiveRipple}
             >
+
+            {/* IMAGE */}
             <RestaurantImage
               url={imageUrl}
               alt={name}
               thumbnail={thumbnail}
               />
+
+            {/* DESCRIPTION */}
             <Description>
-              <RestaurantName>{name}</RestaurantName>
-              <p>{tags.join(', ')}</p>
+              <Flex justify='space-between' align='flex-end'>
+                <RestaurantName>{name}</RestaurantName>
+                <RestaurantRating>
+                  {rating}
+                </RestaurantRating>
+              </Flex>
+              <OpeningHours>Open until 11PM</OpeningHours>
+              <TagsList>{tags.map(tag => <Tag>{tag}</Tag>)}</TagsList>
             </Description>
 
-            {/* We render there the ripples */}
+            {/* RIPPLE EFFECT */}
             {Object.keys(ripples).map((rId) => (
               <Ripple
                 key={rId}

@@ -93,7 +93,7 @@ export default class LazyImage extends React.Component {
 
   checkIfImageIsInViewPort = () => {
     this.hasTicked = false;
-    const viewportHeight = window.innerWidth || document.documentElement.clientWidth;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
     const bounds = this.ref.current.getBoundingClientRect();
 
     // Not in viewport, do nothing
@@ -104,7 +104,7 @@ export default class LazyImage extends React.Component {
 
     // Start loading image
     //TODO: decomment this
-    //this.loadImage();
+    this.loadImage();
 
     // No need to watch scroll/resize anymore
     document.removeEventListener('scroll', this.watchScrollOrResize);
