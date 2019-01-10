@@ -20,7 +20,7 @@ const OFFSET_SIDEBAR = 300;
 
 /**
  * Generates a bunch of size configuration
- * TODO: cleaner comment
+ * TODO: cleaner comment + refactor this ?
  */
 const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
   return `

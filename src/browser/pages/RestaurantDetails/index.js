@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LazyImage from 'COMPONENTS/LazyImage';
 import Basket from 'COMPONENTS/Basket';
-import { ProductControls, ControlButton } from 'COMPONENTS/Basket';
+import { ProductControls, ControlButton } from 'COMPONENTS/Basket/Product';
 import ToolTip from 'COMPONENTS/ToolTip';
 import RemoveIcon from 'ICONS/RemoveIcon';
 import Colors from 'CONSTANTS/Colors';
@@ -56,24 +56,40 @@ const BasketSection = styled.div`
   margin-left: 20px;
 `;
 
+// TODO: refactor this maybe ?
+const PRODUCT_WIDTH = 350;
+const OFFSET_SIDEBAR = 300;
+
+/**
+ * Generates a bunch of size configuration
+ * TODO: cleaner comment + refactor this ?
+ */
+const ResponsiveProductSizes = new Array(10).fill(1).map((_, index) => {
+  return `
+    @media only screen and (min-width: ${((index + 1) * PRODUCT_WIDTH) + OFFSET_SIDEBAR}px) {
+      width: ${100 / (index + 1)}%;
+    }
+  `;
+}).join('\n');
+
 const Product = styled.div`
   width: 350px;
   height: 100px;
   padding: 20px;
   position: relative;
-  margin: 20px;
-  margin-left: 0;
-  margin-bottom: 0;
   cursor: pointer;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
+  width: 100%;
   
   &:hover {
     box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
+  
+  ${ResponsiveProductSizes}
 `;
 
 const NavSection = styled.div``;
