@@ -1,3 +1,9 @@
+/**
+ * SearchInput to search a city. Gets the user
+ * in the Restaurant listing page of the corresponding city
+ * on submit
+ */
+
 import React from 'react';
 import SearchInput from 'COMPONENTS/Form/SearchInput';
 import gql from 'graphql-tag';
@@ -21,6 +27,7 @@ const GET_CITIES_LIST = gql`
   }
 `;
 
+// TODO: Component or PureComponent ?
 class CitySearch extends React.Component {
   render () {
     const {
@@ -43,7 +50,7 @@ class CitySearch extends React.Component {
                 variables: { filter }
               });
 
-              /* we restructure the data to fit SearchInput requirements */
+              // we restructure the data to fit SearchInput requirements
               return data.citiesList.map((match) => ({
                 id: match.city.id,
                 value: `${match.city.name}, ${match.city.country}`,
@@ -55,6 +62,7 @@ class CitySearch extends React.Component {
             }}
             onSubmit={(value) => {
               // We retrieve the city name (The value might be City, Country)
+              // TODO: what if the user types 'dsf,qsdf,qsdf,qsdf,'
               const city = value.split(',')[0];
 
               // Push to the restaurant list of this city

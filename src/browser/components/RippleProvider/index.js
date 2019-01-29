@@ -1,3 +1,8 @@
+/**
+ * Render props component that adds water ripple effects
+ * to a component (e.g. on clicking on a button)
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Colors from 'CONSTANTS/Colors';
@@ -47,7 +52,12 @@ export default class RippleProvider extends React.PureComponent {
   }
 
   deactivateActiveRipple = () => {
-    const { activeRippleId, ripples } = this.state;
+    const {
+      activeRippleId,
+      ripples
+    } = this.state;
+
+    // No ripple is active, don't do anything
     if (activeRippleId === null) {
       return;
     }
@@ -90,6 +100,8 @@ export default class RippleProvider extends React.PureComponent {
       // Ripples state has been cleaned up
       // We resolve the promise and clean up the cancel fn
       // Since it doesn't need to be canceled anymore
+        // TODO: check if the deactivateRippleTimeouts[activeRippleId] key doesnt
+        // TODO: make a memory leak
       });
     }, ANIMATION_DURATION * 1000);
   };

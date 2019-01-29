@@ -73,7 +73,7 @@ export default class LazyImage extends React.Component {
   loadImage = () => {
 
     // When the image has loaded, we display the real img
-    // instead of the placeholer
+    // instead of the placeholder
     // + cancelable in case component gets unmounted
     this.cancelImageLoad = makeCancelable(
       new Promise((resolve, reject) => {
@@ -103,7 +103,6 @@ export default class LazyImage extends React.Component {
     }
 
     // Start loading image
-    //TODO: decomment this
     this.loadImage();
 
     // No need to watch scroll/resize anymore
