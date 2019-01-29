@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import Layout from 'LAYOUTS/Default';
 import Routes from 'ROUTES';
 import Loader from 'COMPONENTS/Loader';
@@ -13,16 +13,13 @@ const Home = lazy(() => import(/* webpackChunkName: 'home' */ 'PAGES/Home'));
 
 export default class App extends React.Component {
   render () {
-    if (document.location.pathname === Routes.HOME) {
-      return (
-        <Suspense fallback={<Loader size={100}/>}>
-          <Home />
-        </Suspense>
-      );
-    }
+    // TODO: use something else than document.location
+    // use responsive layout in RestaurantsList,
+    // fixed otherwise
+    const fixedLayout = document.location.pathname.substring(0, 5) !== '/list';
 
     return (
-      <Layout>
+      <Layout fixedWidth={fixedLayout}>
         <Suspense fallback={<Loader size={100}/>}>
           <Switch>
             <Route exact path={Routes.HOME} component={Home} />

@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import Header from 'COMPONENTS/Header';
 import Footer from 'COMPONENTS/Footer';
+import { Breakpoints } from 'HELPERS/MediaQueries';
 
 const Body = styled.section`
   flex-grow: 1;
   padding: 30px;
+  
+  ${p => p.fixedWidth
+    ? `
+      margin: auto;
+      width: ${Breakpoints.desktop}px;
+      `
+    : ``
+  }
 `;
 
 const StyledLayout = styled.div`
@@ -14,12 +23,12 @@ const StyledLayout = styled.div`
   flex-direction: column;
 `;
 
-export default ({ children }) => (
+export default memo(({ children, fixedWidth = false }) => (
   <StyledLayout>
-    <Header />
-    <Body>
+    <Header fixedWidth={fixedWidth} />
+    <Body fixedWidth={fixedWidth}>
       {children}
     </Body>
-    <Footer />
+    <Footer fixedWidth={fixedWidth}/>
   </StyledLayout>
-);
+));
