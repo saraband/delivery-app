@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components';
 import Colors from '../constants/Colors';
 import LogoSVG from 'DIST/images/logo.svg';
@@ -8,13 +8,12 @@ import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
 import ToolTip from 'COMPONENTS/ToolTip';
 import { Link } from 'react-router-dom';
 import Routes from 'ROUTES';
+import PropTypes from 'prop-types';
+import {Breakpoints} from 'HELPERS/MediaQueries';
 
 const StyledHeader = styled.header`
   flex-grow: 0;
   background-color: ${Colors.BLUE};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
 `;
 
@@ -64,22 +63,51 @@ const ProfileLogo = styled(ProfileSVG)`
   height: 20px;
 `;
 
-export default class extends React.Component {
-  render () {
+const ResponsiveWidthContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const FixedWidthContainer = styled(ResponsiveWidthContainer)`
+  width: ${Breakpoints.desktop}px;
+  margin: auto;
+  height: 100%;
+`;
+
+export default class Header extends React.PureComponent {
+  render() {
+    const { fixedWidth } = this.props;
+    const WidthContainer = fixedWidth
+      ? FixedWidthContainer
+      : ResponsiveWidthContainer;
+
     return (
       <StyledHeader>
-        <Left>
-          <LogoLink to={Routes.HOME}>
-            <Logo />
-          </LogoLink>
-          <Title>Yumbox</Title>
-        </Left>
-        <Right>
-          <Profile>
-            <ProfileLogo />
-          </Profile>
-        </Right>
+        <WidthContainer>
+          <Left>
+            <LogoLink to={Routes.HOME}>
+              <Logo/>
+            </LogoLink>
+            <Title>HotBox.com</Title>
+          </Left>
+          <Right>
+            <Profile>
+              <ProfileLogo/>
+            </Profile>
+          </Right>
+        </WidthContainer>
       </StyledHeader>
     );
   }
+};
+
+Header.propTypes = {
+  fixedWidth: PropTypes.bool
+};
+
+Header.defaultProps = {
+  fixedWidth: false
 };

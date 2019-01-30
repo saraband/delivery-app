@@ -5,6 +5,7 @@ export const createInputHandler = (args) => function updateInput (event) {
   return new Promise((resolve) => {
 
     // TODO: Rework this maybe ?
+    // TODO: messy, might not work properly
     const stateKey = args && args.stateKey;
     const eventKey = (args && args.eventKey) || 'name';
 
@@ -27,6 +28,8 @@ export const createInputHandler = (args) => function updateInput (event) {
   });
 };
 
+// Transforms an hex color into rgb
+// e.g. ('#FF0000') => { r: 255, g: 0, b: 0 }
 // Thank you stack overflow
 export function hexToRgb (hex) {
   if (!/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
@@ -52,6 +55,8 @@ export function hexToRgb (hex) {
   };
 }
 
+// Transforms an hex color into rgba string
+// e.g. ('#FF0000', 0.5) => 'rgba(255, 0, 0, 0.5)'
 export function hexToRgbaString (hex, alpha) {
   const c = hexToRgb(hex);
   return `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;

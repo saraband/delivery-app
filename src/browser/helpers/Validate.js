@@ -16,7 +16,7 @@ export function validateValue (validate, value) {
   // Valid until proven otherwise
   let isValid = true;
 
-  // If no validate func is passed,
+  // If no validate func is provided,
   // the input is always valid
   if (validate !== undefined) {
 
