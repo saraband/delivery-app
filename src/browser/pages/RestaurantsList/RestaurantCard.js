@@ -11,7 +11,8 @@ import { ButtonTypes } from '../../components/Form/BaseButton';
 import FontSizes from '../../constants/FontSizes';
 import { Flex } from 'MISC/Styles';
 import ArrowUpSVG from 'DIST/images/arrow-up.svg';
-import { hexToRgbaString } from 'HELPERS';
+import { getCurrentDay, hexToRgbaString } from 'HELPERS';
+import RatingSVG from 'DIST/images/rating.svg';
 
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;
@@ -79,6 +80,8 @@ const RestaurantRating = styled.h4`
   color: ${Colors.BLUE};
   font-size: ${FontSizes.MEDIUM};
   font-weight: lighter;
+  display: flex;
+  align-items: center;
 `;
 
 const TagsList = styled.div`
@@ -92,19 +95,27 @@ const Tag = styled.span`
   padding: 4px 6px 4px 6px;
   font-size: ${FontSizes.SMALL};
   color: white;
-  border-radius: 1px;
+  border-radius: 3px;
   margin: 3px;
 `;
 
-// TODO: logo for rating
-const RatingLogo = styled(ArrowUpSVG)`
+const RatingLogo = styled(RatingSVG)`
   height: ${FontSizes.MEDIUM};
+  margin-right: 5px;
 `;
 
-const OpeningHours = styled.h3`
-  font-size: ${FontSizes.MEDIUM};
+const Subtitle = styled.h3`
+  font-size: ${FontSizes.SMALL};
   font-weight: normal;
-  color: ${Colors.PASTEL_BLUE};
+  color: ${Colors.GREY};
+`;
+
+const ClosedHours = styled.span`
+  color: ${Colors.RED};
+`;
+
+const OpenHours = styled.span`
+  color: ${Colors.BLUE};
 `;
 
 class RestaurantCard extends React.PureComponent {
@@ -135,16 +146,32 @@ class RestaurantCard extends React.PureComponent {
     })
   };
 
+  renderOpeningHours = () => {
+    const { opening_hours } = this.props;
+    const currentDay = getCurrentDay();
+    const currentHour = new Date().getHours();
+
+    if (currentHour < opening_hours[currentDay].from ||
+      currentHour > opening_hours[currentDay].to) {
+      return <ClosedHours>Closed now</ClosedHours>;
+    }
+
+    return <OpenHours>Open until {opening_hours[currentDay].to}h</OpenHours>
+  }
+
   render () {
     const {
       id,
       name,
       urlName,
+      phone,
       rating,
+      address,
       tags,
       city,
       thumbnail,
       imageUrl,
+
       ripples,
       addRipple,
       deactivateActiveRipple
@@ -173,10 +200,11 @@ class RestaurantCard extends React.PureComponent {
               <Flex justify='space-between' align='flex-end'>
                 <RestaurantName>{name}</RestaurantName>
                 <RestaurantRating>
+                  <RatingLogo />
                   {rating}
                 </RestaurantRating>
               </Flex>
-              <OpeningHours>Open until 11PM</OpeningHours>
+              <Subtitle>{address} - {this.renderOpeningHours()}</Subtitle>
               <TagsList>{tags.map(tag => <Tag>{tag}</Tag>)}</TagsList>
             </Description>
 

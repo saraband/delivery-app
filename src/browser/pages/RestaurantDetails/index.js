@@ -107,11 +107,6 @@ export default class extends React.Component {
                 <BreadCrumb>
                   {[
                     {
-                      label: 'home',
-                      url: Routes.HOME,
-                      tip: 'Home page'
-                    },
-                    {
                       label: city,
                       url: addParamsToUrl(Routes.RESTAURANTS_LIST, { city }),
                       tip: `Restaurants around ${city}`

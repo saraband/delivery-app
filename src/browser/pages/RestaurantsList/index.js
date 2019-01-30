@@ -19,6 +19,9 @@ const GET_RESTAURANTS_LIST = gql`
       rating
       thumbnail
       imageUrl
+      phone
+      address
+      opening_hours
       tags
     }
   }

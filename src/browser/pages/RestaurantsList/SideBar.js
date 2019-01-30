@@ -40,7 +40,7 @@ export default withRouter(({ history, city }) => (
     <Query query={GET_TAGS_LIST}>
       {({ loading, error, data }) => {
         // TODO: placeholder
-        if (loading) return <p>Loading...</p>;
+        if (loading) return <p>Loading..</p>;
         if (error) return <p>error</p>;
 
         return (

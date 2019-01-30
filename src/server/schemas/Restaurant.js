@@ -9,7 +9,7 @@ export const typeDefs = `
     id: ID!
     name: String!
     urlName: String!
-    rating: Int!
+    rating: Float!
     products: [Product!]!
     phone: String
     address: String

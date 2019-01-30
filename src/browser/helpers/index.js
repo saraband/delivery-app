@@ -56,3 +56,17 @@ export function hexToRgbaString (hex, alpha) {
   const c = hexToRgb(hex);
   return `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
 }
+
+const daysMapping = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday'
+];
+
+export function getCurrentDay () {
+  return daysMapping[new Date().getDay()];
+}
