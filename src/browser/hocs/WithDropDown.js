@@ -15,6 +15,7 @@ const DropdownContainer = styled.div`
   min-width: 100%;
   background-color: ${Colors.WHITE};
   border: 1px solid ${Colors.LIGHT_GREY};
+  border-right: 2px solid ${Colors.LIGHT_GREY};
   transition: all 0.15s ease-in-out;
   ${BoxShadow}
   
@@ -38,7 +39,6 @@ const DropdownContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  border: 1px solid red;
   cursor: pointer;
   ${NoSelect};
 `;

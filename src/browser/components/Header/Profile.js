@@ -11,8 +11,11 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import LangSelect from './LangSelect';
 
+const StyledLangSelect = styled(LangSelect)`
+  margin-left: 10px;
+`;
+
 const Container = styled.div`
-  border: 1px solid red;
   display: flex;
   align-items: center;
 `;
@@ -71,7 +74,7 @@ export default class Index extends React.PureComponent {
             <Container>
               <ConnectedAs>Connected as <Username>{username}</Username></ConnectedAs>
               <ProfileButton><ProfileLogo /></ProfileButton>
-              <LangSelect />
+              <StyledLangSelect />
             </Container>
           );
         }}
