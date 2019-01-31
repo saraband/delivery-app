@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import Logo from 'DIST/images/logo.svg';
+import Logo from 'ASSETS/images/placeholder.svg';
 import FontSizes from 'CONSTANTS/FontSizes';
 import Colors from 'CONSTANTS/Colors';
 import CitySearch from 'COMPONENTS/CitySearch';

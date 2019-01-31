@@ -5,8 +5,8 @@ import CliProgress from 'cli-progress';
 import sharp from 'sharp';
 import { ImageResolutions } from 'UTILS';
 
-const distPath = './dist/images/';
-const srcPath = './src/server/data/images/';
+const distPath = './dist/images/restaurants/';
+const srcPath = './assets/images/restaurants/';
 let counter = 0;
 let notProcessedCounter = 0;
 
@@ -47,7 +47,7 @@ function doesFileAlreadyExist (filename) {
 
     // Resolutions
     for (let i = ImageResolutions.length - 1; i >= 0; --i) {
-      const filename = `${distPath}restaurant/${id}/${ImageResolutions[i]}.jpeg`;
+      const filename = `${distPath}${id}/${ImageResolutions[i]}.jpeg`;
 
       if (doesFileAlreadyExist(filename)) {
         ++notProcessedCounter;
@@ -56,8 +56,8 @@ function doesFileAlreadyExist (filename) {
       }
 
       // Create folder if necessary
-      if (!fs.existsSync(`${distPath}restaurant/${id}/`)) {
-        fs.mkdirSync(`${distPath}restaurant/${id}/`);
+      if (!fs.existsSync(`${distPath}${id}/`)) {
+        fs.mkdirSync(`${distPath}${id}/`);
       }
 
       await image.resize({ width: ImageResolutions[i] });

@@ -8,7 +8,7 @@ module.exports = {
       return queryInterface.bulkUpdate(
         'restaurants',
         {
-          image_url: `/images/restaurant/${restaurant.id}/:size.jpeg`
+          image_url: `/images/restaurants/${restaurant.id}/:size.jpeg`
         },
         {
           id: {

@@ -9,7 +9,7 @@ import { ImageResolutions } from 'UTILS';
 (async () => {
   let counter = 1;
   const THUMBNAIL_WIDTH = 25;
-  const distPath = './dist/images/restaurant/';
+  const distPath = './dist/images/restaurants/';
   const restaurantIds = fs.readdirSync(distPath);
   const progressBar = new CliProgress.Bar(
     { format: 'Inserting thumbnails in DB: [{bar}] {percentage}% | ETA: {eta}s | {value}/{total} thumbnails inserted.' },

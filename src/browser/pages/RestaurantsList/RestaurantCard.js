@@ -10,9 +10,8 @@ import Ripple from '../../components/RippleProvider/Ripple';
 import { ButtonTypes } from '../../components/Form/BaseButton';
 import FontSizes from '../../constants/FontSizes';
 import { Flex } from 'MISC/Styles';
-import ArrowUpSVG from 'DIST/images/arrow-up.svg';
 import { getCurrentDay, hexToRgbaString } from 'HELPERS';
-import RatingSVG from 'DIST/images/rating.svg';
+import RatingSVG from 'ASSETS/images/placeholder.svg';
 
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;

@@ -1,8 +1,8 @@
 import React, {memo} from 'react';
 import styled from 'styled-components';
 import Colors from '../constants/Colors';
-import LogoSVG from 'DIST/images/logo.svg';
-import ProfileSVG from 'DIST/images/profile.svg';
+import LogoSVG from 'ASSETS/images/placeholder.svg';
+import ProfileSVG from 'ASSETS/images/placeholder.svg';
 import FontSizes from 'CONSTANTS/FontSizes';
 import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
 import ToolTip from 'COMPONENTS/ToolTip';
