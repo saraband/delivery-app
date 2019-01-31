@@ -14,7 +14,7 @@ export const ButtonTypes = {
   FULL: Symbol()
 };
 
-const TextContainer = styled.div`
+export const TextContainer = styled.div`
   background-color: rgba(0, 0, 0, 0);
   opacity: 1;
   transition: all 0.15s ease-in-out;
