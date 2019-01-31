@@ -10,6 +10,6 @@ export default {
   TEST: '/test',
   HOME: '/',
   RESTAURANTS_LIST: '/list/:city',
-  RESTAURANT_DETAILS: '/r/:id/:city/:name',
-  CHECKOUT: '/r/:id/:name/checkout'
+  RESTAURANT_DETAILS: '/restaurant/:id',
+  RESTAURANT_CHECKOUT: '/restaurant/:id/checkout'
 };

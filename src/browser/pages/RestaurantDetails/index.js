@@ -11,6 +11,7 @@ import Colors from 'CONSTANTS/Colors';
 import AddIcon from 'ICONS/AddIcon';
 import BreadCrumb from 'COMPONENTS/BreadCrumb';
 import Routes, { addParamsToUrl } from 'ROUTES';
+import SectionTitle from 'COMPONENTS/SectionTitle';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -103,6 +104,11 @@ const ProductInformation = styled.div`
 const ProductName = styled.h4``;
 const ProductIngredients = styled.p``;
 
+const MenuTitle = styled(SectionTitle)`
+  margin-bottom: 20px;
+  margin-top: 20px;
+`;
+
 export default class extends React.Component {
   constructor (props) {
     super(props);
@@ -140,6 +146,7 @@ export default class extends React.Component {
                     thumbnail={data.restaurant.thumbnail}
                     alt={data.restaurant.name}
                   />
+                  <MenuTitle>Entries</MenuTitle>
                   {data && data.productsList.map(({ id, name, price, ingredients }) => (
                     <Product key={id}>
                       <ProductInformation>

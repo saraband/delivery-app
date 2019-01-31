@@ -1,6 +1,6 @@
 export default {
-  SMALL: '12px',
-  MEDIUM: '15px',
-  BIG: '20px',
-  VERY_BIG: '24px'
+  SMALL: '0.8em',
+  MEDIUM: '1.2em',
+  LARGE: '2em',
+  VERY_BIG: '3em'
 };

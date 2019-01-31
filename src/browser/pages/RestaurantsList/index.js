@@ -60,6 +60,8 @@ export default class RestaurantsList extends React.Component {
     const { city } = this.props.match.params;
     const tag = queryString.parse(this.props.location.search).tag;
 
+    console.log('city', city);
+
     return (
       <Container>
         <SideBar city={city} />
