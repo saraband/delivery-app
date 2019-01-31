@@ -20,6 +20,11 @@ function doesFileAlreadyExist (filename) {
 }
 
 (async () => {
+
+  // Create the folders ./dist/images/ and ./dist/images/restaurants/ in case they don't exist
+  !doesFileAlreadyExist('./dist/images/') && fs.mkdirSync('./dist/images/');
+  !doesFileAlreadyExist(distPath) && fs.mkdirSync(distPath);
+
   let srcImageFiles = [];
 
   log.endl();
