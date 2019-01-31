@@ -5,6 +5,7 @@
     "database": "YOUR_DB_NAME_HERE",
     "host": "127.0.0.1",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   }
 }

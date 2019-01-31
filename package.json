@@ -10,7 +10,7 @@
     "test": "babel-node ./src/server/schemas/index.js",
     "generate-images": "babel-node ./scripts/generate-images.js",
     "update-thumbnails": "babel-node ./scripts/update-thumbnails.js",
-    "setup": "sequelize db:migrate && sequelize db:seed:all && yarn generate-images && yarn update-thumbnails",
+    "setup": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all && yarn generate-images && yarn update-thumbnails",
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
     "build": "webpack --config ./webpack.prod.js",
     "dev": "concurrently -n SERVER,CLIENT \"yarn server\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\""
