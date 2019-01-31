@@ -26,7 +26,7 @@ Once you've properly configured config.json, run the following to set up the pro
 ```
 yarn install                    # Install dependencies
 yarn setup                      # Run several scripts in order to setup the app
-                                # Those scripts are desribed below
+                                # Those scripts are described below
 
 # What `yarn setup` does:
 

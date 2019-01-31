@@ -6,8 +6,8 @@ export default {
   GREY: '#999',
   DARK_GREY: '#1B4353',
   WHITE: '#FFFFFF',
-  DARK_BLUE: '#0074D9', // this one is too google-ish
-  BLUE: '#2892D7',
+  BLUE: '#0074D9', // this one is too google-ish
+  LIGHT_BLUE: '#2892D7',
   PASTEL_BLUE: '#7180B9', // BLEU DE FRANCE
   //DARK_BLUE: '#001f3f',
   DARK_BLUE_2: '#0B3948',

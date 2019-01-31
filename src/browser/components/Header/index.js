@@ -1,20 +1,21 @@
 import React, {memo} from 'react';
 import styled from 'styled-components';
-import Colors from '../constants/Colors';
-import LogoSVG from 'ASSETS/images/placeholder.svg';
+import Colors from 'CONSTANTS/Colors';
+import LogoSVG from 'ASSETS/images/logo_white.svg';
+import HotboxSVG from 'ASSETS/images/hotbox_white.svg';
 import ProfileSVG from 'ASSETS/images/placeholder.svg';
 import FontSizes from 'CONSTANTS/FontSizes';
 import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
-import ToolTip from 'COMPONENTS/ToolTip';
 import { Link } from 'react-router-dom';
 import Routes from 'ROUTES';
 import PropTypes from 'prop-types';
 import {Breakpoints} from 'HELPERS/MediaQueries';
+import { BoxShadow } from 'MISC/Styles';
 
 const StyledHeader = styled.header`
   flex-grow: 0;
   background-color: ${Colors.BLUE};
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  ${BoxShadow}
 `;
 
 const Left = styled.div`
@@ -36,12 +37,20 @@ const Logo = styled(LogoSVG)`
   height: 40px;
 `;
 
+const HotboxContainer = styled.div`
+  padding: 10px 15px;
+`;
+
+const Hotbox = styled(HotboxSVG)`
+  height: 25px;
+`;
+
 const LogoLink = styled(Link)`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 10px 15px;
   background-color: rgba(255, 255, 255, 0.1);
   transition: all 0.1s ease-in-out;
   
@@ -77,7 +86,7 @@ const FixedWidthContainer = styled(ResponsiveWidthContainer)`
   height: 100%;
 `;
 
-export default class Header extends React.PureComponent {
+export default class Index extends React.PureComponent {
   render() {
     const { fixedWidth } = this.props;
     const WidthContainer = fixedWidth
@@ -87,12 +96,17 @@ export default class Header extends React.PureComponent {
     return (
       <StyledHeader>
         <WidthContainer>
+          {/* LEFT PART */}
           <Left>
             <LogoLink to={Routes.HOME}>
               <Logo/>
             </LogoLink>
-            <Title>HotBox.com</Title>
+            <HotboxContainer>
+              <Hotbox />
+            </HotboxContainer>
           </Left>
+
+          {/* RIGHT PART */}
           <Right>
             <Profile>
               <ProfileLogo/>
@@ -104,10 +118,10 @@ export default class Header extends React.PureComponent {
   }
 };
 
-Header.propTypes = {
+Index.propTypes = {
   fixedWidth: PropTypes.bool
 };
 
-Header.defaultProps = {
+Index.defaultProps = {
   fixedWidth: false
 };

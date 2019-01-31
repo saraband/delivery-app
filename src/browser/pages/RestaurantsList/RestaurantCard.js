@@ -204,7 +204,7 @@ class RestaurantCard extends React.PureComponent {
                 </RestaurantRating>
               </Flex>
               <Subtitle>{address} - {this.renderOpeningHours()}</Subtitle>
-              <TagsList>{tags.map(tag => <Tag>{tag}</Tag>)}</TagsList>
+              <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
             </Description>
 
             {/* RIPPLE EFFECT */}

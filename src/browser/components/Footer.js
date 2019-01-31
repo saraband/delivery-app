@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Colors from '../constants/Colors';
 import { Breakpoints } from 'HELPERS/MediaQueries';
 import PropTypes from 'prop-types';
-import Header from 'COMPONENTS/Header';
+import Index from 'COMPONENTS/Header';
 
 const StyledFooter = styled.footer`
   flex-grow: 0;
