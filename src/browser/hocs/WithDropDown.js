@@ -63,13 +63,6 @@ export default (DropDownComponent) => (ButtonComponent) => {
       document.removeEventListener('click', this.watchClick);
     }
 
-    toggleDropdown = (event) => {
-      event.stopPropagation();
-      event.preventDefault();
-      event.nativeEvent.stopImmediatePropagation();
-      this.setState({ isOpen: !this.state.isOpen });
-    };
-
     watchClick = (event) => {
       const { target } = event;
 
@@ -79,7 +72,14 @@ export default (DropDownComponent) => (ButtonComponent) => {
         return;
       }
 
-      // Close dropdown
+      // Click on the button component, toggle the dropdown
+      if (this.buttonRef.current === target ||
+        this.buttonRef.current.contains(target)) {
+        this.setState({ isOpen: !this.state.isOpen });
+        return;
+      }
+
+      // Else close dropdown
       this.setState({ isOpen: false });
     };
 
@@ -87,12 +87,9 @@ export default (DropDownComponent) => (ButtonComponent) => {
       const { isOpen } = this.state;
 
       return (
-        <Container
-          onClick={this.toggleDropdown}
-          {...this.props}
-          >
-          <ButtonContainer>
-            <ButtonComponent ref={this.buttonRef} />
+        <Container {...this.props}>
+          <ButtonContainer ref={this.buttonRef}>
+            <ButtonComponent />
           </ButtonContainer>
           <DropdownContainer
             ref={this.dropdownRef}

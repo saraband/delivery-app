@@ -10,6 +10,7 @@ import { BoxShadow } from 'MISC/Styles';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import LangSelect from './LangSelect';
+import AccountDropdown from './AccountDropdown';
 
 const StyledLangSelect = styled(LangSelect)`
   margin-left: 10px;
@@ -57,7 +58,7 @@ const GET_ACCOUNT_INFO = gql`
   }
 `;
 
-export default class Index extends React.PureComponent {
+export default class Profile extends React.PureComponent {
   render() {
     return (
       <Query query={GET_ACCOUNT_INFO}>
@@ -73,7 +74,10 @@ export default class Index extends React.PureComponent {
           return (
             <Container>
               <ConnectedAs>Connected as <Username>{username}</Username></ConnectedAs>
-              <ProfileButton><ProfileLogo /></ProfileButton>
+              <AccountDropdown
+                name={username}
+                email={email}
+                />
               <StyledLangSelect />
             </Container>
           );
@@ -81,12 +85,4 @@ export default class Index extends React.PureComponent {
       </Query>
     );
   }
-};
-
-Index.propTypes = {
-  fixedWidth: PropTypes.bool
-};
-
-Index.defaultProps = {
-  fixedWidth: false
 };

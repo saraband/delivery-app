@@ -47,9 +47,7 @@ const LangSelectDropdown = () => (
   </LangOptionsContainer>
 );
 
-const apply = compose(
+export default compose(
   withDropdown(LangSelectDropdown),
   memo
-);
-
-export default apply(LangSelectComponent);
+)(LangSelectComponent);
