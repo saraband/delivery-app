@@ -49,7 +49,7 @@ const Username = styled.span`
   font-weight: normal;
 `;
 
-const GET_ACCOUNT_INFO = gql`
+export const GET_ACCOUNT_INFO = gql`
   query accountInfo {
     self {
       username
@@ -74,10 +74,7 @@ export default class Profile extends React.PureComponent {
           return (
             <Container>
               <ConnectedAs>Connected as <Username>{username}</Username></ConnectedAs>
-              <AccountDropdown
-                name={username}
-                email={email}
-                />
+              <AccountDropdown />
               <StyledLangSelect />
             </Container>
           );

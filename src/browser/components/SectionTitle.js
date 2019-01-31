@@ -6,10 +6,12 @@ import Colors from 'CONSTANTS/Colors';
 const Container = styled.div`
   width: 100%;
   position: relative;
+  margin: 20px 0;
 `;
 
 const Content = styled.h2`
-  font-size: ${FontSizes.BIG};
+  font-size: ${FontSizes.MEDIUM};
+  font-weight: bold;
   display: inline-block;
   padding-right: 5px;
   color: ${Colors.BLUE};

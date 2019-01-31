@@ -5,7 +5,7 @@ import BaseInput from 'COMPONENTS/Form/BaseInput';
 import BaseButton from 'COMPONENTS/Form/BaseButton';
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
-import SearchIcon from 'ICONS/SearchIcon';
+import SearchSVG from 'ASSETS/images/search.svg'
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import {createInputHandler, hexToRgb, hexToRgbaString} from 'HELPERS';
@@ -26,8 +26,15 @@ const StyledInput = styled(BaseInput).attrs({
   width: unset;
 `;
 
+const SearchIcon = styled(SearchSVG)`
+  position: relative;
+  height: ${FontSizes.SMALL};
+  width: ${FontSizes.SMALL};
+  border: 2px solid red;
+`;
+
 const StyledButton = styled(BaseButton).attrs({
-  icon: <SearchIcon height={FontSizes.MEDIUM} />
+  icon: <SearchIcon />
 })`
   border-radius: 0 3px 3px 0;
   border: 1px solid ${Colors.BLUE};

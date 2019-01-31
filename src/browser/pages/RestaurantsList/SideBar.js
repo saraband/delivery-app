@@ -14,11 +14,13 @@ import { withRouter } from 'react-router-dom';
 import { addParamsToUrl } from 'ROUTES';
 import Routes from 'ROUTES';
 import CitySearch from 'COMPONENTS/CitySearch';
+import SectionTitle from 'COMPONENTS/SectionTitle'
+import Section from 'COMPONENTS/Section'
 
 const Container = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
-  width: 300px;
+  width: 250px;
   height: 100%;
   min-height: 300px;
   position: sticky;
@@ -37,6 +39,13 @@ const GET_TAGS_LIST = gql`
 export default withRouter(({ history, city }) => (
   <Container>
     <CitySearch />
+
+    {/* PENDING ORDERS */}
+    <SectionTitle>Pending orders</SectionTitle>
+    <Section>This</Section>
+
+    {/* TAGS SELECT */}
+  <SectionTitle>Type of food</SectionTitle>
     <Query query={GET_TAGS_LIST}>
       {({ loading, error, data }) => {
         // TODO: placeholder
@@ -45,7 +54,6 @@ export default withRouter(({ history, city }) => (
 
         return (
           <StyledFlatSelect
-            title='Tags'
             options={data.tagsList.map((tag) => ({
               id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
               value: tag

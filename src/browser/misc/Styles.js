@@ -9,6 +9,7 @@ export const Flex = styled.div`
   flex-direction: ${p => p.direction || 'initial'};
   justify-content: ${p => p.justify || 'initial'};
   align-items: ${p => p.align || 'initial'};
+  ${p => p.css};
 `;
 
 export const NoSelect = css`

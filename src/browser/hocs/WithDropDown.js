@@ -15,7 +15,7 @@ const DropdownContainer = styled.div`
   min-width: 100%;
   background-color: ${Colors.WHITE};
   border: 1px solid ${Colors.LIGHT_GREY};
-  border-right: 2px solid ${Colors.LIGHT_GREY};
+  border-radius: 2px;
   transition: all 0.15s ease-in-out;
   ${BoxShadow}
   
@@ -27,7 +27,7 @@ const DropdownContainer = styled.div`
     background-color: ${Colors.WHITE};
     position: absolute;
     top: 0;
-    right: 10px;
+    right: 5px;
     border-left: 1px solid ${Colors.LIGHT_GREY};
     border-top: 1px solid ${Colors.LIGHT_GREY};
     transform: translate3d(-50%, -55%, 0) rotate(45deg);

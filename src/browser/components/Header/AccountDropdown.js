@@ -1,11 +1,16 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Colors from 'CONSTANTS/Colors';
 import ProfileSVG from 'ASSETS/images/profile.svg';
 import BaseButton, { ButtonTypes, TextContainer } from 'COMPONENTS/Form/BaseButton';
 import withDropdown from 'HOCS/WithDropDown'
 import { compose } from 'redux';
+import { GET_ACCOUNT_INFO } from 'COMPONENTS/Header/Profile';
+import Query from 'react-apollo/Query';
+import { Flex } from 'MISC/Styles';
+import FontSizes from 'CONSTANTS/FontSizes';
 
+// BUTTON
 const ProfileButton = styled(BaseButton).attrs({
   round: true,
   type: ButtonTypes.FULL,
@@ -27,8 +32,72 @@ const ProfileButtonComponent = () => (
   <ProfileButton><ProfileLogo /></ProfileButton>
 );
 
+// DROP DOWN
+const DropdownContainer = styled.div`
+  padding: 10px;
+`;
+
+const Avatar = styled.div`
+  background-color: ${Colors.LIGHT_GREY};
+  width: 85px;
+  height: 85px;
+`;
+
+const Username = styled.h2`
+  color: ${Colors.BLACK};
+  font-size: ${FontSizes.MEDIUM};
+  margin-bottom: 5px;
+  font-weight: normal;
+`;
+
+const Email = styled.h4`
+  font-size: ${FontSizes.SMALL};
+  color: ${Colors.GREY};
+  margin-bottom: 5px;
+  font-weight: normal;
+`;
+
+const ViewProfileLink = styled.h4`
+  font-size: ${FontSizes.MEDIUM};
+  color: ${Colors.BLUE};
+  margin-bottom: 10px;
+  font-weight: normal;
+`;
+
+const LogoutButton = styled(BaseButton).attrs({
+  type: ButtonTypes.FULL
+})`
+  margin-top: 10px;
+`;
+
 const ProfileDropdown = () => (
-  <p>dd</p>
+  <Query query={GET_ACCOUNT_INFO}>
+    {({ data, loading, error }) => {
+      if (loading) return <p>Loading</p>;
+      if (error) return <p>Error</p>;
+
+      const {
+        email,
+        username
+      } = data.self;
+
+      return (
+        <DropdownContainer>
+          <Flex direction='column'>
+            <Flex>
+              <Avatar />
+              <Flex direction='column' css={css`padding-left: 10px`}>
+                <Username>{username}</Username>
+                <Email>{email}</Email>
+                <ViewProfileLink>View profile</ViewProfileLink>
+              </Flex>
+            </Flex>
+            <LogoutButton>Log out</LogoutButton>
+          </Flex>
+        </DropdownContainer>
+      );
+    }}
+  </Query>
 );
 
 export default compose(

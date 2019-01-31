@@ -39,7 +39,7 @@ const RippleFadeCss = css`
   animation: ${FadeAnimation} ${ANIMATION_DURATION}s forwards ease-out;
 `;
 
-const RippleFilling = styled.div`
+export const RippleFilling = styled.div`
   width: 100%;
   height: 100%;
   opacity: 1;

@@ -3,6 +3,7 @@ import { hexToRgb } from 'HELPERS';
 export default {
   BLACK: '#111111',
   LIGHT_GREY: '#DDD',
+  LIGHT_GREY_2: '#e8e8e8',
   GREY: '#999',
   DARK_GREY: '#1B4353',
   WHITE: '#FFFFFF',

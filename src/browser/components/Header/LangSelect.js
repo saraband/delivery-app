@@ -5,16 +5,19 @@ import withDropdown from 'HOCS/WithDropDown'
 import Colors from 'CONSTANTS/Colors';
 import FontSizes from 'CONSTANTS/FontSizes';
 import { hexToRgbaString } from 'HELPERS';
+import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
+import { RippleFilling } from 'COMPONENTS/RippleProvider/Ripple';
 
-const Lang = styled.h5`
+const Lang = styled(BaseButton).attrs({
+  type: ButtonTypes.EMPTY
+})`
   color: ${Colors.WHITE};
   font-weight: normal;
-  padding: 10px;
   transition: all 0.15s ease-in-out;
   font-size: ${FontSizes.SMALL};
   
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  ${RippleFilling} {
+    background-color: ${Colors.WHITE} !important;
   }
 `;
 
