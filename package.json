@@ -6,14 +6,18 @@
   "author": "saraband <super_yass@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "server": "nodemon --config nodemon.json ./src/server/index.js",
+    "server_dev": "nodemon --config nodemon.json ./src/server/index.js",
+    "server": "./node_modules/.bin/babel-node ./src/server/index.js",
     "test": "babel-node ./src/server/schemas/index.js",
-    "generate-images": "babel-node ./scripts/generate-images.js",
-    "update-thumbnails": "babel-node ./scripts/update-thumbnails.js",
-    "setup": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all && yarn generate-images && yarn update-thumbnails",
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
     "build": "webpack --config ./webpack.prod.js",
-    "dev": "concurrently -n SERVER,CLIENT \"yarn server\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\""
+    "dev": "concurrently -n SERVER,CLIENT \"yarn server_dev\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\"",
+
+    "migrations": "./node_modules/.bin/sequelize db:migrate",
+    "seeds_undo": "./node_modules/.bin/sequelize db:seed:undo:all",
+    "seeds_generate": "./node_modules/.bin/sequelize db:seed:all",
+    "setup": "npm run migrations && npm run seeds_undo && npm run seeds_generate",
+    "deploy": "npm run build && npm run migrations && npm run seeds_undo && npm run seeds_generate && npm run server"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",

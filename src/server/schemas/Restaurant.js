@@ -13,7 +13,7 @@ export const typeDefs = `
     products: [Product!]!
     phone: String
     address: String
-    thumbnail: String!
+    thumbnail: String
     opening_hours: JSON
     imageUrl: String!
     tags: [String!]!

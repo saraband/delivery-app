@@ -86,9 +86,14 @@ export default class LazyImage extends React.Component {
 
     // If the image has a parameter size, find the path
     // to its most optimal resolution
-    this.image.src = addParamsToUrl(this.props.url, {
+    // TODO ====
+    // TODO ====
+    // TODO this should be different
+    this.image.src = this.props.url;
+    // TODO: this is no longer like this, rework
+    /*this.image.src = addParamsToUrl(this.props.url, {
       size: getOptimalResolution(this.ref.current.getBoundingClientRect().width)
-    });
+    });*/
   };
 
   checkIfImageIsInViewPort = () => {

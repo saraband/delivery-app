@@ -5,6 +5,13 @@ module.exports = {
   entry: {
     app: './src/browser/index.js'
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      APP_BASE_URL: process.env.NODE_ENV === 'production'
+        ? JSON.stringify('https://hotbox-demo.herokuapp.com')
+        : JSON.stringify('http://localhost:3000')
+    })
+  ],
   resolve: {
     alias: {
       COMPONENTS: path.resolve(__dirname, 'src/browser/components/'),

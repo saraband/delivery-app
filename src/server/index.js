@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import log from './log';
 import schema from './schemas';
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.disable('x-powered-by-x');
 
@@ -26,10 +27,10 @@ app.use(express.static(path.resolve(__dirname, '../../dist')));
 app.use(bodyParser.json());
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../../dist/_index.html'));
+  res.sendFile(path.resolve(__dirname, '../../dist/index.html'));
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('\n');
-  log.server('Server started on port 3000');
+  log.server(`Server started on port ${PORT}`);
 });
