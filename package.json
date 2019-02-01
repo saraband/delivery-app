@@ -12,9 +12,9 @@
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
     "dev": "concurrently -n SERVER,CLIENT \"yarn server_dev\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\"",
 
-    "migrations": "./node_modules/.bin/sequelize db:migrate",
-    "seeds_undo": "./node_modules/.bin/sequelize db:seed:undo:all",
-    "seeds_generate": "./node_modules/.bin/sequelize db:seed:all",
+    "migrations": "./node_modules/.bin/sequelize db:migrate --app hotbox-demo",
+    "seeds_undo": "./node_modules/.bin/sequelize db:seed:undo:all --app hotbox-demo",
+    "seeds_generate": "./node_modules/.bin/sequelize db:seed:all --app hotbox-demo",
     "setup": "npm run migrations && npm run seeds_undo && npm run seeds_generate",
     "heroku-postbuild": "./node_modules/.bin/webpack --config ./webpack.prod.js && npm run migrations && npm run seeds_undo && npm run seeds_generate",
     "deploy": "npm run server"
