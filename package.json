@@ -10,14 +10,14 @@
     "server": "./node_modules/.bin/babel-node ./src/server/index.js",
     "test": "babel-node ./src/server/schemas/index.js",
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
-    "heroku-postbuild": "./node_modules/.bin/webpack --config ./webpack.prod.js",
     "dev": "concurrently -n SERVER,CLIENT \"yarn server_dev\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\"",
 
     "migrations": "./node_modules/.bin/sequelize db:migrate",
     "seeds_undo": "./node_modules/.bin/sequelize db:seed:undo:all",
     "seeds_generate": "./node_modules/.bin/sequelize db:seed:all",
     "setup": "npm run migrations && npm run seeds_undo && npm run seeds_generate",
-    "deploy": "npm run migrations && npm run seeds_undo && npm run seeds_generate && npm run server"
+    "heroku-postbuild": "./node_modules/.bin/webpack --config ./webpack.prod.js && npm run migrations && npm run seeds_undo && npm run seeds_generate",
+    "deploy": "npm run server"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
