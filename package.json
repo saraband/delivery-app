@@ -17,7 +17,7 @@
     "seeds:generate": "./node_modules/.bin/sequelize db:seed:all",
     "setup": "npm run migrate && npm run seeds:undo && npm run seeds:generate",
     "build": "./node_modules/.bin/webpack --config ./webpack.prod.js",
-    "heroku-postbuild": "npm run setup"
+    "heroku-postbuild": "npm run build && npm run setup"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
