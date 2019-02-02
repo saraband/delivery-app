@@ -3,7 +3,6 @@ node_modules
 yarn.lock
 dist/*.bundle.*
 dist/index.html
-src/server/config.json
 specs.rtf
 package-lock.json
 design
