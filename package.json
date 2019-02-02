@@ -12,12 +12,11 @@
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
     "dev": "concurrently -n SERVER,CLIENT \"yarn server_dev\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\"",
 
-    "migrations": "./node_modules/.bin/sequelize db:migrate",
-    "seeds_undo": "./node_modules/.bin/sequelize db:seed:undo:all",
-    "seeds_generate": "./node_modules/.bin/sequelize db:seed:all",
-    "setup": "npm run migrations && npm run seeds_undo && npm run seeds_generate",
-    "build": "./node_modules/.bin/webpack --config ./webpack.prod.js",
-    "deploy": "npm run migrations && npm run seeds_undo && npm run seeds_generate && npm run server"
+    "migrate": "sequelize db:migrate",
+    "seeds:undo": "sequelize db:seed:undo:all",
+    "seeds:generate": "sequelize db:seed:all",
+    "setup": "npm run migrate && npm run seeds:undo && npm run seeds:generate",
+    "heroku-postbuild": "./node_modules/.bin/webpack --config ./webpack.prod.js && npm run setup"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
