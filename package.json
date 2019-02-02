@@ -16,7 +16,8 @@
     "seeds:undo": "./node_modules/.bin/sequelize db:seed:undo:all",
     "seeds:generate": "./node_modules/.bin/sequelize db:seed:all",
     "setup": "npm run migrate && npm run seeds:undo && npm run seeds:generate",
-    "heroku-postbuild": "./node_modules/.bin/webpack --config ./webpack.prod.js && npm run setup"
+    "build": "./node_modules/.bin/webpack --config ./webpack.prod.js",
+    "heroku-postbuild": "npm run setup"
   },
   "dependencies": {
     "@babel/cli": "^7.1.5",
