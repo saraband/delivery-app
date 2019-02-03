@@ -32,25 +32,25 @@ const Logo = styled(LogoSVG)`
   height: 40px;
 `;
 
-const HotboxContainer = styled.div`
+const LogoContainer = styled.div`
   padding: 10px 15px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
 `;
 
 const Hotbox = styled(HotboxSVG)`
-  height: 25px;
+  height: 20px;
+  margin-left: 15px;
 `;
 
-const LogoLink = styled(Link)`
+const HomeLink = styled(Link)`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 15px;
-  background-color: rgba(255, 255, 255, 0.1);
-  transition: all 0.1s ease-in-out;
-  
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+
+  &:hover ${LogoContainer} {
+    background-color: rgba(255, 255, 255, 0.15);
   }
 `;
 
@@ -80,12 +80,12 @@ export default class Index extends React.PureComponent {
         <WidthContainer>
           {/* LEFT PART */}
           <Left>
-            <LogoLink to={Routes.HOME}>
-              <Logo/>
-            </LogoLink>
-            <HotboxContainer>
+            <HomeLink to={Routes.HOME}>
+              <LogoContainer>
+                <Logo/>
+              </LogoContainer>
               <Hotbox />
-            </HotboxContainer>
+            </HomeLink>
           </Left>
 
           {/* RIGHT PART */}

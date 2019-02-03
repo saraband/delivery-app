@@ -16,6 +16,7 @@ import Routes from 'ROUTES';
 import CitySearch from 'COMPONENTS/CitySearch';
 import SectionTitle from 'COMPONENTS/SectionTitle'
 import Section from 'COMPONENTS/Section'
+import PendingOrders from './PendingOrders'
 
 const Container = styled.div`
   flex-grow: 0;
@@ -36,35 +37,44 @@ const GET_TAGS_LIST = gql`
   }
 `;
 
-export default withRouter(({ history, city }) => (
-  <Container>
-    <CitySearch />
+class SideBar extends React.PureComponent {
+  render () {
+    const {
+      history,
+      city
+    } = this.props;
 
-    {/* PENDING ORDERS */}
-    <SectionTitle>Pending orders</SectionTitle>
-    <Section>This</Section>
+    return (
+      <Container>
+        <CitySearch />
 
-    {/* TAGS SELECT */}
-  <SectionTitle>Type of food</SectionTitle>
-    <Query query={GET_TAGS_LIST}>
-      {({ loading, error, data }) => {
-        // TODO: placeholder
-        if (loading) return <p>Loading..</p>;
-        if (error) return <p>error</p>;
+        {/* PENDING ORDERS */}
+        <PendingOrders />
 
-        return (
-          <StyledFlatSelect
-            options={data.tagsList.map((tag) => ({
-              id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
-              value: tag
-            }))}
-            onSelect={(selected) => {
-              console.log(selected);
-              history.push(addParamsToUrl(Routes.RESTAURANTS_LIST, { city }) + `?tag=${selected.id}`);
-            }}
-            />
-        );
-      }}
-    </Query>
-  </Container>
-));
+        {/* TAGS SELECT */}
+        <SectionTitle>Type of food</SectionTitle>
+        <Query query={GET_TAGS_LIST}>
+          {({ loading, error, data }) => {
+            // TODO: placeholder
+            if (loading) return <p>Loading..</p>;
+            if (error) return <p>error</p>;
+
+            return (
+              <StyledFlatSelect
+                options={data.tagsList.map((tag) => ({
+                  id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
+                  value: tag
+                }))}
+                onSelect={(selected) => {
+                  history.push(addParamsToUrl(Routes.RESTAURANTS_LIST, { city }) + `?tag=${selected.id}`);
+                }}
+              />
+            );
+          }}
+        </Query>
+      </Container>
+    );
+  }
+};
+
+export default withRouter(SideBar);
