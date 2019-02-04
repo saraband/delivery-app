@@ -90,6 +90,12 @@ export default (state = {}, action) => {
             return newBasketState;
           }
 
+          // Only product left of that type, remove it
+          if (productStored.quantity === 1) {
+            return newBasketState;
+          }
+
+          // Decrease quantity
           newBasketState[currentProductId] = {
             ...state[currentBasketId][currentProductId],
             quantity: state[currentBasketId][currentProductId].quantity - 1

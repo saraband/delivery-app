@@ -36,6 +36,7 @@ class Basket extends React.Component {
     const currentBasket = baskets[id];
     const nextBasket = nextProps.baskets[nextProps.id];
 
+    return true
     return JSON.stringify(currentBasket) !== JSON.stringify(nextBasket);
   }
 
@@ -47,10 +48,11 @@ class Basket extends React.Component {
       removeProduct
     } = this.props;
     const products = baskets[id];
+    const total = Object.keys(products).reduce((acc, currentId) => acc + products[currentId].price * products[currentId].quantity, 0);
 
     return (
       <StyledBasket>
-        <Title>Your basket (&nbsp;64.5 €&nbsp;)</Title>
+        <Title>Your basket (&nbsp;{total} €&nbsp;)</Title>
         {Object.keys(products || []).map(productId => {
           const product = products[productId];
           return (
