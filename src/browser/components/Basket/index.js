@@ -35,8 +35,7 @@ class Basket extends React.Component {
     } = this.props;
     const currentBasket = baskets[id];
     const nextBasket = nextProps.baskets[nextProps.id];
-
-    return true
+    
     return JSON.stringify(currentBasket) !== JSON.stringify(nextBasket);
   }
 
