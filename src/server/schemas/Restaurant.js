@@ -1,6 +1,7 @@
 import GraphQLJSON from 'graphql-type-json';
 import db from '../models';
 import { Op } from 'sequelize';
+import { shuffle as shuffleSeed } from 'shuffle-seed';
 
 export const typeDefs = `
   scalar JSON
@@ -20,7 +21,7 @@ export const typeDefs = `
   }
   
   extend type Query {
-    restaurantsList (offset: Int, limit: Int, tag: String, city: String): [Restaurant!]
+    restaurantsList (city: String, offset: Int, limit: Int, tag: String, order: String): [Restaurant!]!
     restaurant (id: ID): Restaurant
   }
 `;
@@ -32,10 +33,16 @@ export const resolvers = {
     products: (restaurant) => restaurant.getProducts()
   },
   Query: {
-    restaurantsList: async (_, { offset, limit, tag, city }) => {
+    restaurantsList: async (_, {
+      city,
+      offset,
+      limit,
+      tag,
+      order
+    }) => {
       let params = {};
 
-      // search restaurants containing the tag
+      // Search restaurants containing the tag
       if (tag !== undefined) {
         params = {
           where: {
@@ -47,16 +54,19 @@ export const resolvers = {
         }
       }
 
-      const results = await db.restaurant.findAll({
+      console.log('loading for offset=', offset, ', limit=', limit);
+
+      let results = await db.restaurant.findAll({
         offset,
         limit,
         ...params
       });
 
-      // sort the city list to be different according to the city
-      // TODO: random based on city hash seed
-      if (city !== undefined) {
-        results.sort(() => Math.random() - 0.5);
+      // Randomly shuffle restaurants list based
+      // on the city name (as a seed). This is to fake that each city has
+      // a different list of restaurants
+      if (city !== 'undefined') {
+        results = shuffleSeed(results, city);
       }
 
       return results;

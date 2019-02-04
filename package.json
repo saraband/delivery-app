@@ -11,7 +11,6 @@
     "test": "babel-node ./src/server/schemas/index.js",
     "client": "webpack-dev-server --watch --config ./webpack.dev.js",
     "dev": "concurrently -n SERVER,CLIENT \"yarn server_dev\" \"yarn client\" -c bgBlue.black,bgRed.black -t \"HH:mm:ss\" -k -p \"{time} - {name}\"",
-
     "migrate": "./node_modules/.bin/sequelize db:migrate",
     "seeds:undo": "./node_modules/.bin/sequelize db:seed:undo:all",
     "seeds:generate": "./node_modules/.bin/sequelize db:seed:all",
@@ -77,6 +76,7 @@
     "sequelize": "^4.38.0",
     "sequelize-cli": "^5.4.0",
     "sharp": "^0.21.1",
+    "shuffle-seed": "^1.1.6",
     "styled-components": "^4.1.2",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",

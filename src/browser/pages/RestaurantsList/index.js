@@ -9,10 +9,11 @@ import queryString from 'query-string';
 import SideBar from './SideBar';
 import RestaurantCard from './RestaurantCard';
 import Colors from 'CONSTANTS/Colors';
+import EndlessScroll from 'COMPONENTS/EndlessScroll';
 
 const GET_RESTAURANTS_LIST = gql`
-  query list ($limit: Int, $tag: String, $city: String) {
-    restaurantsList (limit: $limit, tag: $tag, city: $city) {
+  query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
+    restaurantsList (city: $city, offset: $offset, limit: $limit, tag: $tag, order: $order) {
       id
       name
       urlName
@@ -38,43 +39,81 @@ const Container = styled.div`
   flex-direction: row;
 `;
 
-const options = new Array(20).fill(1).map((_, index) => ({
-  id: index,
-  value: `Option ${index}`
-}));
+const InitialState = {
+  offset: 0,
+  limit: 20
+};
 
 export default class RestaurantsList extends React.Component {
   constructor (props) {
     super(props);
+    this.isFetchingMore = false;
+    this.state = { ...InitialState };
+  }
 
-    this.c = 0;
-    this.state = {
-      limit: 20,
-      progress: 50
-    };
+  componentWillUpdate (nextProps, nextState, nextContext) {
+    // Location has changed => scroll to the top +
+    // reset endless scroll
+    if (this.props.location.pathname !== nextProps.location.pathname ||
+      this.props.location.search !== nextProps.location.search) {
+      this.setState({ ...InitialState });
+      window.scrollTo(0, 0);
+    }
   }
 
   render () {
-    // TODO: endless scroll
-    const { limit } = this.state;
     const { city } = this.props.match.params;
+    const { offset, limit } = this.state;
     const tag = queryString.parse(this.props.location.search).tag;
-
-    console.log('tag', tag);
-    console.log('city', city);
 
     return (
       <Container>
         <SideBar city={city} />
-        <Query query={GET_RESTAURANTS_LIST} variables={{ limit, tag, city }}>
-          {({ error, loading, data }) => {
+        <Query query={GET_RESTAURANTS_LIST} variables={{ city, offset: 0, limit: 20, tag, order: 'asc' }}>
+          {({ error, loading, data, fetchMore }) => {
             // TODO: placeholder
             if (error) return <p>Error</p>;
-            if (loading) return <p>Loading</p>;
+            // if (loading) return <p>Loading</p>;
 
             return (
               <List>
-                {data.restaurantsList.map(r => <RestaurantCard key={r.id} {...r} city={city} />)}
+                {/* LIST OF RESTAURANTS */}
+                {(data.restaurantsList || []).map(r => (
+                  <RestaurantCard key={r.id} {...r} city={city} />
+                ))}
+
+                {/* ENDLESS SCROLL */}
+                <EndlessScroll fetchMore={() => {
+                  if (this.isFetchingMore) {
+                    return;
+                  }
+
+                  this.isFetchingMore = true;
+                  fetchMore({
+                    variables: {
+                      city,
+                      offset: data.restaurantsList.length,
+                      limit: data.restaurantsList.length + 2,
+                      tag,
+                      order: 'asc'
+                    },
+                    updateQuery: async (prev, { fetchMoreResult }) => {
+                      console.log('fetchMoreResult', fetchMoreResult);
+                      if (!fetchMoreResult) return prev;
+
+                      // process the data being fetched ie appending it to
+                      // the existing data
+                      this.isFetchingMore = false;
+                      return {
+                        ...prev,
+                        restaurantsList: [
+                          ...prev.restaurantsList,
+                          ...fetchMoreResult.restaurantsList
+                        ]
+                      };
+                    }
+                  })
+                }} />
               </List>
             );
           }}
