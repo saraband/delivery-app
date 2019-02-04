@@ -1,32 +1,35 @@
 // This helper creates an input handler that needs to be bound
 // to the React class component in the constructor
 // It returns a promise for more convenience
-export const createInputHandler = (args) => function updateInput (event) {
-  return new Promise((resolve) => {
+export const createInputHandler = (args) => {
+  const stateKey = args && args.stateKey;
+  const eventKey = (args && args.eventKey) || 'name';
 
-    // TODO: Rework this maybe ?
-    // TODO: messy, might not work properly
-    const stateKey = args && args.stateKey;
-    const eventKey = (args && args.eventKey) || 'name';
+  // If we need to update the state at a specific
+  // place (i.e. somewhere not on top-level state)
+  if (stateKey !== undefined) {
+    return function updateInput (event) {
+      return new Promise((resolve) => {
+        this.setState({
+          [stateKey]: {
+            ...this.state[stateKey],
+            [event[eventKey]]: event.value
+          }
+        }, () => resolve());
+      });
+    };
+  }
 
-    // If we need to update the state at a specific
-    // place (i.e. somewhere not on top-level state
-    if (stateKey !== undefined) {
-      this.setState({
-        [stateKey]: {
-          ...this.state[stateKey],
-          [event[eventKey]]: event.value
-        }
-      }, () => resolve());
-
-    // We update top-level state
-    } else {
+  // Otherwise we update top-level state
+  return function updateInput (event) {
+    return new Promise((resolve) => {
       this.setState({
         [event[eventKey]]: event.value
       }, () => resolve());
-    }
-  });
+    });
+  };
 };
+
 
 // Transforms an hex color into rgb
 // e.g. ('#FF0000') => { r: 255, g: 0, b: 0 }
@@ -74,4 +77,12 @@ const daysMapping = [
 
 export function getCurrentDay () {
   return daysMapping[new Date().getDay()];
+}
+
+export function deepEqual (a, b) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+export function deepClone (obj) {
+  return JSON.parse(JSON.stringify(obj));
 }

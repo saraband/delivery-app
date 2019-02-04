@@ -10,9 +10,10 @@ import RemoveIcon from 'ICONS/RemoveIcon';
 import ToolTip from 'COMPONENTS/ToolTip';
 
 import {
-  ADD_PRODUCT,
+  ADD_PRODUCT, CLEAR_BASKET,
   REMOVE_PRODUCT
 } from 'STORE/baskets';
+import { deepEqual } from 'HELPERS';
 
 const StyledBasket = styled.div`
   border: 1px solid ${Colors.LIGHT_GREY};
@@ -29,14 +30,15 @@ const Title = styled.h2`
 
 class Basket extends React.Component {
   shouldComponentUpdate(nextProps, nextState, nextContext) {
-    const {
-      id,
-      baskets
-    } = this.props;
-    const currentBasket = baskets[id];
+    const currentBasket = this.props.baskets[this.props.id];
     const nextBasket = nextProps.baskets[nextProps.id];
-    
-    return JSON.stringify(currentBasket) !== JSON.stringify(nextBasket);
+
+    // Update if the current basket has changed
+    return !deepEqual(currentBasket, nextBasket);
+  }
+
+  goToCheckout = () => {
+    console.log('checkout');
   }
 
   render () {
@@ -44,10 +46,11 @@ class Basket extends React.Component {
       id,
       baskets,
       addProduct,
-      removeProduct
+      removeProduct,
+      clearBasket
     } = this.props;
-    const products = baskets[id];
-    const total = Object.keys(products).reduce((acc, currentId) => acc + products[currentId].price * products[currentId].quantity, 0);
+    const products = baskets[id] || [];
+    const total = Object.values(products).reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
     return (
       <StyledBasket>
@@ -64,8 +67,8 @@ class Basket extends React.Component {
           );
         })}
         <Controls>
-          <BaseButton type={ButtonTypes.EMPTY}>Clear</BaseButton>
-          <BaseButton type={ButtonTypes.FULL}>Checkout</BaseButton>
+          <BaseButton onClick={() => clearBasket(id)} type={ButtonTypes.EMPTY}>Clear</BaseButton>
+          <BaseButton onClick={this.goToCheckout} type={ButtonTypes.FULL}>Checkout</BaseButton>
         </Controls>
       </StyledBasket>
     );
@@ -78,6 +81,7 @@ export default connect(
   }),
   dispatch => ({
     addProduct: (product) => dispatch({ type: ADD_PRODUCT, product }),
-    removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product })
+    removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product }),
+    clearBasket: (basketId) => dispatch({ type: CLEAR_BASKET, basketId })
   })
 )(Basket);
