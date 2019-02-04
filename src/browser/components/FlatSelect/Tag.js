@@ -27,6 +27,7 @@ const Container = styled.li`
 
 const Tag = ({
   value,
+  children,
   onSelect
 }) => (
   <Container
@@ -34,13 +35,11 @@ const Tag = ({
     onClick={onSelect}
     onKeyPress={({ key }) => key === 'Enter' && onSelect()}
     >
-    {value}
+    {children}
   </Container>
 );
 
 Tag.propTypes = {
-  id: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired,
-  value: PropTypes.string.isRequired,
   onSelect: PropTypes.func
 };
 

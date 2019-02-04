@@ -12,6 +12,9 @@ import AddIcon from 'ICONS/AddIcon';
 import BreadCrumb from 'COMPONENTS/BreadCrumb';
 import Routes, { addParamsToUrl } from 'ROUTES';
 import SectionTitle from 'COMPONENTS/SectionTitle';
+import ProductCard from './ProductCard';
+import {connect} from 'react-redux';
+import {ADD_PRODUCT, REMOVE_PRODUCT} from 'STORE/baskets';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -34,6 +37,10 @@ const GET_PRODUCTS_LIST = gql`
       name
       price
       ingredients
+      restaurant {
+        id
+        name
+      }
     }
   }
 `;
@@ -57,65 +64,27 @@ const BasketSection = styled.div`
   margin-left: 20px;
 `;
 
-// TODO: refactor this maybe ?
-const PRODUCT_WIDTH = 350;
-const OFFSET_SIDEBAR = 300;
-
-/**
- * Generates a bunch of size configuration
- * TODO: cleaner comment + refactor this ?
- */
-const ResponsiveProductSizes = new Array(10).fill(1).map((_, index) => {
-  return `
-    @media only screen and (min-width: ${((index + 1) * PRODUCT_WIDTH) + OFFSET_SIDEBAR}px) {
-      width: ${100 / (index + 1)}%;
-    }
-  `;
-}).join('\n');
-
-const Product = styled.div`
-  width: 350px;
-  height: 100px;
-  padding: 20px;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
-  border-radius: 3px;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  
-  &:hover {
-    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  ${ResponsiveProductSizes}
-`;
-
 const NavSection = styled.div``;
 const BodySection = styled.div`
   display: flex;
 `;
-
-const ProductInformation = styled.div`
-  flex-grow: 1;
-`;
-const ProductName = styled.h4``;
-const ProductIngredients = styled.p``;
 
 const MenuTitle = styled(SectionTitle)`
   margin-bottom: 20px;
   margin-top: 20px;
 `;
 
-export default class extends React.Component {
+class RestaurantDetails extends React.Component {
   constructor (props) {
     super(props);
   }
 
   render () {
     const { id, city, name } = this.props.match.params;
+    const {
+      addProduct,
+      removeProduct
+    } = this.props;
 
     return (
       <Query query={GET_PRODUCTS_LIST} variables={{ id }}>
@@ -125,6 +94,7 @@ export default class extends React.Component {
 
           return (
             <Container>
+              {/* Breadcrumb */}
               <NavSection>
                 <BreadCrumb>
                   {[
@@ -145,23 +115,15 @@ export default class extends React.Component {
                     url={data.restaurant.imageUrl}
                     thumbnail={data.restaurant.thumbnail}
                     alt={data.restaurant.name}
-                  />
+                    />
                   <MenuTitle>Entries</MenuTitle>
-                  {data && data.productsList.map(({ id, name, price, ingredients }) => (
-                    <Product key={id}>
-                      <ProductInformation>
-                        <ProductName>{name}</ProductName>
-                        <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
-                      </ProductInformation>
-                      <ProductControls>
-                        <ToolTip label='Remove item'>
-                          <ControlButton icon={<RemoveIcon height={12} color={Colors.RED} />} />
-                        </ToolTip>
-                        <ToolTip label='Add item'>
-                          <ControlButton icon={<AddIcon height={12} color={Colors.GREEN} />} />
-                        </ToolTip>
-                      </ProductControls>
-                    </Product>
+                  {data && data.productsList.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      addProduct={() => addProduct(product)}
+                      removeProduct={() => removeProduct(product)}
+                      {...product}
+                      />
                   ))}
                 </MenuSection>
                 <BasketSection>
@@ -175,3 +137,11 @@ export default class extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({}),
+  (dispatch) => ({
+    addProduct: (product) => dispatch({ type: ADD_PRODUCT, product }),
+    removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product })
+  })
+)(RestaurantDetails);

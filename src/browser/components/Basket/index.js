@@ -28,6 +28,17 @@ const Title = styled.h2`
 `;
 
 class Basket extends React.Component {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    const {
+      id,
+      baskets
+    } = this.props;
+    const currentBasket = baskets[id];
+    const nextBasket = nextProps.baskets[nextProps.id];
+
+    return JSON.stringify(currentBasket) !== JSON.stringify(nextBasket);
+  }
+
   render () {
     const {
       id,
@@ -40,20 +51,17 @@ class Basket extends React.Component {
     return (
       <StyledBasket>
         <Title>Your basket (&nbsp;64.5 €&nbsp;)</Title>
-        <FlipMove enterAnimation='fade' leaveAnimation='fade'>
-
-          {Object.keys(products || []).map(productId => {
-            const product = products[productId];
-            return (
-              <Product
-                key={product.id}
-                add={() => addProduct(product)}
-                remove={() => removeProduct(product)}
-                {...product}
-                />
-            );
-          })}
-        </FlipMove>
+        {Object.keys(products || []).map(productId => {
+          const product = products[productId];
+          return (
+            <Product
+              key={product.id}
+              add={() => addProduct(product)}
+              remove={() => removeProduct(product)}
+              {...product}
+              />
+          );
+        })}
         <Controls>
           <BaseButton type={ButtonTypes.EMPTY}>Clear</BaseButton>
           <BaseButton type={ButtonTypes.FULL}>Checkout</BaseButton>

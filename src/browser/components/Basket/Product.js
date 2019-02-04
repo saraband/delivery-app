@@ -42,6 +42,8 @@ export const ControlButton = styled(BaseButton).attrs({
 })`
   filter: grayscale(100%);
   opacity: 0.5;
+  width: 40px;
+  height: 40px;
   
   &:hover {
     filter: grayscale(0);

@@ -47,8 +47,9 @@ export default class FlatSelect extends React.Component {
             <Tag
               key={tag.id}
               onSelect={() => onSelect(tag)}
-              {...tag}
-              />
+              >
+              {tag.value}
+            </Tag>
           ))}
         </List>
       </Section>

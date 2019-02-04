@@ -37,7 +37,7 @@ const StyledButton = styled.button`
   border-radius: ${p => p.round ? '100%' : '5px'};
   box-sizing: border-box;
   cursor: pointer;
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   transition: all 0.15s ease-in-out;
   position: relative;
   overflow: hidden;
