@@ -188,16 +188,16 @@ class RestaurantCard extends React.PureComponent {
             >
 
             {/* IMAGE */}
-            {/*<RestaurantImage
+            <RestaurantImage
               url={imageUrl}
               alt={name}
               thumbnail={thumbnail}
-              />*/}
+              />
 
             {/* DESCRIPTION */}
             <Description>
               <Flex justify='space-between' align='flex-end'>
-                <RestaurantName>{id} = {name}</RestaurantName>
+                <RestaurantName>{name}</RestaurantName>
                 <RestaurantRating>
                   <RatingLogo />
                   {rating}

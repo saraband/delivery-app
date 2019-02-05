@@ -51,15 +51,13 @@ export default class RestaurantsList extends React.Component {
     this.shouldNotFetchAnymore = false;
   }
 
-  /*componentWillUpdate (nextProps, nextState, nextContext) {
+  componentWillUpdate (nextProps, nextState, nextContext) {
     // Location has changed => scroll to the top +
-    // reset endless scroll
     if (this.props.location.pathname !== nextProps.location.pathname ||
       this.props.location.search !== nextProps.location.search) {
-      this.setState({ ...InitialState });
       window.scrollTo(0, 0);
     }
-  }*/
+  }
 
   render () {
     const { city } = this.props.match.params;
@@ -78,13 +76,13 @@ export default class RestaurantsList extends React.Component {
 
         {/* RESTAURANTS LIST */}
         <Query
-          query={GET_RESTAURANTS_LIST} variables={{ city, offset: 0, limit: 5, tag, order: 'asc' }}
           fetchPolicy='cache-and-network'
+          query={GET_RESTAURANTS_LIST}
+          variables={{ city, offset: 0, limit: 20, tag, order: 'asc' }}
           >
           {({ error, loading, data, fetchMore }) => {
-            // TODO: placeholder
             if (error) return <p>Error</p>;
-            // if (loading) return <p>Loading</p>;
+            // TODO loading placeholder
 
             return (
               <List>
@@ -97,7 +95,13 @@ export default class RestaurantsList extends React.Component {
                 {!loading && (
                   <InfiniteScroll
                     fetchMore={() => {
-                      if (this.isFetchingMore || this.shouldNotFetchAnymore) return;
+                      // Already fetching or no more data to fetch
+                      // do nothing
+                      if (this.isFetchingMore ||
+                        this.shouldNotFetchAnymore) {
+                        return;
+                      }
+
                       this.isFetchingMore = true;
                       fetchMore({
                         variables: {
@@ -108,13 +112,15 @@ export default class RestaurantsList extends React.Component {
                           order: 'asc'
                         },
                         updateQuery: (prev, { fetchMoreResult }) => {
-                          if (!fetchMoreResult || !fetchMoreResult.restaurantsList.length) {
-                            console.log('No more data to fetch, not fetching.')
+                          // No more data to fetch, update shouldNotFetchAnymore
+                          // flag so we won't try to fetch data anymore
+                          if (!fetchMoreResult ||
+                            !fetchMoreResult.restaurantsList.length) {
                             this.shouldNotFetchAnymore = true;
                             return prev;
                           }
 
-                          // process the data being fetched ie appending it to
+                          // Process the data fetched i.e. appending it to
                           // the existing data
                           this.isFetchingMore = false;
                           return {
@@ -127,7 +133,7 @@ export default class RestaurantsList extends React.Component {
                         }
                       })
                     }}
-                  />
+                    />
                 )}
               </List>
             );

@@ -118,11 +118,6 @@ class BaseButton extends React.PureComponent {
     // so we can create ripples large enough
     const { width, height } = this.ref.current.getBoundingClientRect();
     this.size = Math.sqrt(width * width + height * height);
-
-    // If the parent of the button needs it ref, we pass it
-    if (this.props.retrieveRef) {
-      this.props.retrieveRef(this.ref.current);
-    }
   }
 
   handleMouseDown = (event) => {

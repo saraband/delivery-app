@@ -32,21 +32,30 @@ export default (state = {}, action) => {
       const { id } = action.product;
       const restaurantId = action.product.restaurant.id;
       const restaurantBasket = state[restaurantId];
-      const productStored = restaurantBasket && restaurantBasket[id];
+      const productStored = restaurantBasket &&
+        restaurantBasket.products &&
+        restaurantBasket.products[id];
 
 
       return {
         ...state,
         [restaurantId]: {
           ...state[restaurantId],
-          [id]: productStored
+          restaurant: action.product.restaurant,
+          products: {
+            // ALready existing products
+            ...(state[restaurantId] ? state[restaurantId].products : {}),
 
-            // If the product already exists in the basket
-            // We increase its quantity
-            ? { ...productStored, quantity: productStored.quantity + 1 }
+            // For the product we want to add
+            [id]: productStored
 
-            // Else, we put it there
-            : { ...action.product, quantity: 1 }
+              // If the product already exists in the basket
+              // We increase its quantity
+              ? { ...productStored, quantity: productStored.quantity + 1 }
+
+              // Else, we put it there
+              : { ...action.product, quantity: 1 }
+          }
         }
       };
     }
@@ -55,7 +64,9 @@ export default (state = {}, action) => {
       const { id, name } = action.product;
       const restaurantId = action.product.restaurant.id;
       const restaurantBasket = state[restaurantId];
-      const productStored = restaurantBasket && restaurantBasket[id];
+      const productStored = restaurantBasket &&
+        restaurantBasket.products &&
+        restaurantBasket.products[id];
 
       // Product doesn't exist in baskets
       // This should never happen
@@ -76,33 +87,36 @@ export default (state = {}, action) => {
         // The product we remove is the only one
         // In the whole basket, remove the basket
         if (productStored.quantity === 1 &&
-          Object.keys(state[currentBasketId]).length === 1) {
+          Object.keys(state[currentBasketId].products).length === 1) {
           return newState;
         }
 
         // Decrease the quantity of the removed product
         // In the basket
-        newState[currentBasketId] = Object.keys(state[currentBasketId]).reduce((newBasketState, currentProductId) => {
+        newState[currentBasketId] = {
+          ...newState[currentBasketId],
+          products: Object.keys(state[currentBasketId].products).reduce((newBasketState, currentProductId) => {
 
-          // Not the product we need to remove
-          if (currentProductId != id) {
-            newBasketState[currentProductId] = state[currentBasketId][currentProductId];
+            // Not the product we need to remove
+            if (currentProductId != id) {
+              newBasketState[currentProductId] = state[currentBasketId].products[currentProductId];
+              return newBasketState;
+            }
+
+            // Only product left of that type, remove it
+            if (productStored.quantity === 1) {
+              return newBasketState;
+            }
+
+            // Decrease quantity
+            newBasketState[currentProductId] = {
+              ...state[currentBasketId].products[currentProductId],
+              quantity: state[currentBasketId].products[currentProductId].quantity - 1
+            };
+
             return newBasketState;
-          }
-
-          // Only product left of that type, remove it
-          if (productStored.quantity === 1) {
-            return newBasketState;
-          }
-
-          // Decrease quantity
-          newBasketState[currentProductId] = {
-            ...state[currentBasketId][currentProductId],
-            quantity: state[currentBasketId][currentProductId].quantity - 1
-          };
-
-          return newBasketState;
-        }, {});
+          }, {})
+        };
 
         return newState;
       }, {});

@@ -51,7 +51,6 @@ export default class InfiniteScroll extends React.PureComponent {
   };
 
   render () {
-    console.log(this.props)
     return (
       <Container ref={this.ref} {...this.props} />
     );

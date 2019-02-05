@@ -99,7 +99,7 @@ export default class SearchInput extends React.PureComponent {
     super(props);
 
     this.dropDownRef = React.createRef();
-    this.buttonRef = null; // This will be callbacked by the button after it gets mounted
+    this.inputRef = React.createRef();
     this.state = {
       value: props.value,
       lastSearchedValue: '',
@@ -157,14 +157,13 @@ export default class SearchInput extends React.PureComponent {
         break;
 
       case 'Enter':
-        // Select the current focused option
-        if (focusedOption !== undefined) {
-          this.selectOption(results[focusedOption].value);
+        // Select the current focused option and
+        // submit the input
+        this.selectOption(results[focusedOption].value);
+        this.props.onSubmit(value);
 
-        // Submit the input
-        } else {
-          this.props.onSubmit(value);
-        }
+        // Blur the input
+        ('activeElement' in document) && document.activeElement.blur();
         break;
     }
 
@@ -210,14 +209,8 @@ export default class SearchInput extends React.PureComponent {
       value,
       isDropDownVisible: false,
       focusedOption: undefined
-    }, () => {
-
-      // Focus the button
-      if (this.buttonRef) {
-        this.buttonRef.focus();
-      }
     });
-  }
+  };
 
   /*  This is a bit messy
    */
@@ -289,6 +282,7 @@ export default class SearchInput extends React.PureComponent {
         <StyledInput
           name={name}
           value={value}
+          ref={this.inputRef}
           onKeyDown={this.handleKeyDown}
           onFocus={() => this.setState({ isDropDownVisible: true })}
           onBlur={(event) => {
@@ -303,9 +297,6 @@ export default class SearchInput extends React.PureComponent {
           placeholder={placeholder}
           />
         <StyledButton
-          // TODO: might refactor this ref thing
-          // TODO: this is a bit messy
-          retrieveRef={(element) => this.buttonRef = element}
           type={ButtonTypes.FULL}
           onClick={() => onSubmit(value)}
           />

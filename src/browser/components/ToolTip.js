@@ -11,6 +11,7 @@ const Container = styled.div`
 
 const Tip = styled.div`
   position: absolute;
+  z-index: -1;
   ${p => p.position === 'top' ? 'bottom' : 'top'}: 100%;
   margin-${p => p.position === 'top' ? 'bottom' : 'top'}: 20px;
   background-color: ${Colors.DARK_GREY};
@@ -41,6 +42,7 @@ const Tip = styled.div`
 
 const ComponentContainer= styled.div`
   &:hover + ${Tip} {
+    z-index: 500;
     opacity: 1;
     margin-${p => p.position === 'top' ? 'bottom' : 'top'}: 10px;
   }

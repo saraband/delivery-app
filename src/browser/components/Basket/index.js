@@ -39,7 +39,7 @@ class Basket extends React.Component {
 
   goToCheckout = () => {
     console.log('checkout');
-  }
+  };
 
   render () {
     const {
@@ -49,7 +49,7 @@ class Basket extends React.Component {
       removeProduct,
       clearBasket
     } = this.props;
-    const products = baskets[id] || [];
+    const products = (baskets[id] && baskets[id].products) || [];
     const total = Object.values(products).reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
     return (

@@ -15,6 +15,7 @@ import SectionTitle from 'COMPONENTS/SectionTitle';
 import ProductCard from './ProductCard';
 import {connect} from 'react-redux';
 import {ADD_PRODUCT, REMOVE_PRODUCT} from 'STORE/baskets';
+import RestaurantBreadCrumb from './RestaurantBreadCrumb';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -64,7 +65,6 @@ const BasketSection = styled.div`
   margin-left: 20px;
 `;
 
-const NavSection = styled.div``;
 const BodySection = styled.div`
   display: flex;
 `;
@@ -80,7 +80,7 @@ class RestaurantDetails extends React.Component {
   }
 
   render () {
-    const { id, city, name } = this.props.match.params;
+    const { id } = this.props.match.params;
     const {
       addProduct,
       removeProduct
@@ -94,21 +94,10 @@ class RestaurantDetails extends React.Component {
 
           return (
             <Container>
-              {/* Breadcrumb */}
-              <NavSection>
-                <BreadCrumb>
-                  {[
-                    {
-                      label: city,
-                      url: addParamsToUrl(Routes.RESTAURANTS_LIST, { city }),
-                      tip: `Restaurants around ${city}`
-                    },
-                    {
-                      label: name
-                    }
-                  ]}
-                </BreadCrumb>
-              </NavSection>
+              {/* BREADCRUMB */}
+              <RestaurantBreadCrumb />
+
+              {/* BODY SECTION */}
               <BodySection>
                 <MenuSection>
                   <BannerImage
@@ -126,6 +115,8 @@ class RestaurantDetails extends React.Component {
                       />
                   ))}
                 </MenuSection>
+
+                {/* BASKET SIDEBAR */}
                 <BasketSection>
                   <Basket id={id} />
                 </BasketSection>
