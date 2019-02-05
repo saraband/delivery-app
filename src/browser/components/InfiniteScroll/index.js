@@ -1,14 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  border: 2px solid red;
-  padding: 20px;
-  font-size: 20px;
-  width: 100%;
-`;
+const Container = styled.div``;
 
-export default class EndlessScroll extends React.PureComponent {
+export default class InfiniteScroll extends React.PureComponent {
   constructor (props) {
     super(props);
 
@@ -19,8 +14,14 @@ export default class EndlessScroll extends React.PureComponent {
     };
   }
 
-  componentDidMount = () => document.addEventListener('scroll', this.watchScroll);
-  componentWillUnmount = () => document.removeEventListener('scroll', this.watchScroll);
+  componentDidMount () {
+    document.addEventListener('scroll', this.watchScroll);
+    this.checkScroll();
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('scroll', this.watchScroll);
+  }
 
   watchScroll = () => {
     if (!this.scrollTick) {
@@ -30,12 +31,11 @@ export default class EndlessScroll extends React.PureComponent {
   };
 
   checkScroll = () => {
-    const { fetchMore } = this.props;
     const top = this.ref.current.getBoundingClientRect().top - window.innerHeight;
 
     // Triggers if the user has scrolled almost to the bottom of the page
     if (top < 0) {
-      fetchMore();
+      this.props.fetchMore();
     }
 
     this.scrollTick = false;
@@ -43,7 +43,7 @@ export default class EndlessScroll extends React.PureComponent {
 
   render () {
     return (
-      <Container ref={this.ref}>Hello</Container>
+      <Container ref={this.ref} />
     );
   }
 };

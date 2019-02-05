@@ -75,6 +75,7 @@ export default class Index extends React.PureComponent {
       ? FixedWidthContainer
       : ResponsiveWidthContainer;
 
+    return null;
     return (
       <StyledHeader>
         <WidthContainer>

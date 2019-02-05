@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import SideBar from './SideBar';
 import RestaurantCard from './RestaurantCard';
 import Colors from 'CONSTANTS/Colors';
-import EndlessScroll from 'COMPONENTS/EndlessScroll';
+import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
 
 const GET_RESTAURANTS_LIST = gql`
   query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
@@ -48,7 +48,7 @@ export default class RestaurantsList extends React.Component {
   constructor (props) {
     super(props);
     this.isFetchingMore = false;
-    this.state = { ...InitialState };
+    this.shouldNotFetchAnymore = false;
   }
 
   componentWillUpdate (nextProps, nextState, nextContext) {
@@ -63,13 +63,15 @@ export default class RestaurantsList extends React.Component {
 
   render () {
     const { city } = this.props.match.params;
-    const { offset, limit } = this.state;
     const tag = queryString.parse(this.props.location.search).tag;
 
     return (
       <Container>
         <SideBar city={city} />
-        <Query query={GET_RESTAURANTS_LIST} variables={{ city, offset: 0, limit: 20, tag, order: 'asc' }}>
+        <Query
+          query={GET_RESTAURANTS_LIST} variables={{ city, offset: 0, limit: 5, tag, order: 'asc' }}
+          fetchPolicy='cache-and-network'
+          >
           {({ error, loading, data, fetchMore }) => {
             // TODO: placeholder
             if (error) return <p>Error</p>;
@@ -83,37 +85,41 @@ export default class RestaurantsList extends React.Component {
                 ))}
 
                 {/* ENDLESS SCROLL */}
-                <EndlessScroll fetchMore={() => {
-                  if (this.isFetchingMore) {
-                    return;
-                  }
+                {!loading && (
+                  <InfiniteScroll
+                    fetchMore={() => {
+                      if (this.isFetchingMore || this.shouldNotFetchAnymore) return;
+                      this.isFetchingMore = true;
+                      fetchMore({
+                        variables: {
+                          city,
+                          offset: data.restaurantsList.length,
+                          limit: data.restaurantsList.length + 5,
+                          tag,
+                          order: 'asc'
+                        },
+                        updateQuery: (prev, { fetchMoreResult }) => {
+                          if (!fetchMoreResult || !fetchMoreResult.restaurantsList.length) {
+                            console.log('No more data to fetch, not fetching.')
+                            this.shouldNotFetchAnymore = true;
+                            return prev;
+                          }
 
-                  this.isFetchingMore = true;
-                  fetchMore({
-                    variables: {
-                      city,
-                      offset: data.restaurantsList.length,
-                      limit: data.restaurantsList.length + 2,
-                      tag,
-                      order: 'asc'
-                    },
-                    updateQuery: async (prev, { fetchMoreResult }) => {
-                      console.log('fetchMoreResult', fetchMoreResult);
-                      if (!fetchMoreResult) return prev;
-
-                      // process the data being fetched ie appending it to
-                      // the existing data
-                      this.isFetchingMore = false;
-                      return {
-                        ...prev,
-                        restaurantsList: [
-                          ...prev.restaurantsList,
-                          ...fetchMoreResult.restaurantsList
-                        ]
-                      };
-                    }
-                  })
-                }} />
+                          // process the data being fetched ie appending it to
+                          // the existing data
+                          this.isFetchingMore = false;
+                          return {
+                            ...prev,
+                            restaurantsList: [
+                              ...prev.restaurantsList,
+                              ...fetchMoreResult.restaurantsList
+                            ]
+                          };
+                        }
+                      })
+                    }}
+                  />
+                )}
               </List>
             );
           }}
