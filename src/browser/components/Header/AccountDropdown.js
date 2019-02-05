@@ -41,11 +41,14 @@ const Avatar = styled.div`
   background-color: ${Colors.LIGHT_GREY};
   width: 85px;
   height: 85px;
+  background: url(${p => p.url});
+  background-size: cover;
+  background-position: 50% 50%;
 `;
 
 const Username = styled.h2`
   color: ${Colors.BLACK};
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   margin-bottom: 5px;
   font-weight: normal;
 `;
@@ -58,10 +61,11 @@ const Email = styled.h4`
 `;
 
 const ViewProfileLink = styled.h4`
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   color: ${Colors.BLUE};
   margin-bottom: 10px;
   font-weight: normal;
+  cursor: pointer;
 `;
 
 const LogoutButton = styled(BaseButton).attrs({
@@ -78,14 +82,15 @@ const ProfileDropdown = () => (
 
       const {
         email,
-        username
+        username,
+        avatarUrl
       } = data.self;
 
       return (
         <DropdownContainer>
           <Flex direction='column'>
             <Flex>
-              <Avatar />
+              <Avatar url={avatarUrl} />
               <Flex direction='column' css={css`padding-left: 10px`}>
                 <Username>{username}</Username>
                 <Email>{email}</Email>

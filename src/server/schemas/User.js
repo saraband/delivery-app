@@ -2,6 +2,7 @@ export const typeDefs = `
   type User {
     username: String!
     email: String!
+    avatarUrl: String
   }
   
   extend type Query {
@@ -13,7 +14,8 @@ export const resolvers = {
   Query: {
     self: () => ({
       username: 'Jane Doe',
-      email: 'jane.doe@mail.com'
+      email: 'jane.doe@mail.com',
+      avatarUrl: '/images/avatar.jpg'
     })
   }
 };

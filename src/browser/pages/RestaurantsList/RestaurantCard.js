@@ -71,7 +71,7 @@ const Description = styled.div`
 
 const RestaurantName = styled.h1`
   color: ${Colors.DARK_GREY};
-  font-size: ${FontSizes.BIG};
+  font-size: ${FontSizes.MEDIUM};
   font-weight: normal;
 `;
 

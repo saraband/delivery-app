@@ -54,6 +54,7 @@ export const GET_ACCOUNT_INFO = gql`
     self {
       username
       email
+      avatarUrl
     }
   }
 `;
