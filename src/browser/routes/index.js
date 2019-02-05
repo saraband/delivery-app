@@ -11,6 +11,6 @@ export default {
   ROOT: '/',
   HOME: '/list/all',
   RESTAURANTS_LIST: '/list/:city',
-  RESTAURANT_DETAILS: '/restaurant/:id',
+  RESTAURANT_DETAILS: '/:city/restaurant/:id',
   RESTAURANT_CHECKOUT: '/restaurant/:id/checkout'
 };

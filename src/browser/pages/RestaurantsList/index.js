@@ -61,7 +61,7 @@ export default class RestaurantsList extends React.Component {
   }
 
   render () {
-    const { city } = this.props.match.params;
+    const city = this.props.match.params.city || 'all';
     const tag = queryString.parse(this.props.location.search).tag;
 
     return (

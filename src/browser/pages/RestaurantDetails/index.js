@@ -16,6 +16,7 @@ import ProductCard from './ProductCard';
 import {connect} from 'react-redux';
 import {ADD_PRODUCT, REMOVE_PRODUCT} from 'STORE/baskets';
 import RestaurantBreadCrumb from './RestaurantBreadCrumb';
+import { Helmet } from 'react-helmet';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -80,7 +81,7 @@ class RestaurantDetails extends React.Component {
   }
 
   render () {
-    const { id } = this.props.match.params;
+    const { id, city } = this.props.match.params;
     const {
       addProduct,
       removeProduct
@@ -94,8 +95,16 @@ class RestaurantDetails extends React.Component {
 
           return (
             <Container>
+              {/* META */}
+              <Helmet>
+                <title>Hotbox | {data.restaurant.name}</title>
+              </Helmet>
+
               {/* BREADCRUMB */}
-              <RestaurantBreadCrumb />
+              <RestaurantBreadCrumb
+                restaurantName={data.restaurant.name}
+                city={city}
+                />
 
               {/* BODY SECTION */}
               <BodySection>

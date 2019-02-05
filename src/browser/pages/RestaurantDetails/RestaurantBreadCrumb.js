@@ -8,22 +8,22 @@ const NavSection = styled.div``;
 
 export default class RestaurantBreadCrumb extends React.PureComponent {
   render () {
+    const { city, restaurantName } = this.props;
     return (
       <NavSection>
         <BreadCrumb>
           {[
             {
-              label: 'HOME',
-              url: Routes.HOME,
-              tip: `Home`
+              label: 'Home',
+              url: Routes.HOME
             },
             {
-              label: 'CITY',
-              url: addParamsToUrl(Routes.RESTAURANTS_LIST, { city: 'all' }),
-              tip: `Restaurants around ${'TODO'}`
+              label: city,
+              url: addParamsToUrl(Routes.RESTAURANTS_LIST, { city }),
+              tip: `Restaurants in ${city}`
             },
             {
-              label: 'RESTAURANT NAME'
+              label: restaurantName
             }
           ]}
         </BreadCrumb>

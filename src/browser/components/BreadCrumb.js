@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Colors from 'CONSTANTS/Colors';
 import { hexToRgbaString } from 'HELPERS';
 import FontSizes from 'CONSTANTS/FontSizes';
+import NullComponent from 'COMPONENTS/NullComponent';
 
 const Container = styled.div`
 padding-bottom: 20px;
@@ -26,6 +27,8 @@ const Label = styled.span`
   color: ${p => p.active ? Colors.DARK_GREY : Colors.BLUE};
 `;
 
+const RenderChildrenComponent = ({ children }) => children;
+
 export default class BreadCrumb extends React.Component {
   // prev and next children props will always be different
   // so this is to avoid re render
@@ -39,14 +42,19 @@ export default class BreadCrumb extends React.Component {
             return <Label key={index} active>{label}</Label>;
           }
 
+          // If no tooltip is provided, don't show anything
+          const ToolTipComponent = tip
+            ? ToolTip
+            : RenderChildrenComponent;
+
           return (
-            <ToolTip key={index} label={label}>
+            <ToolTipComponent key={index} label={tip}>
               <StyledLink to={url}>
                 <Label>
                   {label}
                 </Label>
               </StyledLink>
-            </ToolTip>
+            </ToolTipComponent>
           );
         })}
       </Container>
