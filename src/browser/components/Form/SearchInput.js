@@ -110,7 +110,7 @@ export default class SearchInput extends React.PureComponent {
     };
   }
 
-  handleKeyDown = (event) => {
+  handleKeyDown = async (event) => {
     const {
       value,
       focusedOption,
@@ -157,10 +157,15 @@ export default class SearchInput extends React.PureComponent {
         break;
 
       case 'Enter':
-        // Select the current focused option and
-        // submit the input
-        this.selectOption(results[focusedOption].value);
-        this.props.onSubmit(value);
+        // Select the current focused option if there is
+        // and submit the input
+        if (focusedOption !== undefined) {
+          await this.selectOption(results[focusedOption].value);
+
+        // Only submit the input
+        } else {
+          this.props.onSubmit(this.state.value);
+        }
 
         // Blur the input
         ('activeElement' in document) && document.activeElement.blur();
@@ -181,6 +186,7 @@ export default class SearchInput extends React.PureComponent {
 
       // If the user clears the whole input
       // we hide the container instantly
+      focusedOption: undefined,
       lastSearchedValue: value.length === 0
         ? ''
         : lastSearchedValue
@@ -203,14 +209,20 @@ export default class SearchInput extends React.PureComponent {
     });
   }, 50);
 
-  selectOption = (value) => {
+  selectOption = (value) => new Promise ((resolve) => {
     // Select the value
     this.setState({
       value,
       isDropDownVisible: false,
       focusedOption: undefined
+    }, () => {
+
+      // State has been updated, submit the current value
+      // i.e. the value of the selected option
+      resolve();
+      this.props.onSubmit(this.state.value);
     });
-  };
+  });
 
   /*  This is a bit messy
    */

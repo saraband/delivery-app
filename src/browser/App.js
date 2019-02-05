@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import Layout from 'LAYOUTS/Default';
 import Routes from 'ROUTES';
 import Loader from 'COMPONENTS/Loader';
@@ -24,6 +24,7 @@ export default class App extends React.Component {
         <Suspense fallback={<Loader size={100}/>}>
           <Switch>
             <Route exact path={Routes.TEST} component={TestPage} />
+            <Route exact path={Routes.ROOT} component={RestaurantsList} />
             <Route exact path={Routes.HOME} component={RestaurantsList} />
             <Route exact path={Routes.RESTAURANTS_LIST} component={RestaurantsList} />
             <Route exact path={Routes.RESTAURANT_DETAILS} component={RestaurantDetails} />

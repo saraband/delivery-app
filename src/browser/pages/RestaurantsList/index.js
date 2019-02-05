@@ -10,6 +10,7 @@ import SideBar from './SideBar';
 import RestaurantCard from './RestaurantCard';
 import Colors from 'CONSTANTS/Colors';
 import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
+import { Helmet } from 'react-helmet';
 
 const GET_RESTAURANTS_LIST = gql`
   query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
@@ -61,6 +62,7 @@ export default class RestaurantsList extends React.Component {
 
   render () {
     const { city } = this.props.match.params;
+    console.log(this.props.match)
     const tag = queryString.parse(this.props.location.search).tag;
 
     return (
@@ -86,6 +88,11 @@ export default class RestaurantsList extends React.Component {
 
             return (
               <List>
+                {/* META */}
+                <Helmet>
+                  <title>Hotbox | {city ? `Restaurants in ${city}` : 'All restaurants'}</title>
+                </Helmet>
+
                 {/* LIST */}
                 {(data.restaurantsList || []).map(r => (
                   <RestaurantCard key={r.id} {...r} city={city} />
