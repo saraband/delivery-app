@@ -47,7 +47,7 @@ class SideBar extends React.PureComponent {
 
     return (
       <Container>
-        <CitySearch />
+        <CitySearch value={city} />
 
         {/* PENDING ORDERS */}
         <PendingOrders />
