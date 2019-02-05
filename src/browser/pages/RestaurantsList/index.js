@@ -51,7 +51,7 @@ export default class RestaurantsList extends React.Component {
     this.shouldNotFetchAnymore = false;
   }
 
-  componentWillUpdate (nextProps, nextState, nextContext) {
+  /*componentWillUpdate (nextProps, nextState, nextContext) {
     // Location has changed => scroll to the top +
     // reset endless scroll
     if (this.props.location.pathname !== nextProps.location.pathname ||
@@ -59,7 +59,7 @@ export default class RestaurantsList extends React.Component {
       this.setState({ ...InitialState });
       window.scrollTo(0, 0);
     }
-  }
+  }*/
 
   render () {
     const { city } = this.props.match.params;
@@ -67,7 +67,16 @@ export default class RestaurantsList extends React.Component {
 
     return (
       <Container>
-        <SideBar city={city} />
+        {/* SIDEBAR */}
+        <SideBar
+          city={city}
+          resetScroll={() => {
+            this.isFetchingMore = false;
+            this.shouldNotFetchAnymore = false;
+          }}
+          />
+
+        {/* RESTAURANTS LIST */}
         <Query
           query={GET_RESTAURANTS_LIST} variables={{ city, offset: 0, limit: 5, tag, order: 'asc' }}
           fetchPolicy='cache-and-network'
@@ -79,7 +88,7 @@ export default class RestaurantsList extends React.Component {
 
             return (
               <List>
-                {/* LIST OF RESTAURANTS */}
+                {/* LIST */}
                 {(data.restaurantsList || []).map(r => (
                   <RestaurantCard key={r.id} {...r} city={city} />
                 ))}

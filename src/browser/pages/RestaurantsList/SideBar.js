@@ -41,7 +41,8 @@ class SideBar extends React.PureComponent {
   render () {
     const {
       history,
-      city
+      city,
+      resetScroll
     } = this.props;
 
     return (
@@ -66,7 +67,8 @@ class SideBar extends React.PureComponent {
                   value: tag
                 }))}
                 onSelect={(selected) => {
-                  history.push(addParamsToUrl(Routes.RESTAURANTS_LIST, { city }) + `?tag=${selected.id}`);
+                  resetScroll();
+                  history.push(`${addParamsToUrl(Routes.RESTAURANTS_LIST, { city: city || 'all' })}?tag=${selected.id}`);
                 }}
               />
             );

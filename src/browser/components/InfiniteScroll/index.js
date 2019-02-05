@@ -1,7 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  ${p => p.hasOwnProperty('debug')
+    ? `
+      width: 100%;
+      background-color: red;
+      height: 50px;
+    `
+    : ''
+  }
+`;
 
 export default class InfiniteScroll extends React.PureComponent {
   constructor (props) {
@@ -42,8 +51,9 @@ export default class InfiniteScroll extends React.PureComponent {
   };
 
   render () {
+    console.log(this.props)
     return (
-      <Container ref={this.ref} />
+      <Container ref={this.ref} {...this.props} />
     );
   }
 };

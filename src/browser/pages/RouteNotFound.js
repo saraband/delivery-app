@@ -21,7 +21,7 @@ export default class RouteNotFound extends React.Component {
     return (
       <StyledNotFound>
         <Title>The page you're looking for doesn't seem to exist.</Title>
-        <Subtitle><Link to={Routes.RESTAURANTS_LIST}>Go back to the home page</Link></Subtitle>
+        <Subtitle><Link to={Routes.HOME}>Go back to the home page</Link></Subtitle>
       </StyledNotFound>
     );
   }

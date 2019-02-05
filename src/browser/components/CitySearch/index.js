@@ -33,7 +33,8 @@ class CitySearch extends React.Component {
     const {
       className,
       value,
-      history
+      history,
+      location
     } = this.props;
 
     return (
@@ -45,9 +46,12 @@ class CitySearch extends React.Component {
             className={className}
             placeholder='Search a city...'
             searchFunction={async (filter) => {
+              // Empty filter
+              if (!filter.trim()) return [];
+
               const { data } = await client.query({
                 query: GET_CITIES_LIST,
-                variables: { filter }
+                variables: { filter: filter.trim() }
               });
 
               // we restructure the data to fit SearchInput requirements
@@ -61,12 +65,15 @@ class CitySearch extends React.Component {
               }));
             }}
             onSubmit={(value) => {
-              // We retrieve the city name (The value might be City, Country)
-              // TODO: what if the user types 'dsf,qsdf,qsdf,qsdf,'
-              const city = value.split(',')[0];
+              // If there is no value, redirects to /list/all
+              // Otherwise, we retrieve the city name and redirects to /list:city
+              const city = !value.trim()
+                ? 'all'
+                : value.split(',')[0];
 
               // Push to the restaurant list of this city
-              history.push(addParamsToUrl(Routes.RESTAURANTS_LIST, { city }))
+              // and preserve tags if they exist (query string parameters)
+              history.push(`${addParamsToUrl(Routes.RESTAURANTS_LIST, { city })}${location.search}`)
             }}
           />
         )}
