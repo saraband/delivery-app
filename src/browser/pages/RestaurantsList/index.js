@@ -14,6 +14,7 @@ import { Helmet } from 'react-helmet';
 
 const GET_RESTAURANTS_LIST = gql`
   query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
+    restaurantsCount
     restaurantsList (city: $city, offset: $offset, limit: $limit, tag: $tag, order: $order) {
       id
       name
@@ -29,8 +30,12 @@ const GET_RESTAURANTS_LIST = gql`
   }
 `;
 
+const Body = styled.div`
+  flex-grow: 1;
+`;
+
 const List = styled.div`
-flex-grow: 1;
+  flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
 `;
@@ -75,7 +80,6 @@ export default class RestaurantsList extends React.Component {
           }}
           />
 
-        {/* RESTAURANTS LIST */}
         <Query
           fetchPolicy='cache-and-network'
           query={GET_RESTAURANTS_LIST}
@@ -86,18 +90,25 @@ export default class RestaurantsList extends React.Component {
             // TODO loading placeholder
 
             return (
-              <List>
+              <Body>
                 {/* META */}
                 <Helmet>
                   <title>Hotbox | {city ? `Restaurants in ${city}` : 'All restaurants'}</title>
                 </Helmet>
 
-                {/* LIST */}
-                {(data.restaurantsList || []).map(r => (
-                  <RestaurantCard key={r.id} {...r} city={city} />
-                ))}
+                {/* HEADER */}
+                <div>
+                  {data.restaurantsCount} restaurants found
+                </div>
 
-                {/* ENDLESS SCROLL */}
+                {/* RESTAURANTS LIST */}
+                <List>
+                  {(data.restaurantsList || []).map(r => (
+                    <RestaurantCard key={r.id} {...r} city={city} />
+                  ))}
+                </List>
+
+                {/* INFINITE SCROLL */}
                 {!loading && (
                   <InfiniteScroll
                     fetchMore={() => {
@@ -139,9 +150,9 @@ export default class RestaurantsList extends React.Component {
                         }
                       })
                     }}
-                    />
+                  />
                 )}
-              </List>
+              </Body>
             );
           }}
         </Query>

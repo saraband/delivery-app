@@ -21,10 +21,33 @@ export const typeDefs = `
   }
   
   extend type Query {
+    restaurantsCount (city: String, tag: String): Int!
     restaurantsList (city: String, offset: Int, limit: Int, tag: String, order: String): [Restaurant!]!
     restaurant (id: ID): Restaurant
   }
 `;
+
+function getRestaurantSearchParams (city, tag) {
+  let params = {};
+
+  // Search restaurants containing the tag
+  if (tag !== undefined) {
+    params = {
+      where: {
+        tags: {
+          // TODO: this is not optimal (should be case insensitive)
+          [Op.contains]: [tag.substring(0, 1).toUpperCase() + tag.substring(1)]
+        }
+      }
+    }
+  }
+
+  // city is not used here since it's always the same restaurants list
+  // for every city, we just shuffle it. But in the future, we would process the city
+  // param here
+
+  return params;
+}
 
 export const resolvers = {
   JSON: GraphQLJSON,
@@ -33,6 +56,11 @@ export const resolvers = {
     products: (restaurant) => restaurant.getProducts()
   },
   Query: {
+    restaurantsCount: (_, { city, tag }) => {
+      return db.restaurant.count({
+        ...getRestaurantSearchParams(city, tag)
+      });
+    },
     restaurantsList: async (_, {
       city,
       offset,
@@ -40,28 +68,14 @@ export const resolvers = {
       tag,
       order
     }) => {
-      let params = {};
 
-      // Search restaurants containing the tag
-      if (tag !== undefined) {
-        params = {
-          where: {
-            tags: {
-              // TODO: this is not optimal (shoudl be case insensitive)
-              [Op.contains]: [tag.substring(0, 1).toUpperCase() + tag.substring(1)]
-            }
-          }
-        }
-      }
-
-      console.log('loading for offset=', offset, ', limit=', limit);
-
+      // Query the DB
       let results = await db.restaurant.findAll({
         /*
         offset,
         limit,
          */
-        ...params
+        ...getRestaurantSearchParams(city, tag)
       });
 
       // Randomly shuffle restaurants list based

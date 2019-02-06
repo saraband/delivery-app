@@ -13,11 +13,12 @@ const TestPage = lazy(() => import(/* webpackChunkName: 'route-test' */ 'PAGES/T
 
 export default class App extends React.Component {
   render () {
-    // TODO: use something else than document.location
-    // use responsive layout in RestaurantsList,
-    // fixed otherwise
+    // Use responsive layout when displaying the RestaurantsList page,
+    // use fixed layout otherwise
     const route = document.location.pathname;
-    const fixedLayout = route !== Routes.HOME && route.substring(0, 5) !== '/list';
+    const fixedLayout = route !== Routes.HOME &&
+      route !== Routes.ROOT &&
+      route.substring(0, 5) !== '/list';
 
     return (
       <Layout fixedWidth={fixedLayout}>
