@@ -35,16 +35,16 @@ function getRestaurantSearchParams (city, tag) {
     params = {
       where: {
         tags: {
-          // TODO: this is not optimal (should be case insensitive)
-          [Op.contains]: [tag.substring(0, 1).toUpperCase() + tag.substring(1)]
+          [Op.contains]: [tag.toLowerCase()]
         }
       }
     }
   }
 
-  // city is not used here since it's always the same restaurants list
-  // for every city, we just shuffle it. But in the future, we would process the city
-  // param here
+  /* city is not used here since it's always the same restaurants list
+     for every city, we just shuffle it. But in the future, we would process the city
+     param here
+     */
 
   return params;
 }
@@ -78,9 +78,10 @@ export const resolvers = {
         ...getRestaurantSearchParams(city, tag)
       });
 
-      // Randomly shuffle restaurants list based
-      // on the city name (as a seed). This is to fake that each city has
-      // a different list of restaurants
+      /* Randomly shuffle restaurants list based
+         on the city name (as a seed). This is to fake that each city has
+         a different list of restaurants
+         */
       if (city !== 'undefined') {
         results = shuffleSeed(results, city);
       }
@@ -94,7 +95,7 @@ export const resolvers = {
 
          In a production case where I really have restaurants affiliated to cities, I would pass
          offset and limit in the SQL query as shown in the comment inside the query above
-       */
+         */
       return results.slice(offset, limit);
     },
     restaurant: (_, { id }) => db.restaurant.findOne({
