@@ -1,12 +1,18 @@
 import { remove as removeDiacritics } from 'diacritics';
+import escapeStringRegexp from 'escape-string-regexp';
+import { compose } from 'redux';
 
-/* we restructure the cities */
+/* We compute the ASCII name of each city so we can
+   search on it later
+   */
 const worldCities = require('../data/world-cities').map(city => ({
   id: city.geonameid,
   name: city.name,
   country: city.country,
   asciiName: removeDiacritics(city.name)
 }));
+
+console.log(worldCities[worldCities.length - 1].asciiName)
 
 export const typeDefs = `
   type City {
@@ -28,23 +34,18 @@ export const typeDefs = `
 
 export const resolvers = {
   Query: {
-    /*  TODO: rename this query (searchCity ?)
-     *  TODO: search for country also
-     *  TODO: search through special chars
-     *  TODO: weird bug for example when we search the city `toulouse******`
-     *  maybe due to the regex wildcard ?
-     */
     citiesList: (_, { filter }) => {
+      const then = Date.now();
       const results = [];
-      const regex = new RegExp(removeDiacritics(filter), 'i');
+      const escape = compose(removeDiacritics, escapeStringRegexp);
+      const regex = new RegExp(escape(filter), 'i');
 
       for (let city of worldCities) {
         const match = regex.exec(city.asciiName);
 
-        // if the city name matches the filter,
+        // If the city name matches the filter,
         // we add it as a CityMatch type to the results
         if (match) {
-          console.log('match')
           results.push({
             city,
             matchStartIndex: match.index,
@@ -57,6 +58,8 @@ export const resolvers = {
           }
         }
       }
+
+      console.log(`Search for \`${filter}\` executed in ${(Date.now() - then) / 1000}s`);
 
       return results;
     },

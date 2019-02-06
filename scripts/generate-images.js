@@ -1,3 +1,5 @@
+/* This script is no longer used */
+
 import log from 'SERVER/log';
 import fs from 'fs';
 import db from 'SERVER/models';

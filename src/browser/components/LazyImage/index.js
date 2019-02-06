@@ -9,7 +9,6 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { addParamsToUrl } from 'ROUTES';
-import { getOptimalResolution } from 'UTILS';
 import makeCancelable from 'makecancelable';
 
 const Container = styled.div`
@@ -84,16 +83,9 @@ export default class LazyImage extends React.Component {
       })
     );
 
-    // If the image has a parameter size, find the path
-    // to its most optimal resolution
-    // TODO ====
-    // TODO ====
-    // TODO this should be different
+
+    // Start the image loading
     this.image.src = this.props.url;
-    // TODO: this is no longer like this, rework
-    /*this.image.src = addParamsToUrl(this.props.url, {
-      size: getOptimalResolution(this.ref.current.getBoundingClientRect().width)
-    });*/
   };
 
   checkIfImageIsInViewPort = () => {

@@ -27,7 +27,6 @@ const GET_CITIES_LIST = gql`
   }
 `;
 
-// TODO: Component or PureComponent ?
 class CitySearch extends React.PureComponent {
   render () {
     const {
