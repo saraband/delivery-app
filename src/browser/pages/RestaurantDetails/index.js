@@ -10,6 +10,9 @@ import {connect} from 'react-redux';
 import {ADD_PRODUCT, REMOVE_PRODUCT} from 'STORE/baskets';
 import RestaurantBreadCrumb from './RestaurantBreadCrumb';
 import { Helmet } from 'react-helmet';
+import {Redirect} from 'react-router-dom';
+import Routes from 'ROUTES';
+import {Flex} from 'MISC/Styles';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -68,6 +71,14 @@ const MenuTitle = styled(SectionTitle)`
   margin-top: 20px;
 `;
 
+const Description = styled.div`
+  border: 1px solid red;
+  width: 100%;
+`;
+
+const RestaurantName = styled.h2``;
+const RestaurantRating = styled.h4``;
+
 class RestaurantDetails extends React.Component {
   constructor (props) {
     super(props);
@@ -88,28 +99,52 @@ class RestaurantDetails extends React.Component {
           if (error) return <p>Error</p>;
           if (loading) return <p>Loading</p>;
 
+          // TODO: handle this better
+          if (!data.restaurant || !data.productsList) {
+            return (
+              <Redirect to={Routes.NOT_FOUND_404} />
+            )
+          }
+
+          const {
+            name,
+            thumbnail,
+            rating
+          } = data.restaurant;
+
           return (
             <Container>
               {/* META */}
               <Helmet>
-                <title>Hotbox | {data.restaurant.name}</title>
+                <title>Hotbox | {name}</title>
               </Helmet>
 
               {/* BREADCRUMB */}
               <RestaurantBreadCrumb
-                restaurantName={data.restaurant.name}
+                restaurantName={name}
                 city={city}
                 />
 
               {/* BODY SECTION */}
               <BodySection>
                 <MenuSection>
+                  {/* Banner */}
                   <BannerImage
                     url={data.restaurant.imageUrl}
-                    thumbnail={data.restaurant.thumbnail}
-                    alt={data.restaurant.name}
+                    thumbnail={thumbnail}
+                    alt={name}
                     />
-                  <MenuTitle>Entries</MenuTitle>
+
+                  {/* Restaurant description */}
+                  <Description>
+                    <Flex justify='space-between'>
+                      <RestaurantName>{name}</RestaurantName>
+                      <RestaurantRating>{rating}</RestaurantRating>
+                    </Flex>
+                  </Description>
+
+                  {/* Products list */}
+                  <MenuTitle>Products</MenuTitle>
                   {data && data.productsList.map((product) => (
                     <ProductCard
                       key={product.id}

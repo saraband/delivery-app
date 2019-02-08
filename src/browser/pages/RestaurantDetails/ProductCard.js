@@ -53,6 +53,10 @@ const ProductName = styled.h4`
   font-size: ${FontSizes.NORMAL};
 `;
 
+const ProductPrice = styled.span`
+  color: ${Colors.BLUE};
+`;
+
 const ProductIngredients = styled.p`
   color: ${Colors.DARK_GREY};
   margin-top: 5px;
@@ -72,7 +76,7 @@ export default memo(({
   <Container>
     <Product selected={selected}>
       <ProductInformation>
-        <ProductName>{name}</ProductName>
+        <ProductName>{name}<ProductPrice>&nbsp;&nbsp;{price} €</ProductPrice></ProductName>
         <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
       </ProductInformation>
       <ProductControls>

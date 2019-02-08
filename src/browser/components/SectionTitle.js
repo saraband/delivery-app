@@ -11,7 +11,7 @@ const Container = styled.div`
 
 const Content = styled.h2`
   font-size: ${FontSizes.MEDIUM};
-  font-weight: bold;
+  font-weight: normal;
   display: inline-block;
   padding-right: 5px;
   color: ${Colors.BLUE};
@@ -27,7 +27,7 @@ const Bar = styled.div`
   width: 100%;
   top: 50%;
   left: 0;
-  background-color: ${Colors.BLUE};
+  background-color: ${Colors.LIGHT_BLUE};
 `;
 
 export default memo(({ children, ...rest }) => (
