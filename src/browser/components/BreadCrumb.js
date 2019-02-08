@@ -14,8 +14,9 @@ padding-bottom: 20px;
 
 const StyledLink = styled(Link)`
   transition: all 0.2s ease-in-out;
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   padding: 8px 12px 8px 12px;
+  margin-right: 10px;
   
   &:hover {
     background-color: ${hexToRgbaString(Colors.BLUE, 0.1)};
@@ -23,10 +24,16 @@ const StyledLink = styled(Link)`
 `;
 
 const Label = styled.span`
-  font-weight: ${p => p.active ? 'bold' : 'light'};
+  font-weight: normal;
   color: ${p => p.active ? Colors.DARK_GREY : Colors.BLUE};
 `;
 
+const NoLink = styled.span`
+  font-size: ${FontSizes.NORMAL};
+  padding: 8px 12px 8px 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: ${Colors.DARK_BLUE_2}
+`;
 const RenderChildrenComponent = ({ children }) => children;
 
 export default class BreadCrumb extends React.Component {
@@ -39,7 +46,7 @@ export default class BreadCrumb extends React.Component {
       <Container>
         {this.props.children.map(({ url, tip, label }, index) => {
           if (!url) {
-            return <Label key={index} active>{label}</Label>;
+            return <NoLink key={index}>{label}</NoLink>;
           }
 
           // If no tooltip is provided, don't show anything

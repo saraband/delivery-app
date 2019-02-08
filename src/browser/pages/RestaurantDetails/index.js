@@ -4,13 +4,6 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LazyImage from 'COMPONENTS/LazyImage';
 import Basket from 'COMPONENTS/Basket';
-import { ProductControls, ControlButton } from 'COMPONENTS/Basket/Product';
-import ToolTip from 'COMPONENTS/ToolTip';
-import RemoveIcon from 'ICONS/RemoveIcon';
-import Colors from 'CONSTANTS/Colors';
-import AddIcon from 'ICONS/AddIcon';
-import BreadCrumb from 'COMPONENTS/BreadCrumb';
-import Routes, { addParamsToUrl } from 'ROUTES';
 import SectionTitle from 'COMPONENTS/SectionTitle';
 import ProductCard from './ProductCard';
 import {connect} from 'react-redux';
@@ -83,9 +76,11 @@ class RestaurantDetails extends React.Component {
   render () {
     const { id, city } = this.props.match.params;
     const {
+      baskets,
       addProduct,
       removeProduct
     } = this.props;
+    const currentBasket = (baskets[id] && baskets[id].products) || {};
 
     return (
       <Query query={GET_PRODUCTS_LIST} variables={{ id }}>
@@ -118,6 +113,7 @@ class RestaurantDetails extends React.Component {
                   {data && data.productsList.map((product) => (
                     <ProductCard
                       key={product.id}
+                      selected={!!currentBasket[product.id]}
                       addProduct={() => addProduct(product)}
                       removeProduct={() => removeProduct(product)}
                       {...product}
@@ -139,7 +135,9 @@ class RestaurantDetails extends React.Component {
 }
 
 export default connect(
-  (state) => ({}),
+  (state) => ({
+    baskets: state.baskets
+  }),
   (dispatch) => ({
     addProduct: (product) => dispatch({ type: ADD_PRODUCT, product }),
     removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product })

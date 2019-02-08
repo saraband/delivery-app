@@ -5,15 +5,27 @@ import ToolTip from 'COMPONENTS/ToolTip';
 import RemoveIcon from 'ICONS/RemoveIcon';
 import AddIcon from 'ICONS/AddIcon';
 import Colors from 'CONSTANTS/Colors';
-import {BoxShadow} from '../../misc/Styles';
+import FontSizes from 'CONSTANTS/FontSizes';
+import {hexToRgbaString} from 'HELPERS';
 
+const LightBoxShadowRGBA = hexToRgbaString(Colors.BLUE, 0.2);
 const Product = styled.div`
   width: 100%;
   height: 100%;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
   padding: 8px;
   display: flex;
   align-items: center;
+  border: 1px solid ${Colors.LIGHT_GREY};
+  transition: box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    border-color: ${Colors.BLUE};
+  }
+  
+  ${p => p.selected
+    ? `box-shadow: 0px 0px 0px 4px ${LightBoxShadowRGBA};`
+    : ''
+  }
 `;
 
 const Container = styled.div`
@@ -22,35 +34,43 @@ const Container = styled.div`
   position: relative;
   cursor: pointer;
   border-radius: 3px;
-  padding-right: 5px;
-  padding-bottom: 10px;s
+  padding-right: 10px;
+  padding-bottom: 20px;
   
   &:nth-child(even) {
-    padding-left: 5px;
+    padding-left: 10px;
     padding-right: 0;
-  }
-  
-  &:hover ${Product} {
-    ${BoxShadow};
   }
 `;
 
 const ProductInformation = styled.div`
   flex-grow: 1;
 `;
-const ProductName = styled.h4``;
-const ProductIngredients = styled.p``;
+
+const ProductName = styled.h4`
+  font-weight: ${Colors.GREY};
+  font-weight: normal;
+  font-size: ${FontSizes.NORMAL};
+`;
+
+const ProductIngredients = styled.p`
+  color: ${Colors.DARK_GREY};
+  margin-top: 5px;
+  font-weight: lighter;
+  font-size: ${FontSizes.SMALL};
+`;
 
 export default memo(({
   id,
   name,
   price,
   ingredients,
+  selected,
   addProduct,
   removeProduct
 }) => (
   <Container>
-    <Product>
+    <Product selected={selected}>
       <ProductInformation>
         <ProductName>{name}</ProductName>
         <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
