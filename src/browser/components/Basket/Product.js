@@ -11,8 +11,9 @@ import {Flex} from 'MISC/Styles';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
+
   
   &:first-child { margin-top: 20px; }
   &:last-child { margin-bottom: 20px; }
@@ -33,6 +34,7 @@ const ProductPrice = styled.h3`
   width: 40px;
   text-align: center;
 `;
+
 const ProductQuantity = styled(ProductPrice).attrs({
   as: 'span'
 })`
@@ -42,18 +44,12 @@ const ProductQuantity = styled(ProductPrice).attrs({
   text-align: left;
 `;
 
-const ProductNameToolTip = styled(ToolTip)`
-  flex-grow: 1;
-`;
 const ProductName = styled.h4`
   color: ${Colors.BLACK};
   font-size: ${FontSizes.NORMAL};
   font-family: 'Roboto';
   font-weight: 200;
   flex-grow: 1;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin: 0;
 `;
 
@@ -61,6 +57,9 @@ const ProductName = styled.h4`
 export const ProductControls = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
+  margin-top: -5px;
+  flex-shrink: 0;
 `;
 
 export const ControlButton = styled(BaseButton).attrs({
@@ -91,9 +90,8 @@ export default memo(({
   remove
 }) => (
   <Container>
-    <ProductName label={name}>
-      <ProductQuantity>{quantity}</ProductQuantity>{name}
-    </ProductName>
+    <ProductQuantity>{quantity}</ProductQuantity>
+    <ProductName>{name}</ProductName>
     <ProductControls>
       <ToolTip label='Remove item'>
         <ControlButton
