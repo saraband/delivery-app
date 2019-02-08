@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withRipples } from 'HOCS';
 import Ripple from 'COMPONENTS/RippleProvider/Ripple';
 import nullFunction from 'MISC/NullFunction';
-import { hexToRgb, hexToRgbaString } from 'HELPERS';
+import {deepEqual, hexToRgb, hexToRgbaString} from 'HELPERS';
 
 export const ButtonTypes = {
   EMPTY: Symbol(),

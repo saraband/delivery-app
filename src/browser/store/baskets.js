@@ -43,7 +43,7 @@ export default (state = {}, action) => {
           ...state[restaurantId],
           restaurant: action.product.restaurant,
           products: {
-            // ALready existing products
+            // Already existing products
             ...(state[restaurantId] ? state[restaurantId].products : {}),
 
             // For the product we want to add

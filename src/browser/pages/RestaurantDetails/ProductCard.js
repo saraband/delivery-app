@@ -34,12 +34,12 @@ const Container = styled.div`
   position: relative;
   cursor: pointer;
   border-radius: 3px;
-  padding-right: 10px;
+  padding-left: 10px;
   padding-bottom: 20px;
   
   &:nth-child(even) {
-    padding-left: 10px;
-    padding-right: 0;
+    padding-left: 0px;
+    padding-right: 10px;
   }
 `;
 
@@ -64,35 +64,45 @@ const ProductIngredients = styled.p`
   font-size: ${FontSizes.SMALL};
 `;
 
-export default memo(({
-  id,
-  name,
-  price,
-  ingredients,
-  selected,
-  addProduct,
-  removeProduct
-}) => (
-  <Container>
-    <Product selected={selected}>
-      <ProductInformation>
-        <ProductName>{name}<ProductPrice>&nbsp;&nbsp;{price} €</ProductPrice></ProductName>
-        <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
-      </ProductInformation>
-      <ProductControls>
-        <ToolTip label='Remove item'>
-          <ControlButton
-            onClick={removeProduct}
-            icon={<RemoveIcon height={12} color={Colors.RED} />}
-            />
-        </ToolTip>
-        <ToolTip label='Add item'>
-          <ControlButton
-            onClick={addProduct}
-            icon={<AddIcon height={12} color={Colors.GREEN} />}
-            />
-        </ToolTip>
-      </ProductControls>
-    </Product>
-  </Container>
-));
+export default class extends React.Component {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return nextProps.selected !== this.props.selected
+  }
+
+  render() {
+    const {
+      id,
+      name,
+      price,
+      ingredients,
+      selected,
+      addProduct,
+      removeProduct
+    } = this.props;
+
+    return (
+      <Container>
+        <Product selected={selected}>
+          <ProductInformation>
+            <ProductName>{name}<ProductPrice>&nbsp;&nbsp;{price} €</ProductPrice></ProductName>
+            <ProductIngredients>{ingredients.join(', ')}</ProductIngredients>
+          </ProductInformation>
+          <ProductControls>
+            <ToolTip label='Remove item'>
+              <ControlButton
+                onClick={removeProduct}
+                icon={<RemoveIcon height={12} color={Colors.RED}/>}
+              />
+            </ToolTip>
+            <ToolTip label='Add item'>
+              <ControlButton
+                onClick={addProduct}
+                icon={<AddIcon height={12} color={Colors.GREEN}/>}
+              />
+            </ToolTip>
+          </ProductControls>
+        </Product>
+      </Container>
+    );
+  }
+};

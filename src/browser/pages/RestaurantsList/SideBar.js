@@ -21,6 +21,7 @@ import PendingOrders from './PendingOrders'
 const Container = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
+  padding-left: 15px;
   width: 250px;
   height: 100%;
   min-height: 300px;
@@ -50,7 +51,7 @@ class SideBar extends React.PureComponent {
         <CitySearch value={city} />
 
         {/* PENDING ORDERS */}
-        <PendingOrders />
+        <PendingOrders city={city} />
 
         {/* TAGS SELECT */}
         <SectionTitle>Type of food</SectionTitle>
