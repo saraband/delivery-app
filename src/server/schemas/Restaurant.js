@@ -18,6 +18,7 @@ export const typeDefs = `
     opening_hours: JSON
     imageUrl: String!
     tags: [String!]!
+    description: String!
   }
   
   extend type Query {
