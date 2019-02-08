@@ -13,7 +13,9 @@ import {
   ADD_PRODUCT, CLEAR_BASKET,
   REMOVE_PRODUCT
 } from 'STORE/baskets';
-import { deepEqual } from 'HELPERS';
+import {deepEqual, hexToRgbaString} from 'HELPERS';
+import {Flex} from 'MISC/Styles';
+import FontSizes from 'CONSTANTS/FontSizes';
 
 const StyledBasket = styled.div`
   border: 1px solid ${Colors.LIGHT_GREY};
@@ -24,8 +26,41 @@ const StyledBasket = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${Colors.DARK_GREY};
+  color: ${Colors.DARK_BLUE_2};
   text-align: center;
+  font-weight: normal;
+  background-color: ${hexToRgbaString(Colors.BLUE, 0.2)};
+  padding: 8px 0;
+`;
+
+const ProductsList = styled.div`
+  min-height: 100px;
+`;
+
+const EmptyBasket = styled.p`
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: ${FontSizes.SMALL};
+  color: ${Colors.GREY};
+`;
+
+const TotalContainer = styled.div`
+  background-color: ${hexToRgbaString(Colors.BLUE, 0.2)};
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+`;
+
+const TotalText = styled.span`
+  color: ${Colors.DARK_BLUE_2};
+  font-weight: normal;
+`;
+
+const TotalSum = styled.span`
+  color: ${Colors.BLUE};
+  font-weight: bold;
 `;
 
 class Basket extends React.Component {
@@ -50,25 +85,52 @@ class Basket extends React.Component {
       clearBasket
     } = this.props;
     const products = (baskets[id] && baskets[id].products) || [];
+    const isBasketEmpty = Object.keys(products).length === 0;
     const total = Object.values(products).reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
     return (
       <StyledBasket>
-        <Title>Your basket (&nbsp;{total} €&nbsp;)</Title>
-        {Object.keys(products || []).map(productId => {
-          const product = products[productId];
-          return (
-            <Product
-              key={product.id}
-              add={() => addProduct(product)}
-              remove={() => removeProduct(product)}
-              {...product}
-              />
-          );
-        })}
+        <Title>Your basket</Title>
+
+        {/* Product list */}
+        <ProductsList>
+          {isBasketEmpty
+            ? <EmptyBasket>Your basket is currently empty.</EmptyBasket>
+            : Object.values(products || []).map((product) => {
+                return (
+                  <Product
+                    key={product.id}
+                    add={() => addProduct(product)}
+                    remove={() => removeProduct(product)}
+                    {...product}
+                    />
+                );
+              })
+          }
+        </ProductsList>
+
+        {/* Total */}
+        <TotalContainer>
+          <TotalText>Total</TotalText>
+          <TotalSum>{total} €</TotalSum>
+        </TotalContainer>
+
+        {/* Controls  */}
         <Controls>
-          <BaseButton onClick={() => clearBasket(id)} type={ButtonTypes.EMPTY}>Clear</BaseButton>
-          <BaseButton onClick={this.goToCheckout} type={ButtonTypes.FULL}>Checkout</BaseButton>
+          <BaseButton
+            disabled={isBasketEmpty}
+            onClick={() => clearBasket(id)}
+            type={ButtonTypes.EMPTY}
+            >
+            Clear
+          </BaseButton>
+          <BaseButton
+            disabled={isBasketEmpty}
+            onClick={this.goToCheckout}
+            type={ButtonTypes.FULL}
+            >
+            Checkout
+          </BaseButton>
         </Controls>
       </StyledBasket>
     );

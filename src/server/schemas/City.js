@@ -60,7 +60,6 @@ export const resolvers = {
       }
 
       console.log(`Search for \`${filter}\` executed in ${(Date.now() - then) / 1000}s`);
-
       return results;
     },
   }
