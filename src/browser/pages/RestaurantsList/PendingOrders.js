@@ -49,7 +49,7 @@ class PendingOrders extends React.PureComponent {
         <SectionTitle>Pending orders</SectionTitle>
         {/* ONLY 5 FIRST PENDING ORDERS */}
         <OrdersContainer>
-          {Object.values(baskets).slice(0, 5).map(({ restaurant, products }) => {
+          {Object.values(baskets).slice(0, 3).map(({ restaurant, products }) => {
             const total = Object.values(products).reduce((acc, { price, quantity }) => acc + price * quantity, 0);
             return (
               <Order
@@ -65,10 +65,12 @@ class PendingOrders extends React.PureComponent {
           })}
         </OrdersContainer>
 
-        {/* TODO: test this */}
-        {Object.keys(baskets).length > 5 && (
-          <strong>See all pending orders</strong>
-        )}
+        {/* TODO: See all pending orders */}
+        {/*
+          {Object.keys(baskets).length > 5 && (
+            <strong>See all pending orders</strong>
+          )}
+        */}
       </Fragment>
     );
   }

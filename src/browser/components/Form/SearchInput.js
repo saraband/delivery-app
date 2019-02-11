@@ -110,6 +110,13 @@ export default class SearchInput extends React.PureComponent {
     };
   }
 
+  // TODO: maybe rework this later
+  componentWillReceiveProps (nextProps, nextContext) {
+    if (nextProps.value !== this.props.value) {
+      this.handleChange(nextProps);
+    }
+  }
+
   handleKeyDown = async (event) => {
     const {
       value,

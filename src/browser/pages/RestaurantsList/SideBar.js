@@ -30,7 +30,7 @@ const Container = styled.div`
   top: 15px;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - ${p => p.offset}px - 10px);
+  max-height: calc(100vh - ${p => p.offset}px - 15px);
 `;
 
 const StyledCitySearch = styled(CitySearch)`
@@ -68,7 +68,7 @@ class SideBar extends React.PureComponent {
 
   checkScroll = () => {
     this.hasTicked = false;
-    const HEADER_OFFSET = 85;
+    const HEADER_OFFSET = 80;
     const { pageYOffset } = window;
 
     // Header is not visible, expand to full height
@@ -99,7 +99,7 @@ class SideBar extends React.PureComponent {
         {...rest}
         offset={this.state.offset}
         >
-        <StyledCitySearch value={city} />
+        <StyledCitySearch value={city === 'all' ? '' : city} />
 
         {/* PENDING ORDERS */}
         <PendingOrders city={city} />
