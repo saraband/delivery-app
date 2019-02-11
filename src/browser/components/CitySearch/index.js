@@ -72,7 +72,7 @@ class CitySearch extends React.PureComponent {
 
               // Push to the restaurant list of this city
               // and preserve tags if they exist (query string parameters)
-              history.push(`${addParamsToUrl(Routes.RESTAURANTS_LIST, { city })}${location.search}`)
+              history.push(`${addParamsToUrl(Routes.RESTAURANTS_LIST, { city })}${location.search}`);
             }}
           />
         )}

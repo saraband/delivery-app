@@ -12,10 +12,11 @@ import Colors from 'CONSTANTS/Colors';
 import SearchSVG from 'ASSETS/images/search.svg';
 import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
 import { Helmet } from 'react-helmet';
+import FontSizes from 'CONSTANTS/FontSizes';
 
 const GET_RESTAURANTS_LIST = gql`
   query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
-    restaurantsCount
+    restaurantsCount (tag: $tag)
     restaurantsList (city: $city, offset: $offset, limit: $limit, tag: $tag, order: $order) {
       id
       name
@@ -46,10 +47,17 @@ const Container = styled.div`
   flex-direction: row;
 `;
 
-const InitialState = {
-  offset: 0,
-  limit: 20
-};
+const RestaurantsFound= styled.h4`
+  margin-left: 15px;
+  color: ${Colors.GREY};
+  font-size: ${FontSizes.NORMAL};
+  font-weight: normal;
+`;
+
+const Highlight = styled.strong`
+  color: ${Colors.BLUE};
+  font-weight: normal;
+`;
 
 export default class RestaurantsList extends React.Component {
   constructor (props) {
@@ -94,13 +102,14 @@ export default class RestaurantsList extends React.Component {
               <Body>
                 {/* META */}
                 <Helmet>
-                  <title>Hotbox | {city ? `Restaurants in ${city}` : 'All restaurants'}</title>
+                  <title>Hotbox | {city !== 'all' ? `Restaurants in ${city}` : 'All restaurants'}</title>
                 </Helmet>
 
                 {/* HEADER */}
-                <div>
+                <RestaurantsFound>
                   {data.restaurantsCount} restaurants found
-                </div>
+                  {city !== 'all' && <Highlight> in {city}</Highlight>}.
+                </RestaurantsFound>
 
                 {/* RESTAURANTS LIST */}
                 <List>

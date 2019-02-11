@@ -15,7 +15,7 @@ export const createInputHandler = (args) => {
             ...this.state[stateKey],
             [event[eventKey]]: event.value
           }
-        }, () => resolve());
+        }, resolve);
       });
     };
   }
@@ -25,7 +25,7 @@ export const createInputHandler = (args) => {
     return new Promise((resolve) => {
       this.setState({
         [event[eventKey]]: event.value
-      }, () => resolve());
+      }, resolve);
     });
   };
 };

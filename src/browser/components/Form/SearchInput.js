@@ -58,6 +58,9 @@ const DropDownContainer = styled.div`
 
 const NoResults = styled.div`
   display: flex;
+  font-size: ${FontSizes.NORMAL};
+  color: ${Colors.GREY};
+  padding: 15px;
   justify-content: center;
   align-items: center;
 `;
@@ -278,7 +281,7 @@ export default class SearchInput extends React.PureComponent {
 
     return (
       <NoResults>
-        There seem to be no results for `{lastSearchedValue}`
+        There seem to be no results for `{lastSearchedValue.length > 20 ? `${lastSearchedValue.substring(0, 17)}...` : lastSearchedValue}`
       </NoResults>
     );
   }
