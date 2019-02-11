@@ -24,13 +24,13 @@ const StyledInput = styled(BaseInput).attrs({
 })`
   flex-grow: 1;
   width: unset;
+  font-size: ${FontSizes.NORMAL};
 `;
 
 const SearchIcon = styled(SearchSVG)`
+  width: ${FontSizes.NORMAL};
+  height: ${FontSizes.NORMAL};
   position: relative;
-  height: ${FontSizes.SMALL};
-  width: ${FontSizes.SMALL};
-  border: 2px solid red;
 `;
 
 const StyledButton = styled(BaseButton).attrs({
@@ -72,7 +72,7 @@ const blueRgb = hexToRgb(Colors.BLUE);
 const Result = styled.h4`
   font-weight: lighter;
   padding: 10px;
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   cursor: pointer;
   background-color: ${p => p.focused ? hexToRgbaString(Colors.BLUE, 0.2) : 'white'};
   

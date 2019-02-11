@@ -5,5 +5,5 @@ import { BoxShadow } from 'MISC/Styles';
 
 export default styled.div`
   border: 1px solid ${Colors.LIGHT_GREY};
-  padding: 10PX;
+  padding: 10px;
 `;

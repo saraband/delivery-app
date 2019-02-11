@@ -18,6 +18,10 @@ const List = styled.ul`
   list-style-type: none;
 `;
 
+const StyledSection = styled(Section)`
+  overflow-y: auto;
+`;
+
 /*
  *  TODO: accessibility: arrow down and up to navigate through options
  */
@@ -41,18 +45,19 @@ export default class FlatSelect extends React.Component {
     const { isUnrolled } = this.state;
 
     return (
-      <Section {...rest}>
+      <StyledSection {...rest}>
         <List>
           {options.map((tag) => (
             <Tag
               key={tag.id}
+              selected={selected === tag.id}
               onSelect={() => onSelect(tag)}
               >
               {tag.value}
             </Tag>
           ))}
         </List>
-      </Section>
+      </StyledSection>
     );
   }
 };
@@ -64,8 +69,8 @@ const OptionShape = PropTypes.shape({
 
 FlatSelect.propTypes = {
   options: PropTypes.arrayOf(OptionShape).isRequired,
-  selected: OptionShape,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 FlatSelect.defaultProps = {

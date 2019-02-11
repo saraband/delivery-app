@@ -9,6 +9,7 @@ import queryString from 'query-string';
 import SideBar from './SideBar';
 import RestaurantCard from './RestaurantCard';
 import Colors from 'CONSTANTS/Colors';
+import SearchSVG from 'ASSETS/images/search.svg';
 import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
 import { Helmet } from 'react-helmet';
 

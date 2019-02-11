@@ -22,14 +22,19 @@ const Container = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   padding-left: 15px;
+  padding-bottom: 15px;
   width: 250px;
   height: 100%;
   min-height: 300px;
   position: sticky;
   top: 15px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - ${p => p.offset}px - 10px);
 `;
-const StyledFlatSelect = styled(FlatSelect)`
-  margin-top: 15px;
+
+const StyledCitySearch = styled(CitySearch)`
+  flex-shrink: 0;
 `;
 
 const GET_TAGS_LIST = gql`
@@ -39,16 +44,62 @@ const GET_TAGS_LIST = gql`
 `;
 
 class SideBar extends React.PureComponent {
+  constructor (props) {
+    super(props);
+    this.hasTicked = false;
+    this.state = { offset: 0 };
+  }
+
+  componentDidMount () {
+    document.addEventListener('scroll', this.watchScroll);
+    this.checkScroll();
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('scroll', this.watchScroll)
+  }
+
+  watchScroll = () => {
+    if (!this.hasTicked) {
+      this.hasTicked = true;
+      window.requestAnimationFrame(this.checkScroll)
+    }
+  };
+
+  checkScroll = () => {
+    this.hasTicked = false;
+    const HEADER_OFFSET = 85;
+    const { pageYOffset } = window;
+
+    // Header is not visible, expand to full height
+    if (pageYOffset >= HEADER_OFFSET) {
+      this.setState({ offset: 0 });
+
+    // Header is visible, offset the header
+    } else {
+      this.setState({
+        offset: HEADER_OFFSET - pageYOffset < 0
+          ? 0
+          : HEADER_OFFSET - pageYOffset
+      });
+    }
+  };
+
   render () {
     const {
       history,
       city,
-      resetScroll
+      resetScroll,
+      ...rest
     } = this.props;
+    const selectedTag = history.location.search.split('=')[1];
 
     return (
-      <Container>
-        <CitySearch value={city} />
+      <Container
+        {...rest}
+        offset={this.state.offset}
+        >
+        <StyledCitySearch value={city} />
 
         {/* PENDING ORDERS */}
         <PendingOrders city={city} />
@@ -62,7 +113,8 @@ class SideBar extends React.PureComponent {
             if (error) return <p>error</p>;
 
             return (
-              <StyledFlatSelect
+              <FlatSelect
+                selected={selectedTag}
                 options={data.tagsList.map((tag) => ({
                   id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
                   value: tag

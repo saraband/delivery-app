@@ -9,16 +9,17 @@ import { Link } from 'react-router-dom';
 import {Flex} from 'MISC/Styles';
 import Routes, {addParamsToUrl} from 'ROUTES';
 
+const OrdersContainer = styled.div``;
 const Order= styled(Section).attrs({
   as: Link
 })`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
   cursor: pointer;
+  flex-shrink: 0;
   
-  &:last-child {
-    margin-bottom: 0;
+  &:not(:last-child) {
+    margin-bottom: 15px;
   }
   
   &:hover {
@@ -47,20 +48,22 @@ class PendingOrders extends React.PureComponent {
       <Fragment>
         <SectionTitle>Pending orders</SectionTitle>
         {/* ONLY 5 FIRST PENDING ORDERS */}
-        {Object.values(baskets).slice(0, 5).map(({ restaurant, products }) => {
-          const total = Object.values(products).reduce((acc, { price, quantity }) => acc + price * quantity, 0);
-          return (
-            <Order
-              key={restaurant.id}
-              to={addParamsToUrl(Routes.RESTAURANT_DETAILS, {
-                city,
-                id: restaurant.id
-              })}>
-              <RestaurantName>{restaurant.name}</RestaurantName>
-              <Total>{total} €</Total>
-            </Order>
-          );
-        })}
+        <OrdersContainer>
+          {Object.values(baskets).slice(0, 5).map(({ restaurant, products }) => {
+            const total = Object.values(products).reduce((acc, { price, quantity }) => acc + price * quantity, 0);
+            return (
+              <Order
+                key={restaurant.id}
+                to={addParamsToUrl(Routes.RESTAURANT_DETAILS, {
+                  city,
+                  id: restaurant.id
+                })}>
+                <RestaurantName>{restaurant.name}</RestaurantName>
+                <Total>{total}€</Total>
+              </Order>
+            );
+          })}
+        </OrdersContainer>
 
         {/* TODO: test this */}
         {Object.keys(baskets).length > 5 && (

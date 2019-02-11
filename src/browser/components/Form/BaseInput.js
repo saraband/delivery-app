@@ -25,7 +25,7 @@ const blueRgb = hexToRgb(Colors.BLUE);
 const StyledInput = styled.input`
   border-radius: 3px;
   padding: 8px 12px 8px 12px;
-  font-size: ${FontSizes.MEDIUM};
+  font-size: ${FontSizes.NORMAL};
   border: 1px solid ${Colors.GREY};
   transition: all 0.1s ease-in-out;
   width: 100%;
