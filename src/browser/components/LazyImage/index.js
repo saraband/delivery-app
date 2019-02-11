@@ -57,6 +57,10 @@ export default class LazyImage extends React.Component {
     };
   }
 
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    this.checkIfImageIsInViewPort();
+  }
+
   componentDidMount () {
     document.addEventListener('scroll', this.watchScrollOrResize);
     window.addEventListener('resize', this.watchScrollOrResize);

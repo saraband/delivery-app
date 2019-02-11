@@ -8,6 +8,8 @@ import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
 import AddIcon from 'ICONS/AddIcon';
 import RemoveIcon from 'ICONS/RemoveIcon';
 import ToolTip from 'COMPONENTS/ToolTip';
+import Routes from 'ROUTES';
+import PropTypes from 'prop-types';
 
 import {
   ADD_PRODUCT, CLEAR_BASKET,
@@ -16,6 +18,9 @@ import {
 import {deepEqual, hexToRgbaString} from 'HELPERS';
 import {Flex} from 'MISC/Styles';
 import FontSizes from 'CONSTANTS/FontSizes';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
+import { addParamsToUrl } from 'ROUTES';
 
 const StyledBasket = styled.div`
   border: 1px solid ${Colors.LIGHT_GREY};
@@ -73,7 +78,12 @@ class Basket extends React.Component {
   }
 
   goToCheckout = () => {
-    console.log('checkout');
+    const {
+      history,
+      id
+    } = this.props;
+
+    history.push(addParamsToUrl(Routes.RESTAURANT_CHECKOUT, { id }));
   };
 
   render () {
@@ -82,7 +92,8 @@ class Basket extends React.Component {
       baskets,
       addProduct,
       removeProduct,
-      clearBasket
+      clearBasket,
+      showButtons
     } = this.props;
     const products = (baskets[id] && baskets[id].products) || [];
     const isBasketEmpty = Object.keys(products).length === 0;
@@ -100,6 +111,7 @@ class Basket extends React.Component {
                 return (
                   <Product
                     key={product.id}
+                    showButtons={showButtons}
                     add={() => addProduct(product)}
                     remove={() => removeProduct(product)}
                     {...product}
@@ -116,34 +128,49 @@ class Basket extends React.Component {
         </TotalContainer>
 
         {/* Controls  */}
-        <Controls>
-          <BaseButton
-            disabled={isBasketEmpty}
-            onClick={() => clearBasket(id)}
-            type={ButtonTypes.EMPTY}
+        {showButtons && (
+          <Controls>
+            <BaseButton
+              disabled={isBasketEmpty}
+              onClick={() => clearBasket(id)}
+              type={ButtonTypes.EMPTY}
             >
-            Clear
-          </BaseButton>
-          <BaseButton
-            disabled={isBasketEmpty}
-            onClick={this.goToCheckout}
-            type={ButtonTypes.FULL}
+              Clear
+            </BaseButton>
+            <BaseButton
+              disabled={isBasketEmpty}
+              onClick={this.goToCheckout}
+              type={ButtonTypes.FULL}
             >
-            Checkout
-          </BaseButton>
-        </Controls>
+              Checkout
+            </BaseButton>
+          </Controls>
+        )}
       </StyledBasket>
     );
   }
 }
 
-export default connect(
-  state => ({
-    baskets: state.baskets
-  }),
-  dispatch => ({
-    addProduct: (product) => dispatch({ type: ADD_PRODUCT, product }),
-    removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product }),
-    clearBasket: (basketId) => dispatch({ type: CLEAR_BASKET, basketId })
-  })
-)(Basket);
+Basket.propTypes = {
+  showButtons: PropTypes.bool
+};
+
+Basket.defaultProps = {
+  showButtons: true
+};
+
+const apply = compose(
+  withRouter,
+  connect(
+    state => ({
+      baskets: state.baskets
+    }),
+    dispatch => ({
+      addProduct: (product) => dispatch({ type: ADD_PRODUCT, product }),
+      removeProduct: (product) => dispatch({ type: REMOVE_PRODUCT, product }),
+      clearBasket: (basketId) => dispatch({ type: CLEAR_BASKET, basketId })
+    })
+  )
+);
+
+export default apply(Basket);

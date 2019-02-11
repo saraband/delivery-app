@@ -11,7 +11,7 @@ import { ButtonTypes } from '../../components/Form/BaseButton';
 import FontSizes from '../../constants/FontSizes';
 import { Flex } from 'MISC/Styles';
 import { getCurrentDay, hexToRgbaString } from 'HELPERS';
-import RatingSVG from 'ASSETS/images/placeholder.svg';
+import RatingSVG from 'ASSETS/images/rating.svg';
 
 // TODO: refactor this maybe ?
 const CARD_WIDTH = 350;
@@ -69,13 +69,13 @@ const Description = styled.div`
   padding: 15px;
 `;
 
-const RestaurantName = styled.h1`
+export const RestaurantName = styled.h1`
   color: ${Colors.DARK_GREY};
   font-size: ${FontSizes.MEDIUM};
   font-weight: normal;
 `;
 
-const RestaurantRating = styled.h4`
+export const RestaurantRating = styled.h4`
   color: ${Colors.BLUE};
   font-size: ${FontSizes.MEDIUM};
   font-weight: lighter;
@@ -83,13 +83,13 @@ const RestaurantRating = styled.h4`
   align-items: center;
 `;
 
-const TagsList = styled.div`
+export const TagsList = styled.div`
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
 `;
 
-const Tag = styled.span`
+export const Tag = styled.span`
   background-color: ${hexToRgbaString(Colors.BLUE, 0.8)};
   padding: 4px 6px 4px 6px;
   font-size: ${FontSizes.SMALL};
@@ -98,22 +98,22 @@ const Tag = styled.span`
   margin: 3px;
 `;
 
-const RatingLogo = styled(RatingSVG)`
-  height: ${FontSizes.MEDIUM};
-  margin-right: 5px;
+export const RatingLogo = styled(RatingSVG)`
+  height: ${FontSizes.NORMAL};
+  margin-left: 5px;
 `;
 
-const Subtitle = styled.h3`
+export const Subtitle = styled.h3`
   font-size: ${FontSizes.SMALL};
   font-weight: normal;
   color: ${Colors.GREY};
 `;
 
-const ClosedHours = styled.span`
+export const ClosedHours = styled.span`
   color: ${Colors.RED};
 `;
 
-const OpenHours = styled.span`
+export const OpenHours = styled.span`
   color: ${Colors.BLUE};
 `;
 
@@ -156,7 +156,7 @@ class RestaurantCard extends React.PureComponent {
     }
 
     return <OpenHours>Open until {opening_hours[currentDay].to}h</OpenHours>
-  }
+  };
 
   render () {
     const {
@@ -199,8 +199,8 @@ class RestaurantCard extends React.PureComponent {
               <Flex justify='space-between' align='flex-end'>
                 <RestaurantName>{name}</RestaurantName>
                 <RestaurantRating>
-                  <RatingLogo />
                   {rating}
+                  <RatingLogo />
                 </RestaurantRating>
               </Flex>
               <Subtitle>{address} - {this.renderOpeningHours()}</Subtitle>

@@ -13,6 +13,16 @@ import { Helmet } from 'react-helmet';
 import {Redirect} from 'react-router-dom';
 import Routes from 'ROUTES';
 import {Flex} from 'MISC/Styles';
+import {
+  RatingLogo,
+  Subtitle,
+  TagsList,
+  Tag,
+  ClosedHours,
+  OpenHours,
+  RestaurantName, RestaurantRating
+} from 'PAGES/RestaurantsList/RestaurantCard';
+import { getCurrentDay } from 'HELPERS';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -27,7 +37,9 @@ const GET_PRODUCTS_LIST = gql`
       rating
       thumbnail
       imageUrl
+      address
       tags
+      opening_hours
     }
     
     productsList(restaurantId: $id) {
@@ -72,17 +84,28 @@ const MenuTitle = styled(SectionTitle)`
 `;
 
 const Description = styled.div`
-  border: 1px solid red;
+  padding: 10px 0;
   width: 100%;
 `;
-
-const RestaurantName = styled.h2``;
-const RestaurantRating = styled.h4``;
 
 class RestaurantDetails extends React.Component {
   constructor (props) {
     super(props);
   }
+
+  // TODO: This is repeated in RestaurantsList page
+  // refactor this into a helper
+  renderOpeningHours = (openingHours) => {
+    const currentDay = getCurrentDay();
+    const currentHour = new Date().getHours();
+
+    if (currentHour < openingHours[currentDay].from ||
+      currentHour > openingHours[currentDay].to) {
+      return <ClosedHours>Closed now</ClosedHours>;
+    }
+
+    return <OpenHours>Open until {openingHours[currentDay].to}h</OpenHours>
+  };
 
   render () {
     const { id, city } = this.props.match.params;
@@ -109,7 +132,10 @@ class RestaurantDetails extends React.Component {
           const {
             name,
             thumbnail,
-            rating
+            rating,
+            address,
+            opening_hours,
+            tags
           } = data.restaurant;
 
           return (
@@ -137,10 +163,15 @@ class RestaurantDetails extends React.Component {
 
                   {/* Restaurant description */}
                   <Description>
-                    <Flex justify='space-between'>
+                    <Flex justify='space-between' align='flex-end'>
                       <RestaurantName>{name}</RestaurantName>
-                      <RestaurantRating>{rating}</RestaurantRating>
+                      <RestaurantRating>
+                        {rating}
+                        <RatingLogo />
+                      </RestaurantRating>
                     </Flex>
+                    <Subtitle>{address} - {this.renderOpeningHours(opening_hours)}</Subtitle>
+                    <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
                   </Description>
 
                   {/* Products list */}

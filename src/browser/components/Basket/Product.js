@@ -87,25 +87,30 @@ export default memo(({
   price,
   quantity,
   add,
-  remove
+  remove,
+  showButtons
 }) => (
   <Container>
     <ProductQuantity>{quantity}</ProductQuantity>
     <ProductName>{name}</ProductName>
     <ProductControls>
-      <ToolTip label='Remove item'>
-        <ControlButton
-          icon={<RemoveIcon height={10} color={Colors.RED} />}
-          onClick={remove}
-        />
-      </ToolTip>
-      <ProductPrice>{price * quantity}€</ProductPrice>
-      <ToolTip label='Add item'>
-        <ControlButton
-          icon={<AddIcon height={10} color={Colors.BLUE} />}
-          onClick={add}
-        />
-      </ToolTip>
+      {showButtons && (
+        <ToolTip label='Remove item'>
+          <ControlButton
+            icon={<RemoveIcon height={10} color={Colors.RED} />}
+            onClick={remove}
+          />
+        </ToolTip>
+      )}
+      <ProductPrice showButtons={showButtons}>{price * quantity}€</ProductPrice>
+      {showButtons && (
+        <ToolTip label='Add item'>
+          <ControlButton
+            icon={<AddIcon height={10} color={Colors.BLUE} />}
+            onClick={add}
+          />
+        </ToolTip>
+      )}
     </ProductControls>
   </Container>
 ));
