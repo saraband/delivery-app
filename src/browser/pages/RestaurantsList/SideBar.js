@@ -17,6 +17,9 @@ import CitySearch from 'COMPONENTS/CitySearch';
 import SectionTitle from 'COMPONENTS/SectionTitle'
 import Section from 'COMPONENTS/Section'
 import PendingOrders from './PendingOrders'
+import PendingOrdersSVG from 'ROOT/assets/images/pending_orders.svg';
+import FontSizes from 'CONSTANTS/FontSizes';
+import TypeOfFoodSVG from 'ASSETS/images/tag.svg';
 
 const Container = styled.div`
   flex-grow: 0;
@@ -35,6 +38,12 @@ const Container = styled.div`
 
 const StyledCitySearch = styled(CitySearch)`
   flex-shrink: 0;
+`;
+
+const TypeOfFoodIcon = styled(TypeOfFoodSVG)`
+  width: ${FontSizes.SMALL};
+  height: ${FontSizes.SMALL};
+  margin-right: 7px;
 `;
 
 const GET_TAGS_LIST = gql`
@@ -105,7 +114,7 @@ class SideBar extends React.PureComponent {
         <PendingOrders city={city} />
 
         {/* TAGS SELECT */}
-        <SectionTitle>Type of food</SectionTitle>
+        <SectionTitle><TypeOfFoodIcon />Type of food</SectionTitle>
         <Query query={GET_TAGS_LIST}>
           {({ loading, error, data }) => {
             // TODO: placeholder

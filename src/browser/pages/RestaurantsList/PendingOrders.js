@@ -8,6 +8,7 @@ import Colors from 'CONSTANTS/Colors';
 import { Link } from 'react-router-dom';
 import {Flex} from 'MISC/Styles';
 import Routes, {addParamsToUrl} from 'ROUTES';
+import PendingOrdersSVG from 'ASSETS/images/pending_orders.svg';
 
 const OrdersContainer = styled.div``;
 const Order= styled(Section).attrs({
@@ -37,6 +38,11 @@ const Total = styled(RestaurantName)`
   color: ${Colors.BLUE};
 `;
 
+const PendingOrdersIcon = styled(PendingOrdersSVG)`
+  width: ${FontSizes.SMALL};
+  height: ${FontSizes.SMALL};
+`;
+
 class PendingOrders extends React.PureComponent {
   render () {
     const {
@@ -46,7 +52,7 @@ class PendingOrders extends React.PureComponent {
 
     return (
       <Fragment>
-        <SectionTitle>Pending orders</SectionTitle>
+        <SectionTitle><PendingOrdersIcon /> Pending orders</SectionTitle>
         {/* ONLY 5 FIRST PENDING ORDERS */}
         <OrdersContainer>
           {Object.values(baskets).slice(0, 3).map(({ restaurant, products }) => {
