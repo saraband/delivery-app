@@ -9,7 +9,7 @@ import Colors from 'CONSTANTS/Colors';
 import { ANIMATION_DURATION } from './Ripple';
 import { deepEqual } from 'HELPERS';
 
-export default class RippleProvider extends React.Component {
+export default class RippleProvider extends React.PureComponent {
   constructor (props) {
     super(props);
 
@@ -19,10 +19,6 @@ export default class RippleProvider extends React.Component {
       ripples: {},
       activeRippleId: null
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return !deepEqual(nextState, this.state);
   }
 
   componentWillUnmount () {

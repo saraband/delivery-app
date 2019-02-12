@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { addParamsToUrl } from 'ROUTES';
 import makeCancelable from 'makecancelable';
 import { deepEqual } from 'HELPERS';
+import { withRouter } from 'react-router-dom';
 
 const Container = styled.div`
   position: relative;
@@ -47,7 +48,7 @@ const StyledImage = styled.div`
   transform: scale(1.1);
 `;
 
-export default class LazyImage extends React.Component {
+class LazyImage extends React.Component {
   constructor (props) {
     super(props);
 
@@ -88,9 +89,8 @@ export default class LazyImage extends React.Component {
       new Promise((resolve, reject) => {
         this.image.onload = resolve;
         this.image.onerror = reject;
-      }).then(() => {
-        this.setState({ hasImageLoaded: true });
-      })
+      }),
+      () => this.setState({ hasImageLoaded: true })
     );
 
 
@@ -152,3 +152,5 @@ LazyImage.propTypes = {
   alt: PropTypes.string.isRequired,
   thumbnail: PropTypes.string
 };
+
+export default withRouter(LazyImage);

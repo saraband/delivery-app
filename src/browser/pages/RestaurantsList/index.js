@@ -110,7 +110,11 @@ export default class RestaurantsList extends React.Component {
                 {/* RESTAURANTS LIST */}
                 <List>
                   {(data.restaurantsList || []).map(r => (
-                    <RestaurantCard key={r.id} {...r} city={city} />
+                    <RestaurantCard
+                      key={r.id}
+                      city={city}
+                      {...r}
+                      />
                   ))}
                 </List>
 
