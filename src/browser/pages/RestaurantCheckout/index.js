@@ -11,6 +11,8 @@ import BaseInput from 'COMPONENTS/Form/BaseInput';
 import BaseButton, {ButtonTypes} from 'COMPONENTS/Form/BaseButton';
 import Colors from 'CONSTANTS/Colors';
 import LazyImage from 'COMPONENTS/LazyImage';
+import v from 'HELPERS/Validate'
+import {createInputHandler} from 'HELPERS';
 
 const Body = styled.div`
   display: flex;
@@ -51,7 +53,7 @@ const Title = styled.h1`
 
 const FormInput = styled(BaseInput)`
   flex-grow: 1;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   
   &:last-child:not(:only-child) {
     margin-left: 15px;
@@ -73,6 +75,18 @@ const BannerImage = styled(LazyImage)`
 export default class extends React.Component {
   constructor (props) {
     super(props);
+    this.updateInput = createInputHandler({ stateKey: 'form' }).bind(this);
+    this.state = {
+      form: {
+        firstName: '',
+        lastName: '',
+        address: '',
+        zipCode: '',
+        city: '',
+        creditCardNumber: '',
+        ccv: ''
+      }
+    }
   }
 
   render () {
@@ -92,6 +106,17 @@ export default class extends React.Component {
             thumbnail,
             imageUrl
           } = data.restaurant;
+
+          const {
+            firstName,
+            lastName,
+            address,
+            zipCode,
+            city,
+            creditCardNumber,
+            ccv
+          } = this.state.form;
+
           return (
             <Flex direction='column'>
               <BannerImage
@@ -110,26 +135,51 @@ export default class extends React.Component {
                         <FormInput
                           placeholder='Fist name'
                           name='firstName'
+                          value={firstName}
+                          errorLabel='This field is required'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.required}
                         />
                         <FormInput
                           placeholder='Last name'
                           name='lastName'
+                          value={lastName}
+                          errorLabel='This field is required'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.required}
                         />
                       </Flex>
                       <Flex>
                         <FormInput
                           placeholder='Address'
                           name='address'
+                          value={address}
+                          errorLabel='This field is required'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.required}
                           />
                       </Flex>
                       <Flex>
                         <FormInput
                           placeholder='ZIP Code'
                           name='zipCode'
+                          value={zipCode}
+                          errorLabel='This field must be a valid zip code'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.zipCode}
                           />
                         <FormInput
                           placeholder='City'
                           name='city'
+                          value={city}
+                          errorLabel='This field is required'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.required}
                           />
                       </Flex>
 
@@ -138,13 +188,23 @@ export default class extends React.Component {
                         <FormInput
                           placeholder='Credit card number'
                           name='creditCardNumber'
+                          value={creditCardNumber}
+                          errorLabel='This field must be a valid credit card number'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.creditCardNumber}
                           />
                         <FormInput
                           placeholder='CCV'
                           name='ccv'
+                          value={ccv}
+                          errorLabel='This field must be a valid CCV'
+                          onChange={this.updateInput}
+                          validator={validator}
+                          validate={v.ccv}
                           />
                       </Flex>
-                      <PayButton>Pay now</PayButton>
+                      <PayButton disabled={!isFormValid}>Pay now</PayButton>
                     </Left>
                   )}
                 </FormValidator>

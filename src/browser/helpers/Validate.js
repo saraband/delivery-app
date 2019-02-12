@@ -6,7 +6,12 @@ export default {
   email: str => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(str),
 
   // Tests if the password has at least 8 characters, an uppercase letter and a number
-  password: pw => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw)
+  password: pw => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw),
+
+  required: str => !!str && !!str.trim().length,
+  zipCode: str => !!str && /^[0-9]{5}(?:-[0-9]{4})?$/.test(str),
+  ccv: str => !!str && /^[0-9]{3}$/.test(str.trim()),
+  creditCardNumber: str => !!str && /[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}/.test(str)
 };
 
 // This helper tests a rule (or an array of rules)
