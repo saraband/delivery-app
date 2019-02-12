@@ -42,10 +42,11 @@ function getRestaurantSearchParams (city, tag) {
     }
   }
 
-  /* city is not used here since it's always the same restaurants list
-     for every city, we just shuffle it. But in the future, we would process the city
-     param here
-     */
+  /**
+   *  The `city` parameter is not used here since it's always the same restaurants list
+   *  for every city, we just shuffle it to fake that every city has a different list.
+   *  Buut in the future, we would process the city param here
+   */
 
   return params;
 }
@@ -79,24 +80,26 @@ export const resolvers = {
         ...getRestaurantSearchParams(city, tag)
       });
 
-      /* Randomly shuffle restaurants list based
-         on the city name (as a seed). This is to fake that each city has
-         a different list of restaurants
-         */
+      /**
+       *  Randomly shuffle restaurants list based
+       *  on the city name (as a seed). This is to fake that each city has
+       *  a different list of restaurants
+       */
       if (city !== 'undefined') {
         results = shuffleSeed(results, city);
       }
 
-      /* offset and limit
-         This is suboptimal as we need to keep in memory the whole list
-         but in this case - since we fake that each city has a different list of restaurants
-         by randomly shuffling the list - we need to slice after shuffling. Otherwise
-         it would give a different shuffling result and would fuck up the offset and limit given
-         that is used for infinite scrolling
+      /**
+       *  offset and limit
+       *  This is suboptimal as we need to keep in memory the whole list
+       but in this case - since we fake that each city has a different list of restaurants
+       by randomly shuffling the list - we need to slice after shuffling. Otherwise
+       it would give a different shuffling result and would fuck up the offset and limit given
+       that is used for infinite scrolling
 
-         In a production case where I really have restaurants affiliated to cities, I would pass
-         offset and limit in the SQL query as shown in the comment inside the query above
-         */
+       In a production case where I really have restaurants affiliated to cities, I would pass
+       offset and limit in the SQL query as shown in the comment inside the query above
+       */
       return results.slice(offset, limit);
     },
     restaurant: (_, { id }) => db.restaurant.findOne({

@@ -6,7 +6,10 @@ export const typeDefs = `
 
 export const resolvers = {
   Query: {
-    // TODO: tags list needs to be constant somewhere
+    /**
+     *  This would be dynamically computed as new restaurants and tags
+     *  get added in the database.
+     */
     tagsList: () => [
       'Chinese',
       'Burger',
