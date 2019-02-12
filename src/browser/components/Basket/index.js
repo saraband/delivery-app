@@ -93,14 +93,15 @@ class Basket extends React.Component {
       addProduct,
       removeProduct,
       clearBasket,
-      showButtons
+      showButtons,
+      ...rest
     } = this.props;
     const products = (baskets[id] && baskets[id].products) || [];
     const isBasketEmpty = Object.keys(products).length === 0;
     const total = Object.values(products).reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
 
     return (
-      <StyledBasket>
+      <StyledBasket {...rest}>
         <Title>Your basket</Title>
 
         {/* Product list */}
