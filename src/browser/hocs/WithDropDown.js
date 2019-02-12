@@ -16,7 +16,7 @@ const DropdownContainer = styled.div`
   background-color: ${Colors.WHITE};
   border: 1px solid ${Colors.LIGHT_GREY};
   border-radius: 2px;
-  transition: all 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
   ${BoxShadow}
   
   &:before {

@@ -40,6 +40,7 @@ const Total = styled(RestaurantName)`
 const PendingOrdersIcon = styled(PendingOrdersSVG)`
   width: ${FontSizes.SMALL};
   height: ${FontSizes.SMALL};
+  margin-right: 5px;
 `;
 
 class PendingOrders extends React.PureComponent {
