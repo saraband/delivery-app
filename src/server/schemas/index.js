@@ -7,9 +7,14 @@ const typeDefs = [`
   type Query {
     _empty: String
   }
+  
+  type Mutation {
+    _empty: String
+  }
 
   type schema {
     query: Query
+    mutation: Mutation
   }
 `];
 

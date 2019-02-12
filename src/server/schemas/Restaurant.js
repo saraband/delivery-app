@@ -26,6 +26,10 @@ export const typeDefs = `
     restaurantsList (city: String, offset: Int, limit: Int, tag: String, order: String): [Restaurant!]!
     restaurant (id: ID): Restaurant
   }
+  
+  extend type Mutation {
+    sendOrder (params: String): String
+  }
 `;
 
 function getRestaurantSearchParams (city, tag) {
@@ -56,6 +60,21 @@ export const resolvers = {
   Restaurant: {
     imageUrl: (restaurant) => restaurant.image_url,
     products: (restaurant) => restaurant.getProducts()
+  },
+  Mutation: {
+    sendOrder: (_, { params }) => {
+      /**
+       * Do something with params here (params.firstName, params.ccv, etc)
+       */
+      const {
+        ccv,
+        firstName,
+        lastName
+        // ...rest of the order details
+      } = JSON.parse(params);
+
+      return 'OK'
+    }
   },
   Query: {
     restaurantsCount: (_, { city, tag }) => {

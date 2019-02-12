@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import { Flex } from 'MISC/Styles';
 import SectionTitle from 'COMPONENTS/SectionTitle';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import {Mutation, Query} from 'react-apollo';
 import Basket from 'COMPONENTS/Basket';
 import Section from 'COMPONENTS/Section';
 import FormValidator from 'COMPONENTS/Form/FormValidator';
@@ -30,6 +30,10 @@ const GET_RESTAURANT_INFORMATION = gql`
       imageUrl
     }
   }
+`;
+
+const SEND_ORDER = gql`
+  mutation sendOrder
 `;
 
 const Left = styled(Section)`
@@ -79,6 +83,7 @@ export default class extends React.Component {
     super(props);
     this.updateInput = createInputHandler({ stateKey: 'form' }).bind(this);
     this.state = {
+      orderProcessed: false,
       form: {
         firstName: '',
         lastName: '',
@@ -109,6 +114,7 @@ export default class extends React.Component {
             imageUrl
           } = data.restaurant;
 
+          const { orderProcessed } = this.state;
           const {
             firstName,
             lastName,
@@ -122,7 +128,6 @@ export default class extends React.Component {
           return (
             <Flex direction='column'>
               {/* FINISHED CHECKOUT MODAL */}
-              <RedirectHomeModal />
 
               {/* BANNER */}
               <BannerImage
@@ -212,7 +217,17 @@ export default class extends React.Component {
                           validate={v.ccv}
                           />
                       </Flex>
-                      <PayButton disabled={!isFormValid}>Pay now</PayButton>
+                      <Mutation mutation={SEND_ORDER}>
+                        {(sendOrder) => (
+                          <Fragment>
+                            <PayButton
+                              disabled={!isFormValid}
+        >
+                              Pay now
+                            </PayButton>
+                            {orderProcessed && <RedirectHomeModal />}
+                          </Fragment>
+                        )}
                     </Left>
                   )}
                 </FormValidator>
