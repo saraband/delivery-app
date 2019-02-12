@@ -5,7 +5,7 @@ import nullFunc from 'MISC/NullFunction';
 import FontSizes from 'CONSTANTS/FontSizes';
 import Colors from 'CONSTANTS/Colors';
 import Tag from './Tag';
-import Section from 'COMPONENTS/Section'
+import Section from 'COMPONENTS/Section';
 
 const Title = styled.h3`
   font-size: ${FontSizes.MEDIUM};

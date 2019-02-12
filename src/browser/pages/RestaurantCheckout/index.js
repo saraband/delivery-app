@@ -13,6 +13,8 @@ import Colors from 'CONSTANTS/Colors';
 import LazyImage from 'COMPONENTS/LazyImage';
 import v from 'HELPERS/Validate'
 import {createInputHandler} from 'HELPERS';
+import Modal from 'COMPONENTS/Modal';
+import RedirectHomeModal from './RedirectHomeModal';
 
 const Body = styled.div`
   display: flex;
@@ -119,11 +121,17 @@ export default class extends React.Component {
 
           return (
             <Flex direction='column'>
+              {/* FINISHED CHECKOUT MODAL */}
+              <RedirectHomeModal />
+
+              {/* BANNER */}
               <BannerImage
                 thumbnail={thumbnail}
                 url={imageUrl}
                 alt={name}
                 />
+
+              {/* RECAP BODY */}
               <SectionTitle>{name} checkout</SectionTitle>
               <Body>
                 {/* FORM SECTION */}
