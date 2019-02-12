@@ -1,3 +1,8 @@
+/**
+ *  This loader takes a svg and turns it into a React component
+ *  that will inline it and allows to add more props to the top-level <svg> tag
+ */
+
 module.exports = function (source) {
   const regex = /<\s*svg([^>]*)>(.*)<\s*\/\s*svg\s*>/;
   const matches = regex.exec(source.replace(/\r?\n|\r/g, ''));

@@ -2,17 +2,16 @@ import { remove as removeDiacritics } from 'diacritics';
 import escapeStringRegexp from 'escape-string-regexp';
 import { compose } from 'redux';
 
-/* We compute the ASCII name of each city so we can
-   search on it later
-   */
+/**
+ *  We compute the ASCII name of each city so we can
+ *  search on it later
+ */
 const worldCities = require('../data/world-cities').map(city => ({
   id: city.geonameid,
   name: city.name,
   country: city.country,
   asciiName: removeDiacritics(city.name)
 }));
-
-console.log(worldCities[worldCities.length - 1].asciiName)
 
 export const typeDefs = `
   type City {

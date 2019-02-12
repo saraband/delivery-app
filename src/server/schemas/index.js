@@ -13,6 +13,9 @@ const typeDefs = [`
   }
 `];
 
+/**
+ *  Merge all typeDefs and resolvers to build schema
+ */
 const modules = fs.readdirSync(__dirname)
   .filter((filename) => filename !== 'index.js')
   .map((module) => require(path.resolve(__dirname, module)));
