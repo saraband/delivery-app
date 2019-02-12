@@ -26,6 +26,11 @@ const FixedWidthContainer = styled(ResponsiveWidthContainer)`
   height: 100%;
 `;
 
+const CopyrightContainer = styled.p`
+  text-align: center;
+  width: 100%;
+`;
+
 export default class Footer extends React.PureComponent {
   render() {
     const { fixedWidth } = this.props;
@@ -36,7 +41,7 @@ export default class Footer extends React.PureComponent {
     return (
       <StyledFooter>
         <WidthContainer>
-          <h1>Footer</h1>
+          <CopyrightContainer>All rights reserved &copy; Yassine Hermellin 2019 - This website is a fictional demo application</CopyrightContainer>
         </WidthContainer>
       </StyledFooter>
     );

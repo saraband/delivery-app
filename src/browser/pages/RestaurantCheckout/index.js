@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Flex } from 'MISC/Styles';
 import SectionTitle from 'COMPONENTS/SectionTitle';
@@ -12,11 +12,10 @@ import BaseButton, {ButtonTypes} from 'COMPONENTS/Form/BaseButton';
 import Colors from 'CONSTANTS/Colors';
 import LazyImage from 'COMPONENTS/LazyImage';
 import v from 'HELPERS/Validate'
-import {createInputHandler} from 'HELPERS';
-import Modal from 'COMPONENTS/Modal';
+import { createInputHandler } from 'HELPERS';
 import RedirectHomeModal from './RedirectHomeModal';
-import {connect} from 'react-redux';
-import {CLEAR_BASKET} from 'STORE/baskets';
+import { connect } from 'react-redux';
+import { CLEAR_BASKET } from 'STORE/baskets';
 
 const Body = styled.div`
   display: flex;
@@ -85,6 +84,7 @@ const BannerImage = styled(LazyImage)`
 class RestaurantCheckout extends React.Component {
   constructor (props) {
     super(props);
+
     this.updateInput = createInputHandler({ stateKey: 'form' }).bind(this);
     this.state = {
       orderProcessed: false,
@@ -137,8 +137,6 @@ class RestaurantCheckout extends React.Component {
 
           return (
             <Flex direction='column'>
-              {/* FINISHED CHECKOUT MODAL */}
-
               {/* BANNER */}
               <BannerImage
                 thumbnail={thumbnail}
@@ -149,6 +147,7 @@ class RestaurantCheckout extends React.Component {
               {/* RECAP BODY */}
               <SectionTitle>{name} checkout</SectionTitle>
               <Body>
+
                 {/* FORM SECTION */}
                 <FormValidator>
                   {({ validator, isFormValid }) => (
@@ -227,16 +226,18 @@ class RestaurantCheckout extends React.Component {
                           validate={v.ccv}
                           />
                       </Flex>
+
+                      {/* PAY NOW BUTTON */}
                       <Mutation
                         mutation={SEND_ORDER}
                         onCompleted={() => {
-                          // Order processed, redirects to the home page
+                          // Order processed, display the modal
                           this.setState({ orderProcessed: true });
                         }}>
-                        {(sendOrder) => (
+                        {(sendOrder, { loading }) => (
                           <Fragment>
                             <PayButton
-                              disabled={!isFormValid}
+                              disabled={!isFormValid || loading}
                               onClick={() => {
                                 /* Send the order details here */
                                 sendOrder({ variables: {
@@ -246,7 +247,7 @@ class RestaurantCheckout extends React.Component {
                                   })
                                 }});
                               }}>
-                              Pay now
+                              {loading ? 'Processing order...' : 'Pay now'}
                             </PayButton>
 
                             {/* Order has been processed, show the redirect modal and clear basket */}
@@ -259,6 +260,7 @@ class RestaurantCheckout extends React.Component {
                     </Left>
                   )}
                 </FormValidator>
+
                 {/* RECAP BASKET */}
                 <StyledBasket id={id} />
               </Body>
