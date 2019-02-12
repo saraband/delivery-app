@@ -1,15 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import Loader from 'COMPONENTS/Loader';
-import Input from 'COMPONENTS/Form/BaseInput';
-import Button from 'COMPONENTS/Form/BaseButton';
 import queryString from 'query-string';
 import SideBar from './SideBar';
 import RestaurantCard from './RestaurantCard';
 import Colors from 'CONSTANTS/Colors';
-import SearchSVG from 'ASSETS/images/search.svg';
 import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
 import { Helmet } from 'react-helmet';
 import FontSizes from 'CONSTANTS/FontSizes';
@@ -67,7 +63,7 @@ export default class RestaurantsList extends React.Component {
   }
 
   componentWillUpdate (nextProps, nextState, nextContext) {
-    // Location has changed => scroll to the top +
+    // Location has changed => scroll to the top
     if (this.props.location.pathname !== nextProps.location.pathname ||
       this.props.location.search !== nextProps.location.search) {
       window.scrollTo(0, 0);

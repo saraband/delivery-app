@@ -1,11 +1,11 @@
-/*
+/**
  *  SideBar.js
  *  ----------
  *  The side bar on the left when listing restaurants. This component allows the user
  *  to choose a city and a tag that will narrow its search.
  */
 
-import React, { memo } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import FlatSelect from 'COMPONENTS/FlatSelect';
 import { Query } from 'react-apollo';
@@ -15,9 +15,7 @@ import { addParamsToUrl } from 'ROUTES';
 import Routes from 'ROUTES';
 import CitySearch from 'COMPONENTS/CitySearch';
 import SectionTitle from 'COMPONENTS/SectionTitle'
-import Section from 'COMPONENTS/Section'
 import PendingOrders from './PendingOrders'
-import PendingOrdersSVG from 'ROOT/assets/images/pending_orders.svg';
 import FontSizes from 'CONSTANTS/FontSizes';
 import TypeOfFoodSVG from 'ASSETS/images/tag.svg';
 
@@ -125,7 +123,7 @@ class SideBar extends React.PureComponent {
               <FlatSelect
                 selected={selectedTag}
                 options={data.tagsList.map((tag) => ({
-                  id: tag.toLowerCase(), // TODO WEIRD, rewrite this shit
+                  id: tag.toLowerCase(),
                   value: tag
                 }))}
                 onSelect={(selected) => {

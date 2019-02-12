@@ -1,13 +1,13 @@
+/**
+ *  The baskets are implemented as nested hash lists
+ *  So retrieving the products list for one restaurant basket is fast,
+ *  and isn't dependent of the amount of data stored.
+ */
+
 export const ADD_PRODUCT = 'ADD_PRODUCT';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const CLEAR_BASKET = 'CLEAR_BASKET';
 export const CLEAR_ALL_BASKETS = 'CLEAR_ALL_BASKETS';
-
-/*
- *  The baskets are implemented as nested hash lists
- *  So retrieving the products list for one restaurant basket is quick,
- *  and isn't dependent of the amount of data stored.
- */
 
 export default (state = {}, action) => {
   switch (action.type) {

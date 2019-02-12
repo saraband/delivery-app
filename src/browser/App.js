@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Layout from 'LAYOUTS/Default';
 import Routes from 'ROUTES';
 import Loader from 'COMPONENTS/Loader';

@@ -1,26 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import Colors from '../../constants/Colors';
+import Colors from 'CONSTANTS/Colors';
 import Routes, { addParamsToUrl } from 'ROUTES';
 import { Link } from 'react-router-dom';
-import LazyImage from '../../components/LazyImage';
-import PropTypes from 'prop-types';
+import LazyImage from 'COMPONENTS/LazyImage';
 import { withRipples } from 'HOCS';
-import Ripple from '../../components/RippleProvider/Ripple';
-import { ButtonTypes } from '../../components/Form/BaseButton';
-import FontSizes from '../../constants/FontSizes';
+import Ripple from 'COMPONENTS/RippleProvider/Ripple';
+import FontSizes from 'CONSTANTS/FontSizes';
 import { Flex } from 'MISC/Styles';
 import { getCurrentDay, hexToRgbaString } from 'HELPERS';
 import RatingSVG from 'ASSETS/images/rating.svg';
 
-// TODO: refactor this maybe ?
+// TODO: Refactor this into a helper maybe ?
 const CARD_WIDTH = 350;
 const CARD_HEIGHT = 400;
 const OFFSET_SIDEBAR = 300;
 
 /**
- * Generates a bunch of size configuration
- * TODO: cleaner comment + refactor this ?
+ *  Generates a bunch of size configuration i.e.
+ *  some responsive widths. This allow the restaurant `cards` shown in the Restaurants listing
+ *  to fill the screen while preserving (more or less) their aspect ratio
  */
 const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
   return `
@@ -31,7 +30,7 @@ const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
 }).join('\n');
 
 const ResponsiveContainer = styled.div`
-  width: 100%; /* This will get overridden if the width of the viewport is higher */
+  width: 100%; /* This will get overridden by the size configuration above if necessary */
   min-height: ${CARD_HEIGHT}px;
   padding: 15px;
   
@@ -142,7 +141,7 @@ class RestaurantCard extends React.PureComponent {
       y,
       color: Colors.BLUE,
       size: this.size * 2
-    })
+    });
   };
 
   renderOpeningHours = () => {
@@ -155,7 +154,7 @@ class RestaurantCard extends React.PureComponent {
       return <ClosedHours>Closed now</ClosedHours>;
     }
 
-    return <OpenHours>Open until {opening_hours[currentDay].to}h</OpenHours>
+    return <OpenHours>Open until {opening_hours[currentDay].to}h</OpenHours>;
   };
 
   render () {

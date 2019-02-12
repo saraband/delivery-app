@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import SectionTitle from 'COMPONENTS/SectionTitle';
 import Section from 'COMPONENTS/Section';
@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import FontSizes from 'CONSTANTS/FontSizes';
 import Colors from 'CONSTANTS/Colors';
 import { Link } from 'react-router-dom';
-import {Flex} from 'MISC/Styles';
-import Routes, {addParamsToUrl} from 'ROUTES';
+import Routes, { addParamsToUrl } from 'ROUTES';
 import PendingOrdersSVG from 'ASSETS/images/pending_orders.svg';
 
 const OrdersContainer = styled.div``;
@@ -52,8 +51,12 @@ class PendingOrders extends React.PureComponent {
 
     return (
       <Fragment>
-        <SectionTitle><PendingOrdersIcon /> Pending orders</SectionTitle>
-        {/* ONLY 5 FIRST PENDING ORDERS */}
+        <SectionTitle>
+          <PendingOrdersIcon />
+          Pending orders
+        </SectionTitle>
+
+        {/* ONLY FIRST 3 PENDING ORDERS */}
         <OrdersContainer>
           {Object.values(baskets).slice(0, 3).map(({ restaurant, products }) => {
             const total = Object.values(products).reduce((acc, { price, quantity }) => acc + price * quantity, 0);

@@ -8,7 +8,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from 'STORE/index';
 import App from './App';
 
-console.log(`APP_BASE_URL=${APP_BASE_URL}`);
 const apolloClient = new ApolloClient({
   uri: `${APP_BASE_URL}/graphql`
 });
