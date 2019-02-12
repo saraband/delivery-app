@@ -29,7 +29,7 @@ const ResponsiveCardSizes = new Array(10).fill(1).map((_, index) => {
   `;
 }).join('\n');
 
-const ResponsiveContainer = styled.div`
+export const ResponsiveContainer = styled.div`
   width: 100%; /* This will get overridden by the size configuration above if necessary */
   min-height: ${CARD_HEIGHT}px;
   padding: 15px;

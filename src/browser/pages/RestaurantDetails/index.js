@@ -23,6 +23,7 @@ import {
   RestaurantName, RestaurantRating
 } from 'PAGES/RestaurantsList/RestaurantCard';
 import { getCurrentDay } from 'HELPERS';
+import Placeholder from './RestaurantDetailsPlaceholder';
 
 const BannerImage = styled(LazyImage)`
   width: 100%;
@@ -120,7 +121,7 @@ class RestaurantDetails extends React.Component {
       <Query query={GET_PRODUCTS_LIST} variables={{ id }}>
         {({ error, loading, data }) => {
           if (error) return <p>Error</p>;
-          if (loading) return <p>Loading</p>;
+          if (loading) return <Placeholder />
 
           // TODO: handle this better
           if (!data.restaurant || !data.productsList) {
@@ -153,39 +154,43 @@ class RestaurantDetails extends React.Component {
 
               {/* BODY SECTION */}
               <BodySection>
-                <MenuSection>
-                  {/* Banner */}
-                  <BannerImage
-                    url={data.restaurant.imageUrl}
-                    thumbnail={thumbnail}
-                    alt={name}
-                    />
-
-                  {/* Restaurant description */}
-                  <Description>
-                    <Flex justify='space-between' align='flex-end'>
-                      <RestaurantName>{name}</RestaurantName>
-                      <RestaurantRating>
-                        {rating}
-                        <RatingLogo />
-                      </RestaurantRating>
-                    </Flex>
-                    <Subtitle>{address} - {this.renderOpeningHours(opening_hours)}</Subtitle>
-                    <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
-                  </Description>
-
-                  {/* Products list */}
-                  <MenuTitle>Products</MenuTitle>
-                  {data && data.productsList.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      selected={!!currentBasket[product.id]}
-                      addProduct={() => addProduct(product)}
-                      removeProduct={() => removeProduct(product)}
-                      {...product}
+                {!loading && data ? (
+                  <MenuSection>
+                    {/* Banner */}
+                    <BannerImage
+                      url={data.restaurant.imageUrl}
+                      thumbnail={thumbnail}
+                      alt={name}
                       />
-                  ))}
-                </MenuSection>
+
+                    {/* Restaurant description */}
+                    <Description>
+                      <Flex justify='space-between' align='flex-end'>
+                        <RestaurantName>{name}</RestaurantName>
+                        <RestaurantRating>
+                          {rating}
+                          <RatingLogo />
+                        </RestaurantRating>
+                      </Flex>
+                      <Subtitle>{address} - {this.renderOpeningHours(opening_hours)}</Subtitle>
+                      <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
+                    </Description>
+
+                    {/* Products list */}
+                    <MenuTitle>Products</MenuTitle>
+                    {data && data.productsList.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        selected={!!currentBasket[product.id]}
+                        addProduct={() => addProduct(product)}
+                        removeProduct={() => removeProduct(product)}
+                        {...product}
+                        />
+                    ))}
+                  </MenuSection>
+                ) : (
+                  <Placeholder />
+                )}
 
                 {/* BASKET SIDEBAR */}
                 <BasketSection>

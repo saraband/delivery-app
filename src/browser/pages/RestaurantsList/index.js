@@ -9,6 +9,7 @@ import Colors from 'CONSTANTS/Colors';
 import InfiniteScroll from 'COMPONENTS/InfiniteScroll';
 import { Helmet } from 'react-helmet';
 import FontSizes from 'CONSTANTS/FontSizes';
+import Placeholder from './RestaurantsListPlaceholder';
 
 const GET_RESTAURANTS_LIST = gql`
   query list ($city: String, $offset: Int, $limit: Int, $tag: String, $order: String) {
@@ -116,6 +117,7 @@ export default class RestaurantsList extends React.Component {
                       {...r}
                       />
                   ))}
+                  {loading && <Placeholder />}
                 </List>
 
                 {/* INFINITE SCROLL */}
