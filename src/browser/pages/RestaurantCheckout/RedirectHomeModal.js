@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Modal from 'COMPONENTS/Modal';
 import FontSizes from 'CONSTANTS/FontSizes';
 import Colors from 'CONSTANTS/Colors';
+import Routes from 'ROUTES';
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -26,6 +27,13 @@ const Subtitle = styled.h5`
 `;
 
 export default class RedirectHomeModal extends React.PureComponent {
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.clearBasket();
+      document.location = Routes.HOME;
+    }, 2000);
+  }
+
   render () {
     return (
       <StyledModal>

@@ -66,12 +66,13 @@ export const resolvers = {
       /**
        * Do something with params here (params.firstName, params.ccv, etc)
        */
-      const {
-        ccv,
-        firstName,
-        lastName
+     /* const {
+        orderInfo,
+        userInfo
         // ...rest of the order details
-      } = JSON.parse(params);
+      } = JSON.parse(params);*/
+
+      console.log(params)
 
       return 'OK'
     }

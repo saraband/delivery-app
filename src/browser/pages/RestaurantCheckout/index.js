@@ -15,6 +15,8 @@ import v from 'HELPERS/Validate'
 import {createInputHandler} from 'HELPERS';
 import Modal from 'COMPONENTS/Modal';
 import RedirectHomeModal from './RedirectHomeModal';
+import {connect} from 'react-redux';
+import {CLEAR_BASKET} from 'STORE/baskets';
 
 const Body = styled.div`
   display: flex;
@@ -33,7 +35,9 @@ const GET_RESTAURANT_INFORMATION = gql`
 `;
 
 const SEND_ORDER = gql`
-  mutation sendOrder
+  mutation sendOrder ($params: String!) {
+    sendOrder (params: $params)
+  }
 `;
 
 const Left = styled(Section)`
@@ -78,7 +82,7 @@ const BannerImage = styled(LazyImage)`
   height: 300px;
 `;
 
-export default class extends React.Component {
+class RestaurantCheckout extends React.Component {
   constructor (props) {
     super(props);
     this.updateInput = createInputHandler({ stateKey: 'form' }).bind(this);
@@ -98,6 +102,11 @@ export default class extends React.Component {
 
   render () {
     const { id } = this.props.match.params;
+    const products = (this.props.baskets[id] && this.props.baskets[id].products) || {};
+    const orderInfo = Object.keys(products).map((productId) => ({
+      id: productId,
+      quantity: products[productId].quantity
+    }));
 
     return (
       <Query
@@ -114,6 +123,7 @@ export default class extends React.Component {
             imageUrl
           } = data.restaurant;
 
+          const { clearBasket } = this.props;
           const { orderProcessed } = this.state;
           const {
             firstName,
@@ -217,17 +227,35 @@ export default class extends React.Component {
                           validate={v.ccv}
                           />
                       </Flex>
-                      <Mutation mutation={SEND_ORDER}>
+                      <Mutation
+                        mutation={SEND_ORDER}
+                        onCompleted={() => {
+                          // Order processed, redirects to the home page
+                          this.setState({ orderProcessed: true });
+                        }}>
                         {(sendOrder) => (
                           <Fragment>
                             <PayButton
                               disabled={!isFormValid}
-        >
+                              onClick={() => {
+                                /* Send the order details here */
+                                sendOrder({ variables: {
+                                  params: JSON.stringify({
+                                    userInfo: this.state.form,
+                                    orderInfo
+                                  })
+                                }});
+                              }}>
                               Pay now
                             </PayButton>
-                            {orderProcessed && <RedirectHomeModal />}
+
+                            {/* Order has been processed, show the redirect modal and clear basket */}
+                            {orderProcessed && (
+                              <RedirectHomeModal clearBasket={() => clearBasket(id)} />
+                            )}
                           </Fragment>
                         )}
+                      </Mutation>
                     </Left>
                   )}
                 </FormValidator>
@@ -241,3 +269,12 @@ export default class extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({
+    baskets: state.baskets
+  }),
+  (dispatch) => ({
+    clearBasket: (basketId) => dispatch({ type: CLEAR_BASKET, basketId })
+  })
+)(RestaurantCheckout);

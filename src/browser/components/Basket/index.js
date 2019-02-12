@@ -1,22 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import FlipMove from 'react-flip-move';
 import Product, { Controls } from './Product';
 import Colors from 'CONSTANTS/Colors';
 import BaseButton, { ButtonTypes } from 'COMPONENTS/Form/BaseButton';
-import AddIcon from 'ICONS/AddIcon';
-import RemoveIcon from 'ICONS/RemoveIcon';
-import ToolTip from 'COMPONENTS/ToolTip';
 import Routes from 'ROUTES';
 import PropTypes from 'prop-types';
-
 import {
-  ADD_PRODUCT, CLEAR_BASKET,
+  ADD_PRODUCT,
+  CLEAR_BASKET,
   REMOVE_PRODUCT
 } from 'STORE/baskets';
-import {deepEqual, hexToRgbaString} from 'HELPERS';
-import {Flex} from 'MISC/Styles';
+import { deepEqual, hexToRgbaString } from 'HELPERS';
 import FontSizes from 'CONSTANTS/FontSizes';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
