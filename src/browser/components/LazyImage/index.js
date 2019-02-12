@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { addParamsToUrl } from 'ROUTES';
 import makeCancelable from 'makecancelable';
+import { deepEqual } from 'HELPERS';
 
 const Container = styled.div`
   position: relative;
@@ -55,6 +56,11 @@ export default class LazyImage extends React.Component {
     this.state = {
       hasImageLoaded: !props.thumbnail
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return !deepEqual(this.state, nextState) ||
+      !deepEqual(this.props, nextProps);
   }
 
   componentDidUpdate (prevProps, prevState, snapshot) {
