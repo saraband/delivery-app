@@ -1,11 +1,8 @@
-import React, {memo} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Colors from 'CONSTANTS/Colors';
 import LogoSVG from 'ASSETS/images/logo_white.svg';
 import HotboxSVG from 'ASSETS/images/hotbox_white.svg';
-import ProfileSVG from 'ASSETS/images/profile.svg';
-import FontSizes from 'CONSTANTS/FontSizes';
-import BaseButton, { ButtonTypes, TextContainer } from 'COMPONENTS/Form/BaseButton';
 import { Link } from 'react-router-dom';
 import Routes from 'ROUTES';
 import PropTypes from 'prop-types';
@@ -68,7 +65,7 @@ const FixedWidthContainer = styled(ResponsiveWidthContainer)`
   height: 100%;
 `;
 
-export default class Index extends React.PureComponent {
+export default class Header extends React.PureComponent {
   render() {
     const { fixedWidth } = this.props;
     const WidthContainer = fixedWidth
@@ -98,10 +95,10 @@ export default class Index extends React.PureComponent {
   }
 };
 
-Index.propTypes = {
+Header.propTypes = {
   fixedWidth: PropTypes.bool
 };
 
-Index.defaultProps = {
+Header.defaultProps = {
   fixedWidth: false
 };
