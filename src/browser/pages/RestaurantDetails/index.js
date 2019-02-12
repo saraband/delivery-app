@@ -154,43 +154,39 @@ class RestaurantDetails extends React.Component {
 
               {/* BODY SECTION */}
               <BodySection>
-                {!loading && data ? (
-                  <MenuSection>
-                    {/* Banner */}
-                    <BannerImage
-                      url={data.restaurant.imageUrl}
-                      thumbnail={thumbnail}
-                      alt={name}
+                <MenuSection>
+                  {/* Banner */}
+                  <BannerImage
+                    url={data.restaurant.imageUrl}
+                    thumbnail={thumbnail}
+                    alt={name}
+                    />
+
+                  {/* Restaurant description */}
+                  <Description>
+                    <Flex justify='space-between' align='flex-end'>
+                      <RestaurantName>{name}</RestaurantName>
+                      <RestaurantRating>
+                        {rating}
+                        <RatingLogo />
+                      </RestaurantRating>
+                    </Flex>
+                    <Subtitle>{address} - {this.renderOpeningHours(opening_hours)}</Subtitle>
+                    <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
+                  </Description>
+
+                  {/* Products list */}
+                  <MenuTitle>Products</MenuTitle>
+                  {data && data.productsList.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      selected={!!currentBasket[product.id]}
+                      addProduct={() => addProduct(product)}
+                      removeProduct={() => removeProduct(product)}
+                      {...product}
                       />
-
-                    {/* Restaurant description */}
-                    <Description>
-                      <Flex justify='space-between' align='flex-end'>
-                        <RestaurantName>{name}</RestaurantName>
-                        <RestaurantRating>
-                          {rating}
-                          <RatingLogo />
-                        </RestaurantRating>
-                      </Flex>
-                      <Subtitle>{address} - {this.renderOpeningHours(opening_hours)}</Subtitle>
-                      <TagsList>{tags.map((tag, index) => <Tag key={index}>{tag}</Tag>)}</TagsList>
-                    </Description>
-
-                    {/* Products list */}
-                    <MenuTitle>Products</MenuTitle>
-                    {data && data.productsList.map((product) => (
-                      <ProductCard
-                        key={product.id}
-                        selected={!!currentBasket[product.id]}
-                        addProduct={() => addProduct(product)}
-                        removeProduct={() => removeProduct(product)}
-                        {...product}
-                        />
-                    ))}
-                  </MenuSection>
-                ) : (
-                  <Placeholder />
-                )}
+                  ))}
+                </MenuSection>
 
                 {/* BASKET SIDEBAR */}
                 <BasketSection>
