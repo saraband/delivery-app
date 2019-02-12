@@ -16,7 +16,7 @@ const ResponsiveWidthContainer = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 20px;
 `;
 
@@ -24,11 +24,15 @@ const FixedWidthContainer = styled(ResponsiveWidthContainer)`
   width: ${Breakpoints.desktop}px;
   margin: auto;
   height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const CopyrightContainer = styled.p`
   text-align: center;
   width: 100%;
+  font-weight: normal;
 `;
 
 export default class Footer extends React.PureComponent {
@@ -42,6 +46,7 @@ export default class Footer extends React.PureComponent {
       <StyledFooter>
         <WidthContainer>
           <CopyrightContainer>All rights reserved &copy; Yassine Hermellin 2019 - This website is a fictional demo application</CopyrightContainer>
+          <CopyrightContainer>Photo by Joshua Rawson-Harris on Unsplash</CopyrightContainer>
         </WidthContainer>
       </StyledFooter>
     );
