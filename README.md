@@ -1,11 +1,12 @@
 # Hotbox demo app
 
-This demo app simulates a food delivery website.
+This demo app emulates partially a food delivery application. It consists in a `Express` server hooked to a `PostgreSQL` database through `Sequelize`.
+The client application uses mainly `React` and is connected to the server with `Apollo`, which lets it communicate via the `GraphQL` endpoint exposed by the server.
 
 ## How to try it out
 
-This app can be live tested here (link WIP).
-If you want to run it locally, make sure first to have Postgres running a postgres database running.
+This app can be [live tested here](https://hotbox-demo.herokuapp.com/).
+If you want to run it locally, make sure first to have a Postgres database running.
 Tweak the file src/server/config.json to fit your localhost database credentials:
 
 ```json
@@ -16,7 +17,8 @@ Tweak the file src/server/config.json to fit your localhost database credentials
     "database": "YOUR_DB_NAME_HERE",
     "host": "127.0.0.1",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   }
 }
 ```
@@ -25,17 +27,13 @@ Once you've properly configured config.json, run the following to set up the pro
 
 ```
 yarn install                    # Install dependencies
-yarn setup                      # Run several scripts in order to setup the app
-                                # Those scripts are described below
+yarn setup                      # Run sequelize migrations and seed to populate the DB
 
 # What `yarn setup` does:
 
 sequelize db:migrate            # Migrate DB schemas
-sequelize db:seed:all           # Populate the DB with fake data
-
-yarn generate-images            # Generates static images of different resolutions (Can take some time)
-yarn update-thumbnails          # Generate base 64 thumbnails from the images previously generated
-                                # and updates the DB
+sequelize db:seed:undo:all      # Revert previous seeds
+sequelize db:seed:all           # Seeds database
 ```
 
 You may now launch the project:
