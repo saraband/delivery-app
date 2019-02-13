@@ -50,7 +50,7 @@ yarn dev                        # Launch the client app on port 8080
     * [constants/](./src/browser/constants/) Constants (Colors, styles, etc)
     * [helpers/](./src/browser/helpers/) Various helpers
     * [hocs/](./src/browser/hocs/) HOCS adding general purpose utilities (Loaders, dropdowns, etc)
-    * [icons/](./src/browser/icons/) SVG icons as components **(TODO: MAYBE REMOVE THIS ?)**
+    * [icons/](./src/browser/icons/) SVG icons as components
     * [layouts/](./src/browser/layouts/) Page layouts
     * [misc/](./src/browser/misc/) Everything that doesn't fit in neither of these folders
     * [pages/](./src/browser/pages/) Different pages of the client app
