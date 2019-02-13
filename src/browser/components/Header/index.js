@@ -13,6 +13,7 @@ import Profile from './Profile';
 const StyledHeader = styled.header`
   flex-grow: 0;
   background-color: ${Colors.BLUE};
+  z-index: 50;
   ${BoxShadow}
 `;
 

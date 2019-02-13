@@ -68,7 +68,6 @@ export default (DropDownComponent) => (ButtonComponent) => {
     }
 
     watchClick = (event) => {
-      console.log('mousedown')
       const { target } = event;
 
       // Click inside the dropdown, do nothing
