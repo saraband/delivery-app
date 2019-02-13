@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import Header from 'COMPONENTS/Header';
 import Footer from 'COMPONENTS/Footer';
 import { Breakpoints } from 'HELPERS/MediaQueries';
+import Colors from 'CONSTANTS/Colors';
 
 const Body = styled.section`
   flex-grow: 1;
   padding: 30px 0;
+  background-color: ${Colors.WHITE};
   
   ${p => p.fixedWidth
     ? `

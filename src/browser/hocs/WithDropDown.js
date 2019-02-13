@@ -55,15 +55,20 @@ export default (DropDownComponent) => (ButtonComponent) => {
       };
     }
 
+    /**
+     * Click event listener was interfering with RippleProvider mousedown event listener
+     * somehow and made the dropdown bug. Ths fixed the issue. TODO: troubleshoot
+     */
     componentDidMount () {
-      document.addEventListener('click', this.watchClick);
+      document.addEventListener('mousedown', this.watchClick);
     }
 
     componentWillUnmount () {
-      document.removeEventListener('click', this.watchClick);
+      document.removeEventListener('mousedown', this.watchClick);
     }
 
     watchClick = (event) => {
+      console.log('mousedown')
       const { target } = event;
 
       // Click inside the dropdown, do nothing
