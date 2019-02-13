@@ -99,4 +99,4 @@ yarn dev                        # Launch the client app on port 8080
 
 ## Credits
 
-* WIP: logo licenses
+* Photo by Joshua Rawson-Harris on Unsplash
