@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
+import City from './City';
+import Product from './Product';
+import Restaurant from './Restaurant';
+import Tags from './Tags';
+import User from './User';
 
 const typeDefs = [`
   type Query {
@@ -21,9 +26,18 @@ const typeDefs = [`
 /**
  *  Merge all typeDefs and resolvers to build schema
  */
+/*
 const modules = fs.readdirSync(__dirname)
   .filter((filename) => filename !== 'index.js')
-  .map((module) => require(path.resolve(__dirname, module)));
+  .map((module) => require(`./${module}`));*/
+
+const modules = [
+  City,
+  Product,
+  Restaurant,
+  Tags,
+  User
+];
 
 export default makeExecutableSchema({
   resolvers: merge(...modules.map((module) => module.resolvers)),
