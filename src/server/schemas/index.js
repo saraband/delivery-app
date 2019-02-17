@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
-import City from './City';
-import Product from './Product';
-import Restaurant from './Restaurant';
-import Tags from './Tags';
-import User from './User';
+const City = require('./City');
+const Product = require('./Product');
+const Restaurant = require('./Restaurant');
+const Tags = require('./Tags');
+const User = require('./User');
 
 const typeDefs = [`
   type Query {

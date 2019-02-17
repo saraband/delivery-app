@@ -42,16 +42,16 @@ export const resolvers = {
   Query: {
     citiesList: (_, { filter }) => {
       const then = Date.now();
-      const escape = compose(
+      const escapedFilter = compose(
         removeDiacritics,
         escapeStringRegexp,
         (str) => str.toLowerCase()
-      );
+      )(filter);
 
-      const results = citiesDictionary.lookup(escape(filter)).map((city) => ({
+      const results = citiesDictionary.lookup(escapedFilter).map((city) => ({
         city,
-        matchStartIndex: 0, // TODO!!! matchIndex
-        matchEndIndex: 5
+        matchStartIndex: 0,
+        matchEndIndex: escapedFilter.length // TODO: rework this ?
       }));
       
       console.log(`Search for \`${filter}\` executed in ${(Date.now() - then) / 1000}s`);
