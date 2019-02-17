@@ -6,10 +6,12 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import log from './log';
 import schema from './schemas';
+import helmet from 'helmet';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.disable('x-powered-by-x');
+
+app.use(helmet());
 
 /* GRAPHQL */
 app.use(cors());

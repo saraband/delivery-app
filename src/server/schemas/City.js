@@ -1,7 +1,7 @@
 import { remove as removeDiacritics } from 'diacritics';
 import escapeStringRegexp from 'escape-string-regexp';
 import { compose } from 'redux';
-import CitiesDictionary from '../CitiesDictionary';
+import Dictionary from '../Dictionary';
 
 /**
  *  We compute the ASCII name of each city so we can
@@ -15,7 +15,10 @@ const worldCities = require('../data/world-cities').map(city => ({
 }));
 
 // Create a dictionary that will allow us to search efficiently
-const citiesDictionary = new CitiesDictionary(worldCities);
+const citiesDictionary = new Dictionary(
+  worldCities,
+  (city) => city.asciiName
+);
 
 export const typeDefs = `
   type City {
@@ -45,7 +48,7 @@ export const resolvers = {
         (str) => str.toLowerCase()
       );
 
-      const results = citiesDictionary.lookupCities(escape(filter)).map((city) => ({
+      const results = citiesDictionary.lookup(escape(filter)).map((city) => ({
         city,
         matchStartIndex: 0, // TODO!!! matchIndex
         matchEndIndex: 5
