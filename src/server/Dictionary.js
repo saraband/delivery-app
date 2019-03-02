@@ -1,12 +1,13 @@
 /**
  *  Dictionary.js
  *  -------------
- *  This component implements a radix trie data structure
- *  in order to efficiently lookup all keys for a prefix given.
- *  It is used for looking up cities quickly
+ *  This component implements a uncompressed radix trie data structure
+ *  in order to quickly retrieve key for a given prefix
+ *  Used for looking up cities in the autocomplete
  */
 
 const REF_SYMBOL = Symbol('WORD_REF');
+
 export default class Dictionary {
   constructor (arrayOfObjects, functionToGetKeyFromObject = (str) => str) {
     this.root = {};
@@ -19,8 +20,8 @@ export default class Dictionary {
   }
 
   insert (key, ref) {
-    let currentNode = this.root;
     // Make the way inside the tree
+    let currentNode = this.root;
     for (let char of key) {
       if (currentNode[char] === undefined) {
         currentNode[char] = {};
